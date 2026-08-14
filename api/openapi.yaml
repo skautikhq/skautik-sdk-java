@@ -3612,6 +3612,91 @@ paths:
       - application/problem+json
 components:
   schemas:
+    Address:
+      properties:
+        city:
+          type: string
+        country:
+          type: string
+        district:
+          type: string
+        number:
+          type: string
+        postal_code:
+          type: string
+        province:
+          type: string
+        street:
+          type: string
+    Building:
+      properties:
+        condition:
+          type: string
+        construction_type:
+          type: string
+        heating_type:
+          type: string
+        year_built:
+          type: integer
+        year_renovated:
+          type: integer
+    City:
+      properties:
+        city:
+          type: string
+        periods:
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - city
+      - periods
+    Delivery:
+      properties:
+        attempts:
+          type: integer
+        created_at:
+          format: date-time
+          type: string
+        delivered_at:
+          format: date-time
+          type: string
+        event:
+          type: string
+        id:
+          type: string
+        max_attempts:
+          type: integer
+        next_retry_at:
+          format: date-time
+          type: string
+        response_status:
+          type: integer
+        status:
+          type: string
+      required:
+      - attempts
+      - created_at
+      - event
+      - id
+      - max_attempts
+      - status
+    District:
+      properties:
+        district:
+          type: string
+        listing_count:
+          type: integer
+      required:
+      - district
+      - listing_count
+    Energy:
+      properties:
+        consumption_kwh:
+          type: number
+        label:
+          type: string
     Envelope:
       description: "Every success puts the payload under `data`, and anything about\
         \ the response rather than the resource under `meta`. A single record and\
@@ -3627,6 +3712,355 @@ components:
           type: object
       required:
       - data
+    Export:
+      properties:
+        byte_size:
+          type: integer
+        created_at:
+          format: date-time
+          type: string
+        download_url:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        failure_reason:
+          type: string
+        finished_at:
+          format: date-time
+          type: string
+        format:
+          type: string
+        id:
+          type: string
+        record_count:
+          type: integer
+        status:
+          type: string
+      required:
+      - created_at
+      - expires_at
+      - format
+      - id
+      - status
+    Generation:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        failure_reason:
+          type: string
+        finished_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        image_url:
+          type: string
+        kind:
+          type: string
+        prompt:
+          type: string
+        property_id:
+          type: string
+        room_type:
+          type: string
+        source_image_id:
+          type: string
+        status:
+          type: string
+        style:
+          type: string
+      required:
+      - created_at
+      - id
+      - kind
+      - status
+    Image:
+      properties:
+        id:
+          type: string
+        is_primary:
+          type: boolean
+        position:
+          type: integer
+        room_type:
+          type: string
+        url:
+          type: string
+      required:
+      - id
+      - is_primary
+      - position
+      - url
+    Import:
+      properties:
+        bytes:
+          type: integer
+        counts:
+          $ref: "#/components/schemas/ImportCounts"
+        created_at:
+          format: date-time
+          type: string
+        dry_run:
+          type: boolean
+        failure_reason:
+          type: string
+        filename:
+          type: string
+        finished_at:
+          format: date-time
+          type: string
+        format:
+          type: string
+        id:
+          type: string
+        mode:
+          type: string
+        source_id:
+          type: string
+        started_at:
+          format: date-time
+          type: string
+        status:
+          type: string
+      required:
+      - counts
+      - created_at
+      - dry_run
+      - format
+      - id
+      - mode
+      - status
+    ImportCounts:
+      properties:
+        created:
+          type: integer
+        failed:
+          type: integer
+        read:
+          type: integer
+        unchanged:
+          type: integer
+        updated:
+          type: integer
+        withdrawn:
+          type: integer
+      required:
+      - created
+      - failed
+      - read
+      - unchanged
+      - updated
+      - withdrawn
+    ImportRecord:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+          default: null
+        external_id:
+          type: string
+        location:
+          type: string
+        outcome:
+          type: string
+        property_id:
+          type: string
+      required:
+      - location
+      - outcome
+    ImportSource:
+      properties:
+        active:
+          type: boolean
+        created_at:
+          format: date-time
+          type: string
+        deletion_policy:
+          type: string
+        delivery:
+          $ref: "#/components/schemas/SourceDelivery"
+        format:
+          type: string
+        id:
+          type: string
+        last_delivery_at:
+          format: date-time
+          type: string
+        mapping:
+          additionalProperties:
+            type: string
+        name:
+          type: string
+        next_expected_at:
+          format: date-time
+          type: string
+        schedule:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - active
+      - created_at
+      - deletion_policy
+      - delivery
+      - format
+      - id
+      - name
+      - updated_at
+    Inquiry:
+      properties:
+        channel:
+          type: string
+        consent_text:
+          type: string
+        consented_at:
+          format: date-time
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        property_id:
+          type: string
+        read_at:
+          format: date-time
+          type: string
+        replied_at:
+          format: date-time
+          type: string
+        sender_email:
+          type: string
+        sender_name:
+          type: string
+        sender_phone:
+          type: string
+        status:
+          type: string
+      required:
+      - channel
+      - created_at
+      - id
+      - message
+      - property_id
+      - sender_email
+      - sender_name
+      - status
+    Listing:
+      properties:
+        available_from:
+          format: date-time
+          type: string
+        currency:
+          type: string
+        deposit:
+          type: number
+        price:
+          type: number
+        price_per_sqm:
+          type: number
+        price_period:
+          type: string
+        published_at:
+          format: date-time
+          type: string
+        service_charges:
+          type: number
+        status:
+          type: string
+        transaction_type:
+          type: string
+      required:
+      - status
+      - transaction_type
+    Location:
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
+        precision:
+          type: string
+      required:
+      - latitude
+      - longitude
+      - precision
+    Market:
+      properties:
+        city:
+          type: string
+        district:
+          type: string
+        metrics:
+          items:
+            $ref: "#/components/schemas/MarketMetric"
+          type: array
+          default: null
+        period:
+          type: string
+        property_type:
+          type: string
+      required:
+      - city
+      - metrics
+      - period
+    MarketContext:
+      properties:
+        city:
+          type: string
+        district:
+          type: string
+        metrics:
+          items:
+            $ref: "#/components/schemas/MarketMetric"
+          type: array
+          default: null
+        period:
+          type: string
+      required:
+      - city
+      - metrics
+      - period
+    MarketMetric:
+      properties:
+        change_pct:
+          type: number
+        computed_at:
+          format: date-time
+          type: string
+        currency:
+          type: string
+        name:
+          type: string
+        sample_size:
+          type: integer
+        unit:
+          type: string
+        value:
+          type: number
+      required:
+      - computed_at
+      - name
+    PriceObservation:
+      properties:
+        currency:
+          type: string
+        observed_at:
+          format: date-time
+          type: string
+        price:
+          type: number
+        source:
+          type: string
+      required:
+      - currency
+      - observed_at
     Problem:
       description: "An RFC 9457 problem document, returned by every failure."
       properties:
@@ -3657,6 +4091,158 @@ components:
           description: A link to the documentation for this failure.
           example: https://skautik.com/developers/docs/errors#not_found
           type: string
+    Property:
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        building:
+          $ref: "#/components/schemas/Building"
+        created_at:
+          format: date-time
+          type: string
+        description:
+          type: string
+        energy:
+          $ref: "#/components/schemas/Energy"
+        external_id:
+          type: string
+        id:
+          type: string
+        images:
+          items:
+            $ref: "#/components/schemas/Image"
+          type: array
+          default: null
+        last_verified_at:
+          format: date-time
+          type: string
+        listing:
+          $ref: "#/components/schemas/Listing"
+        location:
+          $ref: "#/components/schemas/Location"
+        market:
+          $ref: "#/components/schemas/MarketContext"
+        price_history:
+          items:
+            $ref: "#/components/schemas/PriceObservation"
+          type: array
+          default: null
+        rooms:
+          $ref: "#/components/schemas/Rooms"
+        size:
+          $ref: "#/components/schemas/Size"
+        source:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - address
+      - building
+      - created_at
+      - id
+      - rooms
+      - size
+      - source
+      - title
+      - type
+      - updated_at
+    Rooms:
+      properties:
+        bathrooms:
+          type: integer
+        bedrooms:
+          type: integer
+        floor:
+          type: integer
+        floors_in_building:
+          type: integer
+        half_bathrooms:
+          type: integer
+        total_rooms:
+          type: integer
+    Series:
+      properties:
+        city:
+          type: string
+        interval:
+          type: string
+        property_type:
+          type: string
+        series:
+          items:
+            $ref: "#/components/schemas/SeriesPoint"
+          type: array
+          default: null
+        transaction_type:
+          type: string
+      required:
+      - city
+      - interval
+      - series
+    SeriesPoint:
+      properties:
+        listing_count:
+          type: integer
+        median_days_listed:
+          type: integer
+        median_price:
+          type: number
+        median_price_per_area:
+          type: number
+        period:
+          type: string
+      required:
+      - listing_count
+      - period
+    Size:
+      properties:
+        living_area_sqm:
+          type: number
+        plot_area_sqm:
+          type: number
+        usable_area_sqm:
+          type: number
+    SourceDelivery:
+      properties:
+        type:
+          type: string
+        url:
+          type: string
+        username:
+          type: string
+      required:
+      - type
+    Webhook:
+      properties:
+        active:
+          type: boolean
+        created_at:
+          format: date-time
+          type: string
+        events:
+          items:
+            type: string
+          type: array
+          default: null
+        id:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        url:
+          type: string
+      required:
+      - active
+      - created_at
+      - events
+      - id
+      - updated_at
+      - url
     createExport_request:
       properties:
         fields:
