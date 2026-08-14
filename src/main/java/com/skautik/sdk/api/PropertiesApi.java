@@ -22,7 +22,12 @@ import java.math.BigDecimal;
 import com.skautik.sdk.model.CreatePropertyRequest;
 import com.skautik.sdk.model.Envelope;
 import java.io.File;
+import com.skautik.sdk.model.ImagePage;
+import com.skautik.sdk.model.ImageResponse;
+import com.skautik.sdk.model.PriceObservationPage;
 import com.skautik.sdk.model.Problem;
+import com.skautik.sdk.model.PropertyPage;
+import com.skautik.sdk.model.PropertyResponse;
 import com.skautik.sdk.model.SearchPropertiesRequest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -539,10 +544,10 @@ public class PropertiesApi {
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
    * @param expand Related resources to inline. (optional)
-   * @return Envelope
+   * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope getProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand) throws ApiException {
+  public PropertyResponse getProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand) throws ApiException {
     return getProperty(propertyId, expand, null);
   }
 
@@ -552,11 +557,11 @@ public class PropertiesApi {
    * @param propertyId Identifier returned by any collection endpoint. (required)
    * @param expand Related resources to inline. (optional)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope getProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = getPropertyWithHttpInfo(propertyId, expand, headers);
+  public PropertyResponse getProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyResponse> localVarResponse = getPropertyWithHttpInfo(propertyId, expand, headers);
     return localVarResponse.getData();
   }
 
@@ -565,10 +570,10 @@ public class PropertiesApi {
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
    * @param expand Related resources to inline. (optional)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> getPropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand) throws ApiException {
+  public ApiResponse<PropertyResponse> getPropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand) throws ApiException {
     return getPropertyWithHttpInfo(propertyId, expand, null);
   }
 
@@ -578,10 +583,10 @@ public class PropertiesApi {
    * @param propertyId Identifier returned by any collection endpoint. (required)
    * @param expand Related resources to inline. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> getPropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+  public ApiResponse<PropertyResponse> getPropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = getPropertyRequestBuilder(propertyId, expand, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -597,7 +602,7 @@ public class PropertiesApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<PropertyResponse>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -607,10 +612,10 @@ public class PropertiesApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        PropertyResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PropertyResponse>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<PropertyResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -689,10 +694,10 @@ public class PropertiesApi {
    * @param sort Field to order by. Prefix with a minus for descending. Ties break on id, so paging is deterministic. (optional, default to -listed_at)
    * @param fields Comma-separated list of fields to return. Trims payloads substantially when you only need a few. (optional)
    * @param expand Comma-separated related resources to inline rather than fetch separately. (optional)
-   * @return Envelope
+   * @return PropertyPage
    * @throws ApiException if fails to make API call
    */
-  public Envelope listProperties(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand) throws ApiException {
+  public PropertyPage listProperties(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand) throws ApiException {
     return listProperties(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, null);
   }
 
@@ -715,11 +720,11 @@ public class PropertiesApi {
    * @param fields Comma-separated list of fields to return. Trims payloads substantially when you only need a few. (optional)
    * @param expand Comma-separated related resources to inline rather than fetch separately. (optional)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return PropertyPage
    * @throws ApiException if fails to make API call
    */
-  public Envelope listProperties(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = listPropertiesWithHttpInfo(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, headers);
+  public PropertyPage listProperties(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyPage> localVarResponse = listPropertiesWithHttpInfo(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, headers);
     return localVarResponse.getData();
   }
 
@@ -741,10 +746,10 @@ public class PropertiesApi {
    * @param sort Field to order by. Prefix with a minus for descending. Ties break on id, so paging is deterministic. (optional, default to -listed_at)
    * @param fields Comma-separated list of fields to return. Trims payloads substantially when you only need a few. (optional)
    * @param expand Comma-separated related resources to inline rather than fetch separately. (optional)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;PropertyPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> listPropertiesWithHttpInfo(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand) throws ApiException {
+  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand) throws ApiException {
     return listPropertiesWithHttpInfo(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, null);
   }
 
@@ -767,10 +772,10 @@ public class PropertiesApi {
    * @param fields Comma-separated list of fields to return. Trims payloads substantially when you only need a few. (optional)
    * @param expand Comma-separated related resources to inline rather than fetch separately. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;PropertyPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> listPropertiesWithHttpInfo(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listPropertiesRequestBuilder(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -786,7 +791,7 @@ public class PropertiesApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<PropertyPage>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -796,10 +801,10 @@ public class PropertiesApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        PropertyPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PropertyPage>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<PropertyPage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -887,10 +892,11 @@ public class PropertiesApi {
    * List images
    * Image records for a property, in display order.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
+   * @return ImagePage
    * @throws ApiException if fails to make API call
    */
-  public void listPropertyImages(@javax.annotation.Nonnull String propertyId) throws ApiException {
-    listPropertyImages(propertyId, null);
+  public ImagePage listPropertyImages(@javax.annotation.Nonnull String propertyId) throws ApiException {
+    return listPropertyImages(propertyId, null);
   }
 
   /**
@@ -898,20 +904,22 @@ public class PropertiesApi {
    * Image records for a property, in display order.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
    * @param headers Optional headers to include in the request
+   * @return ImagePage
    * @throws ApiException if fails to make API call
    */
-  public void listPropertyImages(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
-    listPropertyImagesWithHttpInfo(propertyId, headers);
+  public ImagePage listPropertyImages(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImagePage> localVarResponse = listPropertyImagesWithHttpInfo(propertyId, headers);
+    return localVarResponse.getData();
   }
 
   /**
    * List images
    * Image records for a property, in display order.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;ImagePage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> listPropertyImagesWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
+  public ApiResponse<ImagePage> listPropertyImagesWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
     return listPropertyImagesWithHttpInfo(propertyId, null);
   }
 
@@ -920,10 +928,10 @@ public class PropertiesApi {
    * Image records for a property, in display order.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;ImagePage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> listPropertyImagesWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<ImagePage> listPropertyImagesWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listPropertyImagesRequestBuilder(propertyId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -938,13 +946,24 @@ public class PropertiesApi {
           throw getApiException("listPropertyImages", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ImagePage>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ImagePage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImagePage>() {});
+        
+
+        return new ApiResponse<ImagePage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -973,7 +992,7 @@ public class PropertiesApi {
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {
@@ -991,10 +1010,10 @@ public class PropertiesApi {
    * Price history
    * Every asking price we observed while tracking the listing.  These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
-   * @return Envelope
+   * @return PriceObservationPage
    * @throws ApiException if fails to make API call
    */
-  public Envelope propertyPriceHistory(@javax.annotation.Nonnull String propertyId) throws ApiException {
+  public PriceObservationPage propertyPriceHistory(@javax.annotation.Nonnull String propertyId) throws ApiException {
     return propertyPriceHistory(propertyId, null);
   }
 
@@ -1003,11 +1022,11 @@ public class PropertiesApi {
    * Every asking price we observed while tracking the listing.  These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return PriceObservationPage
    * @throws ApiException if fails to make API call
    */
-  public Envelope propertyPriceHistory(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = propertyPriceHistoryWithHttpInfo(propertyId, headers);
+  public PriceObservationPage propertyPriceHistory(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+    ApiResponse<PriceObservationPage> localVarResponse = propertyPriceHistoryWithHttpInfo(propertyId, headers);
     return localVarResponse.getData();
   }
 
@@ -1015,10 +1034,10 @@ public class PropertiesApi {
    * Price history
    * Every asking price we observed while tracking the listing.  These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;PriceObservationPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> propertyPriceHistoryWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
+  public ApiResponse<PriceObservationPage> propertyPriceHistoryWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
     return propertyPriceHistoryWithHttpInfo(propertyId, null);
   }
 
@@ -1027,10 +1046,10 @@ public class PropertiesApi {
    * Every asking price we observed while tracking the listing.  These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;PriceObservationPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> propertyPriceHistoryWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<PriceObservationPage> propertyPriceHistoryWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = propertyPriceHistoryRequestBuilder(propertyId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1046,7 +1065,7 @@ public class PropertiesApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<PriceObservationPage>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -1056,10 +1075,10 @@ public class PropertiesApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        PriceObservationPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PriceObservationPage>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<PriceObservationPage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -1229,10 +1248,11 @@ public class PropertiesApi {
    * Comparable records, for context or valuation support.  Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.  Requires the &#x60;properties:read&#x60; scope.  Availability: Growth and above.
    * @param propertyId Property to compare against. (required)
    * @param limit Comparables to return, 1 to 50. (optional, default to 10)
+   * @return PropertyPage
    * @throws ApiException if fails to make API call
    */
-  public void similarProperties(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit) throws ApiException {
-    similarProperties(propertyId, limit, null);
+  public PropertyPage similarProperties(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit) throws ApiException {
+    return similarProperties(propertyId, limit, null);
   }
 
   /**
@@ -1241,10 +1261,12 @@ public class PropertiesApi {
    * @param propertyId Property to compare against. (required)
    * @param limit Comparables to return, 1 to 50. (optional, default to 10)
    * @param headers Optional headers to include in the request
+   * @return PropertyPage
    * @throws ApiException if fails to make API call
    */
-  public void similarProperties(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit, Map<String, String> headers) throws ApiException {
-    similarPropertiesWithHttpInfo(propertyId, limit, headers);
+  public PropertyPage similarProperties(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyPage> localVarResponse = similarPropertiesWithHttpInfo(propertyId, limit, headers);
+    return localVarResponse.getData();
   }
 
   /**
@@ -1252,10 +1274,10 @@ public class PropertiesApi {
    * Comparable records, for context or valuation support.  Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.  Requires the &#x60;properties:read&#x60; scope.  Availability: Growth and above.
    * @param propertyId Property to compare against. (required)
    * @param limit Comparables to return, 1 to 50. (optional, default to 10)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;PropertyPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> similarPropertiesWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit) throws ApiException {
+  public ApiResponse<PropertyPage> similarPropertiesWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit) throws ApiException {
     return similarPropertiesWithHttpInfo(propertyId, limit, null);
   }
 
@@ -1265,10 +1287,10 @@ public class PropertiesApi {
    * @param propertyId Property to compare against. (required)
    * @param limit Comparables to return, 1 to 50. (optional, default to 10)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;PropertyPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> similarPropertiesWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit, Map<String, String> headers) throws ApiException {
+  public ApiResponse<PropertyPage> similarPropertiesWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = similarPropertiesRequestBuilder(propertyId, limit, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1283,13 +1305,24 @@ public class PropertiesApi {
           throw getApiException("similarProperties", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<PropertyPage>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        PropertyPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PropertyPage>() {});
+        
+
+        return new ApiResponse<PropertyPage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -1333,7 +1366,7 @@ public class PropertiesApi {
       localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
     }
 
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {
@@ -1352,10 +1385,11 @@ public class PropertiesApi {
    * Change fields on a record you published.  A partial update: send only what changes. Send If-Match with the ETag from your last read to avoid overwriting a concurrent edit. A record owned by an import source is refused here, because the next run would revert whatever you wrote: change it in the system that feeds the import instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to update. (required)
    * @param ifMatch ETag from your last read. Rejected with 412 if the record moved on. (optional)
+   * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public void updateProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch) throws ApiException {
-    updateProperty(propertyId, ifMatch, null);
+  public PropertyResponse updateProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch) throws ApiException {
+    return updateProperty(propertyId, ifMatch, null);
   }
 
   /**
@@ -1364,10 +1398,12 @@ public class PropertiesApi {
    * @param propertyId Property to update. (required)
    * @param ifMatch ETag from your last read. Rejected with 412 if the record moved on. (optional)
    * @param headers Optional headers to include in the request
+   * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public void updateProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
-    updatePropertyWithHttpInfo(propertyId, ifMatch, headers);
+  public PropertyResponse updateProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyResponse> localVarResponse = updatePropertyWithHttpInfo(propertyId, ifMatch, headers);
+    return localVarResponse.getData();
   }
 
   /**
@@ -1375,10 +1411,10 @@ public class PropertiesApi {
    * Change fields on a record you published.  A partial update: send only what changes. Send If-Match with the ETag from your last read to avoid overwriting a concurrent edit. A record owned by an import source is refused here, because the next run would revert whatever you wrote: change it in the system that feeds the import instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to update. (required)
    * @param ifMatch ETag from your last read. Rejected with 412 if the record moved on. (optional)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> updatePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch) throws ApiException {
+  public ApiResponse<PropertyResponse> updatePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch) throws ApiException {
     return updatePropertyWithHttpInfo(propertyId, ifMatch, null);
   }
 
@@ -1388,10 +1424,10 @@ public class PropertiesApi {
    * @param propertyId Property to update. (required)
    * @param ifMatch ETag from your last read. Rejected with 412 if the record moved on. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> updatePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
+  public ApiResponse<PropertyResponse> updatePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = updatePropertyRequestBuilder(propertyId, ifMatch, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1406,13 +1442,24 @@ public class PropertiesApi {
           throw getApiException("updateProperty", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<PropertyResponse>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        PropertyResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PropertyResponse>() {});
+        
+
+        return new ApiResponse<PropertyResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -1444,7 +1491,7 @@ public class PropertiesApi {
     if (ifMatch != null) {
       localVarRequestBuilder.header("If-Match", ifMatch.toString());
     }
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {
@@ -1464,10 +1511,11 @@ public class PropertiesApi {
    * @param propertyId Property to attach to. (required)
    * @param _file Image payload. (required)
    * @param position Display order. The image at position 0 is the primary one. (optional)
+   * @return ImageResponse
    * @throws ApiException if fails to make API call
    */
-  public void uploadPropertyImage(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position) throws ApiException {
-    uploadPropertyImage(propertyId, _file, position, null);
+  public ImageResponse uploadPropertyImage(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position) throws ApiException {
+    return uploadPropertyImage(propertyId, _file, position, null);
   }
 
   /**
@@ -1477,10 +1525,12 @@ public class PropertiesApi {
    * @param _file Image payload. (required)
    * @param position Display order. The image at position 0 is the primary one. (optional)
    * @param headers Optional headers to include in the request
+   * @return ImageResponse
    * @throws ApiException if fails to make API call
    */
-  public void uploadPropertyImage(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
-    uploadPropertyImageWithHttpInfo(propertyId, _file, position, headers);
+  public ImageResponse uploadPropertyImage(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImageResponse> localVarResponse = uploadPropertyImageWithHttpInfo(propertyId, _file, position, headers);
+    return localVarResponse.getData();
   }
 
   /**
@@ -1489,10 +1539,10 @@ public class PropertiesApi {
    * @param propertyId Property to attach to. (required)
    * @param _file Image payload. (required)
    * @param position Display order. The image at position 0 is the primary one. (optional)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;ImageResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> uploadPropertyImageWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position) throws ApiException {
+  public ApiResponse<ImageResponse> uploadPropertyImageWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position) throws ApiException {
     return uploadPropertyImageWithHttpInfo(propertyId, _file, position, null);
   }
 
@@ -1503,10 +1553,10 @@ public class PropertiesApi {
    * @param _file Image payload. (required)
    * @param position Display order. The image at position 0 is the primary one. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;ImageResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> uploadPropertyImageWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
+  public ApiResponse<ImageResponse> uploadPropertyImageWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = uploadPropertyImageRequestBuilder(propertyId, _file, position, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1521,13 +1571,24 @@ public class PropertiesApi {
           throw getApiException("uploadPropertyImage", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ImageResponse>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ImageResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImageResponse>() {});
+        
+
+        return new ApiResponse<ImageResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -1560,7 +1621,7 @@ public class PropertiesApi {
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     MultipartEntityBuilder multiPartBuilder = MultipartEntityBuilder.create();
     boolean hasFiles = false;

@@ -20,6 +20,8 @@ import com.skautik.sdk.Pair;
 
 import com.skautik.sdk.model.CreateGenerationRequest;
 import com.skautik.sdk.model.Envelope;
+import com.skautik.sdk.model.GenerationPage;
+import com.skautik.sdk.model.GenerationResponse;
 import com.skautik.sdk.model.Problem;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -168,10 +170,10 @@ public class ImageGenerationsApi {
    * Request a generation
    * Queue a transformation of one of your property images.  Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.  Requires the &#x60;images:write&#x60; scope.
    * @param createGenerationRequest  (required)
-   * @return Envelope
+   * @return GenerationResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope createGeneration(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest) throws ApiException {
+  public GenerationResponse createGeneration(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest) throws ApiException {
     return createGeneration(createGenerationRequest, null);
   }
 
@@ -180,11 +182,11 @@ public class ImageGenerationsApi {
    * Queue a transformation of one of your property images.  Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.  Requires the &#x60;images:write&#x60; scope.
    * @param createGenerationRequest  (required)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return GenerationResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope createGeneration(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = createGenerationWithHttpInfo(createGenerationRequest, headers);
+  public GenerationResponse createGeneration(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest, Map<String, String> headers) throws ApiException {
+    ApiResponse<GenerationResponse> localVarResponse = createGenerationWithHttpInfo(createGenerationRequest, headers);
     return localVarResponse.getData();
   }
 
@@ -192,10 +194,10 @@ public class ImageGenerationsApi {
    * Request a generation
    * Queue a transformation of one of your property images.  Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.  Requires the &#x60;images:write&#x60; scope.
    * @param createGenerationRequest  (required)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;GenerationResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> createGenerationWithHttpInfo(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest) throws ApiException {
+  public ApiResponse<GenerationResponse> createGenerationWithHttpInfo(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest) throws ApiException {
     return createGenerationWithHttpInfo(createGenerationRequest, null);
   }
 
@@ -204,10 +206,10 @@ public class ImageGenerationsApi {
    * Queue a transformation of one of your property images.  Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.  Requires the &#x60;images:write&#x60; scope.
    * @param createGenerationRequest  (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;GenerationResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> createGenerationWithHttpInfo(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest, Map<String, String> headers) throws ApiException {
+  public ApiResponse<GenerationResponse> createGenerationWithHttpInfo(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = createGenerationRequestBuilder(createGenerationRequest, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -223,7 +225,7 @@ public class ImageGenerationsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<GenerationResponse>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -233,10 +235,10 @@ public class ImageGenerationsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        GenerationResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<GenerationResponse>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<GenerationResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -291,10 +293,10 @@ public class ImageGenerationsApi {
    * Retrieve a generation
    * Status, and the image once it is ready.  Moves through queued, running, and then completed or failed. A failed generation carries the reason, including when the model declined rather than errored: those are different problems and only one is worth retrying.  Requires the &#x60;images:write&#x60; scope.
    * @param generationId Generation identifier. (required)
-   * @return Envelope
+   * @return GenerationResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope getGeneration(@javax.annotation.Nonnull String generationId) throws ApiException {
+  public GenerationResponse getGeneration(@javax.annotation.Nonnull String generationId) throws ApiException {
     return getGeneration(generationId, null);
   }
 
@@ -303,11 +305,11 @@ public class ImageGenerationsApi {
    * Status, and the image once it is ready.  Moves through queued, running, and then completed or failed. A failed generation carries the reason, including when the model declined rather than errored: those are different problems and only one is worth retrying.  Requires the &#x60;images:write&#x60; scope.
    * @param generationId Generation identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return GenerationResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope getGeneration(@javax.annotation.Nonnull String generationId, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = getGenerationWithHttpInfo(generationId, headers);
+  public GenerationResponse getGeneration(@javax.annotation.Nonnull String generationId, Map<String, String> headers) throws ApiException {
+    ApiResponse<GenerationResponse> localVarResponse = getGenerationWithHttpInfo(generationId, headers);
     return localVarResponse.getData();
   }
 
@@ -315,10 +317,10 @@ public class ImageGenerationsApi {
    * Retrieve a generation
    * Status, and the image once it is ready.  Moves through queued, running, and then completed or failed. A failed generation carries the reason, including when the model declined rather than errored: those are different problems and only one is worth retrying.  Requires the &#x60;images:write&#x60; scope.
    * @param generationId Generation identifier. (required)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;GenerationResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> getGenerationWithHttpInfo(@javax.annotation.Nonnull String generationId) throws ApiException {
+  public ApiResponse<GenerationResponse> getGenerationWithHttpInfo(@javax.annotation.Nonnull String generationId) throws ApiException {
     return getGenerationWithHttpInfo(generationId, null);
   }
 
@@ -327,10 +329,10 @@ public class ImageGenerationsApi {
    * Status, and the image once it is ready.  Moves through queued, running, and then completed or failed. A failed generation carries the reason, including when the model declined rather than errored: those are different problems and only one is worth retrying.  Requires the &#x60;images:write&#x60; scope.
    * @param generationId Generation identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;GenerationResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> getGenerationWithHttpInfo(@javax.annotation.Nonnull String generationId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<GenerationResponse> getGenerationWithHttpInfo(@javax.annotation.Nonnull String generationId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = getGenerationRequestBuilder(generationId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -346,7 +348,7 @@ public class ImageGenerationsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<GenerationResponse>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -356,10 +358,10 @@ public class ImageGenerationsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        GenerationResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<GenerationResponse>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<GenerationResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -517,29 +519,32 @@ public class ImageGenerationsApi {
   /**
    * List generations
    * Recent requests for your organisation, newest first.  Requires the &#x60;images:write&#x60; scope.
+   * @return GenerationPage
    * @throws ApiException if fails to make API call
    */
-  public void listGenerations() throws ApiException {
-    listGenerations(null);
+  public GenerationPage listGenerations() throws ApiException {
+    return listGenerations(null);
   }
 
   /**
    * List generations
    * Recent requests for your organisation, newest first.  Requires the &#x60;images:write&#x60; scope.
    * @param headers Optional headers to include in the request
+   * @return GenerationPage
    * @throws ApiException if fails to make API call
    */
-  public void listGenerations(Map<String, String> headers) throws ApiException {
-    listGenerationsWithHttpInfo(headers);
+  public GenerationPage listGenerations(Map<String, String> headers) throws ApiException {
+    ApiResponse<GenerationPage> localVarResponse = listGenerationsWithHttpInfo(headers);
+    return localVarResponse.getData();
   }
 
   /**
    * List generations
    * Recent requests for your organisation, newest first.  Requires the &#x60;images:write&#x60; scope.
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;GenerationPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> listGenerationsWithHttpInfo() throws ApiException {
+  public ApiResponse<GenerationPage> listGenerationsWithHttpInfo() throws ApiException {
     return listGenerationsWithHttpInfo(null);
   }
 
@@ -547,10 +552,10 @@ public class ImageGenerationsApi {
    * List generations
    * Recent requests for your organisation, newest first.  Requires the &#x60;images:write&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;GenerationPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> listGenerationsWithHttpInfo(Map<String, String> headers) throws ApiException {
+  public ApiResponse<GenerationPage> listGenerationsWithHttpInfo(Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listGenerationsRequestBuilder(headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -565,13 +570,24 @@ public class ImageGenerationsApi {
           throw getApiException("listGenerations", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<GenerationPage>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        GenerationPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<GenerationPage>() {});
+        
+
+        return new ApiResponse<GenerationPage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -595,7 +611,7 @@ public class ImageGenerationsApi {
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {

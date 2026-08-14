@@ -19,7 +19,8 @@ import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
 import com.skautik.sdk.model.CreateExportRequest;
-import com.skautik.sdk.model.Envelope;
+import com.skautik.sdk.model.ExportPage;
+import com.skautik.sdk.model.ExportResponse;
 import com.skautik.sdk.model.Problem;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -168,10 +169,10 @@ public class ExportsApi {
    * Request an export
    * Queue a bulk extract of the catalogue.  Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.  Requires the &#x60;exports:create&#x60; scope.
    * @param createExportRequest  (required)
-   * @return Envelope
+   * @return ExportResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope createExport(@javax.annotation.Nonnull CreateExportRequest createExportRequest) throws ApiException {
+  public ExportResponse createExport(@javax.annotation.Nonnull CreateExportRequest createExportRequest) throws ApiException {
     return createExport(createExportRequest, null);
   }
 
@@ -180,11 +181,11 @@ public class ExportsApi {
    * Queue a bulk extract of the catalogue.  Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.  Requires the &#x60;exports:create&#x60; scope.
    * @param createExportRequest  (required)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return ExportResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope createExport(@javax.annotation.Nonnull CreateExportRequest createExportRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = createExportWithHttpInfo(createExportRequest, headers);
+  public ExportResponse createExport(@javax.annotation.Nonnull CreateExportRequest createExportRequest, Map<String, String> headers) throws ApiException {
+    ApiResponse<ExportResponse> localVarResponse = createExportWithHttpInfo(createExportRequest, headers);
     return localVarResponse.getData();
   }
 
@@ -192,10 +193,10 @@ public class ExportsApi {
    * Request an export
    * Queue a bulk extract of the catalogue.  Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.  Requires the &#x60;exports:create&#x60; scope.
    * @param createExportRequest  (required)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;ExportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> createExportWithHttpInfo(@javax.annotation.Nonnull CreateExportRequest createExportRequest) throws ApiException {
+  public ApiResponse<ExportResponse> createExportWithHttpInfo(@javax.annotation.Nonnull CreateExportRequest createExportRequest) throws ApiException {
     return createExportWithHttpInfo(createExportRequest, null);
   }
 
@@ -204,10 +205,10 @@ public class ExportsApi {
    * Queue a bulk extract of the catalogue.  Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.  Requires the &#x60;exports:create&#x60; scope.
    * @param createExportRequest  (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;ExportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> createExportWithHttpInfo(@javax.annotation.Nonnull CreateExportRequest createExportRequest, Map<String, String> headers) throws ApiException {
+  public ApiResponse<ExportResponse> createExportWithHttpInfo(@javax.annotation.Nonnull CreateExportRequest createExportRequest, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = createExportRequestBuilder(createExportRequest, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -223,7 +224,7 @@ public class ExportsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<ExportResponse>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -233,10 +234,10 @@ public class ExportsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        ExportResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ExportResponse>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<ExportResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -291,10 +292,10 @@ public class ExportsApi {
    * Retrieve an export
    * Status, and the download URL once it is ready.  Download URLs are signed and expire one hour after issue, and are minted per request rather than stored, so ask again if one lapses. The file itself is kept for seven days; after that the export still appears in your history with no link, because the object has been swept.  Requires the &#x60;exports:create&#x60; scope.
    * @param exportId Export identifier. (required)
-   * @return Envelope
+   * @return ExportResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope getExport(@javax.annotation.Nonnull String exportId) throws ApiException {
+  public ExportResponse getExport(@javax.annotation.Nonnull String exportId) throws ApiException {
     return getExport(exportId, null);
   }
 
@@ -303,11 +304,11 @@ public class ExportsApi {
    * Status, and the download URL once it is ready.  Download URLs are signed and expire one hour after issue, and are minted per request rather than stored, so ask again if one lapses. The file itself is kept for seven days; after that the export still appears in your history with no link, because the object has been swept.  Requires the &#x60;exports:create&#x60; scope.
    * @param exportId Export identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return ExportResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope getExport(@javax.annotation.Nonnull String exportId, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = getExportWithHttpInfo(exportId, headers);
+  public ExportResponse getExport(@javax.annotation.Nonnull String exportId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ExportResponse> localVarResponse = getExportWithHttpInfo(exportId, headers);
     return localVarResponse.getData();
   }
 
@@ -315,10 +316,10 @@ public class ExportsApi {
    * Retrieve an export
    * Status, and the download URL once it is ready.  Download URLs are signed and expire one hour after issue, and are minted per request rather than stored, so ask again if one lapses. The file itself is kept for seven days; after that the export still appears in your history with no link, because the object has been swept.  Requires the &#x60;exports:create&#x60; scope.
    * @param exportId Export identifier. (required)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;ExportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> getExportWithHttpInfo(@javax.annotation.Nonnull String exportId) throws ApiException {
+  public ApiResponse<ExportResponse> getExportWithHttpInfo(@javax.annotation.Nonnull String exportId) throws ApiException {
     return getExportWithHttpInfo(exportId, null);
   }
 
@@ -327,10 +328,10 @@ public class ExportsApi {
    * Status, and the download URL once it is ready.  Download URLs are signed and expire one hour after issue, and are minted per request rather than stored, so ask again if one lapses. The file itself is kept for seven days; after that the export still appears in your history with no link, because the object has been swept.  Requires the &#x60;exports:create&#x60; scope.
    * @param exportId Export identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;ExportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> getExportWithHttpInfo(@javax.annotation.Nonnull String exportId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<ExportResponse> getExportWithHttpInfo(@javax.annotation.Nonnull String exportId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = getExportRequestBuilder(exportId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -346,7 +347,7 @@ public class ExportsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<ExportResponse>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -356,10 +357,10 @@ public class ExportsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        ExportResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ExportResponse>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<ExportResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -408,29 +409,32 @@ public class ExportsApi {
   /**
    * List exports
    * Recent exports for your organisation, newest first.  Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.  Requires the &#x60;exports:create&#x60; scope.
+   * @return ExportPage
    * @throws ApiException if fails to make API call
    */
-  public void listExports() throws ApiException {
-    listExports(null);
+  public ExportPage listExports() throws ApiException {
+    return listExports(null);
   }
 
   /**
    * List exports
    * Recent exports for your organisation, newest first.  Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.  Requires the &#x60;exports:create&#x60; scope.
    * @param headers Optional headers to include in the request
+   * @return ExportPage
    * @throws ApiException if fails to make API call
    */
-  public void listExports(Map<String, String> headers) throws ApiException {
-    listExportsWithHttpInfo(headers);
+  public ExportPage listExports(Map<String, String> headers) throws ApiException {
+    ApiResponse<ExportPage> localVarResponse = listExportsWithHttpInfo(headers);
+    return localVarResponse.getData();
   }
 
   /**
    * List exports
    * Recent exports for your organisation, newest first.  Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.  Requires the &#x60;exports:create&#x60; scope.
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;ExportPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> listExportsWithHttpInfo() throws ApiException {
+  public ApiResponse<ExportPage> listExportsWithHttpInfo() throws ApiException {
     return listExportsWithHttpInfo(null);
   }
 
@@ -438,10 +442,10 @@ public class ExportsApi {
    * List exports
    * Recent exports for your organisation, newest first.  Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.  Requires the &#x60;exports:create&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;ExportPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> listExportsWithHttpInfo(Map<String, String> headers) throws ApiException {
+  public ApiResponse<ExportPage> listExportsWithHttpInfo(Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listExportsRequestBuilder(headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -456,13 +460,24 @@ public class ExportsApi {
           throw getApiException("listExports", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ExportPage>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ExportPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ExportPage>() {});
+        
+
+        return new ApiResponse<ExportPage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -486,7 +501,7 @@ public class ExportsApi {
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {

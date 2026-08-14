@@ -18,8 +18,11 @@ import com.skautik.sdk.ApiResponse;
 import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
-import com.skautik.sdk.model.Envelope;
+import com.skautik.sdk.model.CityPage;
+import com.skautik.sdk.model.DistrictPage;
+import com.skautik.sdk.model.MarketResponse;
 import com.skautik.sdk.model.Problem;
+import com.skautik.sdk.model.SeriesResponse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -286,10 +289,10 @@ public class MarketsApi {
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier, such as berlin-de. (required)
-   * @return Envelope
+   * @return MarketResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope getMarket(@javax.annotation.Nonnull String marketId) throws ApiException {
+  public MarketResponse getMarket(@javax.annotation.Nonnull String marketId) throws ApiException {
     return getMarket(marketId, null);
   }
 
@@ -298,11 +301,11 @@ public class MarketsApi {
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier, such as berlin-de. (required)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return MarketResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope getMarket(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = getMarketWithHttpInfo(marketId, headers);
+  public MarketResponse getMarket(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
+    ApiResponse<MarketResponse> localVarResponse = getMarketWithHttpInfo(marketId, headers);
     return localVarResponse.getData();
   }
 
@@ -310,10 +313,10 @@ public class MarketsApi {
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier, such as berlin-de. (required)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;MarketResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId) throws ApiException {
+  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId) throws ApiException {
     return getMarketWithHttpInfo(marketId, null);
   }
 
@@ -322,10 +325,10 @@ public class MarketsApi {
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier, such as berlin-de. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;MarketResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = getMarketRequestBuilder(marketId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -341,7 +344,7 @@ public class MarketsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<MarketResponse>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -351,10 +354,10 @@ public class MarketsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        MarketResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<MarketResponse>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<MarketResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -404,10 +407,11 @@ public class MarketsApi {
    * List districts
    * Subdivisions of a market, for building your own filters.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier. (required)
+   * @return DistrictPage
    * @throws ApiException if fails to make API call
    */
-  public void listDistricts(@javax.annotation.Nonnull String marketId) throws ApiException {
-    listDistricts(marketId, null);
+  public DistrictPage listDistricts(@javax.annotation.Nonnull String marketId) throws ApiException {
+    return listDistricts(marketId, null);
   }
 
   /**
@@ -415,20 +419,22 @@ public class MarketsApi {
    * Subdivisions of a market, for building your own filters.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier. (required)
    * @param headers Optional headers to include in the request
+   * @return DistrictPage
    * @throws ApiException if fails to make API call
    */
-  public void listDistricts(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
-    listDistrictsWithHttpInfo(marketId, headers);
+  public DistrictPage listDistricts(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
+    ApiResponse<DistrictPage> localVarResponse = listDistrictsWithHttpInfo(marketId, headers);
+    return localVarResponse.getData();
   }
 
   /**
    * List districts
    * Subdivisions of a market, for building your own filters.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier. (required)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;DistrictPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> listDistrictsWithHttpInfo(@javax.annotation.Nonnull String marketId) throws ApiException {
+  public ApiResponse<DistrictPage> listDistrictsWithHttpInfo(@javax.annotation.Nonnull String marketId) throws ApiException {
     return listDistrictsWithHttpInfo(marketId, null);
   }
 
@@ -437,10 +443,10 @@ public class MarketsApi {
    * Subdivisions of a market, for building your own filters.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;DistrictPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> listDistrictsWithHttpInfo(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<DistrictPage> listDistrictsWithHttpInfo(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listDistrictsRequestBuilder(marketId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -455,13 +461,24 @@ public class MarketsApi {
           throw getApiException("listDistricts", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<DistrictPage>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        DistrictPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<DistrictPage>() {});
+        
+
+        return new ApiResponse<DistrictPage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -490,7 +507,7 @@ public class MarketsApi {
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {
@@ -510,10 +527,10 @@ public class MarketsApi {
    * @param country ISO 3166-1 alpha-2 filter. (optional)
    * @param limit Records per page, 1 to 200. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
-   * @return Envelope
+   * @return CityPage
    * @throws ApiException if fails to make API call
    */
-  public Envelope listMarkets(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+  public CityPage listMarkets(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     return listMarkets(country, limit, cursor, null);
   }
 
@@ -524,11 +541,11 @@ public class MarketsApi {
    * @param limit Records per page, 1 to 200. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return CityPage
    * @throws ApiException if fails to make API call
    */
-  public Envelope listMarkets(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = listMarketsWithHttpInfo(country, limit, cursor, headers);
+  public CityPage listMarkets(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
+    ApiResponse<CityPage> localVarResponse = listMarketsWithHttpInfo(country, limit, cursor, headers);
     return localVarResponse.getData();
   }
 
@@ -538,10 +555,10 @@ public class MarketsApi {
    * @param country ISO 3166-1 alpha-2 filter. (optional)
    * @param limit Records per page, 1 to 200. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;CityPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> listMarketsWithHttpInfo(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+  public ApiResponse<CityPage> listMarketsWithHttpInfo(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     return listMarketsWithHttpInfo(country, limit, cursor, null);
   }
 
@@ -552,10 +569,10 @@ public class MarketsApi {
    * @param limit Records per page, 1 to 200. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;CityPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> listMarketsWithHttpInfo(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
+  public ApiResponse<CityPage> listMarketsWithHttpInfo(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listMarketsRequestBuilder(country, limit, cursor, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -571,7 +588,7 @@ public class MarketsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<CityPage>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -581,10 +598,10 @@ public class MarketsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        CityPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CityPage>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<CityPage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -652,10 +669,10 @@ public class MarketsApi {
    * @param transactionType sale or rent. (optional)
    * @param interval Granularity of the returned series. (optional, default to month)
    * @param since RFC 3339 lower bound on the series. (optional)
-   * @return Envelope
+   * @return SeriesResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
+  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
     return marketStatistics(marketId, propertyType, transactionType, interval, since, null);
   }
 
@@ -668,11 +685,11 @@ public class MarketsApi {
    * @param interval Granularity of the returned series. (optional, default to month)
    * @param since RFC 3339 lower bound on the series. (optional)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return SeriesResponse
    * @throws ApiException if fails to make API call
    */
-  public Envelope marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = marketStatisticsWithHttpInfo(marketId, propertyType, transactionType, interval, since, headers);
+  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
+    ApiResponse<SeriesResponse> localVarResponse = marketStatisticsWithHttpInfo(marketId, propertyType, transactionType, interval, since, headers);
     return localVarResponse.getData();
   }
 
@@ -684,10 +701,10 @@ public class MarketsApi {
    * @param transactionType sale or rent. (optional)
    * @param interval Granularity of the returned series. (optional, default to month)
    * @param since RFC 3339 lower bound on the series. (optional)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;SeriesResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
+  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
     return marketStatisticsWithHttpInfo(marketId, propertyType, transactionType, interval, since, null);
   }
 
@@ -700,10 +717,10 @@ public class MarketsApi {
    * @param interval Granularity of the returned series. (optional, default to month)
    * @param since RFC 3339 lower bound on the series. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;SeriesResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
+  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = marketStatisticsRequestBuilder(marketId, propertyType, transactionType, interval, since, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -719,7 +736,7 @@ public class MarketsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<SeriesResponse>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -729,10 +746,10 @@ public class MarketsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        SeriesResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<SeriesResponse>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<SeriesResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue

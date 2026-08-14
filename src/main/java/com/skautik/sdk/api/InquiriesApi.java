@@ -18,7 +18,8 @@ import com.skautik.sdk.ApiResponse;
 import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
-import com.skautik.sdk.model.Envelope;
+import com.skautik.sdk.model.InquiryPage;
+import com.skautik.sdk.model.InquiryResponse;
 import com.skautik.sdk.model.Problem;
 import com.skautik.sdk.model.UpdateInquiryRequest;
 
@@ -174,10 +175,11 @@ public class InquiriesApi {
    * Retrieve an inquiry
    * One enquiry in full.  An enquiry about a property your organisation does not own answers exactly as a missing one does, so the API cannot be used to probe for records you cannot read.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
+   * @return InquiryResponse
    * @throws ApiException if fails to make API call
    */
-  public void getInquiry(@javax.annotation.Nonnull String inquiryId) throws ApiException {
-    getInquiry(inquiryId, null);
+  public InquiryResponse getInquiry(@javax.annotation.Nonnull String inquiryId) throws ApiException {
+    return getInquiry(inquiryId, null);
   }
 
   /**
@@ -185,20 +187,22 @@ public class InquiriesApi {
    * One enquiry in full.  An enquiry about a property your organisation does not own answers exactly as a missing one does, so the API cannot be used to probe for records you cannot read.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
    * @param headers Optional headers to include in the request
+   * @return InquiryResponse
    * @throws ApiException if fails to make API call
    */
-  public void getInquiry(@javax.annotation.Nonnull String inquiryId, Map<String, String> headers) throws ApiException {
-    getInquiryWithHttpInfo(inquiryId, headers);
+  public InquiryResponse getInquiry(@javax.annotation.Nonnull String inquiryId, Map<String, String> headers) throws ApiException {
+    ApiResponse<InquiryResponse> localVarResponse = getInquiryWithHttpInfo(inquiryId, headers);
+    return localVarResponse.getData();
   }
 
   /**
    * Retrieve an inquiry
    * One enquiry in full.  An enquiry about a property your organisation does not own answers exactly as a missing one does, so the API cannot be used to probe for records you cannot read.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;InquiryResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> getInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId) throws ApiException {
+  public ApiResponse<InquiryResponse> getInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId) throws ApiException {
     return getInquiryWithHttpInfo(inquiryId, null);
   }
 
@@ -207,10 +211,10 @@ public class InquiriesApi {
    * One enquiry in full.  An enquiry about a property your organisation does not own answers exactly as a missing one does, so the API cannot be used to probe for records you cannot read.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;InquiryResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> getInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<InquiryResponse> getInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = getInquiryRequestBuilder(inquiryId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -225,13 +229,24 @@ public class InquiriesApi {
           throw getApiException("getInquiry", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<InquiryResponse>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        InquiryResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<InquiryResponse>() {});
+        
+
+        return new ApiResponse<InquiryResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -260,7 +275,7 @@ public class InquiriesApi {
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {
@@ -281,10 +296,10 @@ public class InquiriesApi {
    * @param status Only enquiries in this state. (optional)
    * @param limit Page size. Clamped to 200. (optional, default to 50)
    * @param cursor Opaque cursor from the previous page&#39;s meta.next_cursor. (optional)
-   * @return Envelope
+   * @return InquiryPage
    * @throws ApiException if fails to make API call
    */
-  public Envelope listInquiries(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+  public InquiryPage listInquiries(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     return listInquiries(propertyId, status, limit, cursor, null);
   }
 
@@ -296,11 +311,11 @@ public class InquiriesApi {
    * @param limit Page size. Clamped to 200. (optional, default to 50)
    * @param cursor Opaque cursor from the previous page&#39;s meta.next_cursor. (optional)
    * @param headers Optional headers to include in the request
-   * @return Envelope
+   * @return InquiryPage
    * @throws ApiException if fails to make API call
    */
-  public Envelope listInquiries(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = listInquiriesWithHttpInfo(propertyId, status, limit, cursor, headers);
+  public InquiryPage listInquiries(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
+    ApiResponse<InquiryPage> localVarResponse = listInquiriesWithHttpInfo(propertyId, status, limit, cursor, headers);
     return localVarResponse.getData();
   }
 
@@ -311,10 +326,10 @@ public class InquiriesApi {
    * @param status Only enquiries in this state. (optional)
    * @param limit Page size. Clamped to 200. (optional, default to 50)
    * @param cursor Opaque cursor from the previous page&#39;s meta.next_cursor. (optional)
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;InquiryPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> listInquiriesWithHttpInfo(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
+  public ApiResponse<InquiryPage> listInquiriesWithHttpInfo(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
     return listInquiriesWithHttpInfo(propertyId, status, limit, cursor, null);
   }
 
@@ -326,10 +341,10 @@ public class InquiriesApi {
    * @param limit Page size. Clamped to 200. (optional, default to 50)
    * @param cursor Opaque cursor from the previous page&#39;s meta.next_cursor. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Envelope&gt;
+   * @return ApiResponse&lt;InquiryPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> listInquiriesWithHttpInfo(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
+  public ApiResponse<InquiryPage> listInquiriesWithHttpInfo(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listInquiriesRequestBuilder(propertyId, status, limit, cursor, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -345,7 +360,7 @@ public class InquiriesApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Envelope>(
+          return new ApiResponse<InquiryPage>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -355,10 +370,10 @@ public class InquiriesApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
+        InquiryPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<InquiryPage>() {});
         
 
-        return new ApiResponse<Envelope>(
+        return new ApiResponse<InquiryPage>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -529,10 +544,11 @@ public class InquiriesApi {
    * Move an enquiry through your workflow.  Setting replied records when it happened, and that record survives a later move to closed: the fact that somebody was answered is not undone by filing the conversation away.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
    * @param updateInquiryRequest  (required)
+   * @return InquiryResponse
    * @throws ApiException if fails to make API call
    */
-  public void updateInquiry(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest) throws ApiException {
-    updateInquiry(inquiryId, updateInquiryRequest, null);
+  public InquiryResponse updateInquiry(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest) throws ApiException {
+    return updateInquiry(inquiryId, updateInquiryRequest, null);
   }
 
   /**
@@ -541,10 +557,12 @@ public class InquiriesApi {
    * @param inquiryId Inquiry identifier. (required)
    * @param updateInquiryRequest  (required)
    * @param headers Optional headers to include in the request
+   * @return InquiryResponse
    * @throws ApiException if fails to make API call
    */
-  public void updateInquiry(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest, Map<String, String> headers) throws ApiException {
-    updateInquiryWithHttpInfo(inquiryId, updateInquiryRequest, headers);
+  public InquiryResponse updateInquiry(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest, Map<String, String> headers) throws ApiException {
+    ApiResponse<InquiryResponse> localVarResponse = updateInquiryWithHttpInfo(inquiryId, updateInquiryRequest, headers);
+    return localVarResponse.getData();
   }
 
   /**
@@ -552,10 +570,10 @@ public class InquiriesApi {
    * Move an enquiry through your workflow.  Setting replied records when it happened, and that record survives a later move to closed: the fact that somebody was answered is not undone by filing the conversation away.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
    * @param updateInquiryRequest  (required)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;InquiryResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> updateInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest) throws ApiException {
+  public ApiResponse<InquiryResponse> updateInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest) throws ApiException {
     return updateInquiryWithHttpInfo(inquiryId, updateInquiryRequest, null);
   }
 
@@ -565,10 +583,10 @@ public class InquiriesApi {
    * @param inquiryId Inquiry identifier. (required)
    * @param updateInquiryRequest  (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;InquiryResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> updateInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest, Map<String, String> headers) throws ApiException {
+  public ApiResponse<InquiryResponse> updateInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = updateInquiryRequestBuilder(inquiryId, updateInquiryRequest, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -583,13 +601,24 @@ public class InquiriesApi {
           throw getApiException("updateInquiry", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody != null) {
-          localVarResponseBody.readAllBytes();
+        if (localVarResponseBody == null) {
+          return new ApiResponse<InquiryResponse>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
-        return new ApiResponse<>(
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        InquiryResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<InquiryResponse>() {});
+        
+
+        return new ApiResponse<InquiryResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            null
+            responseValue
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -623,7 +652,7 @@ public class InquiriesApi {
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
       byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(updateInquiryRequest);

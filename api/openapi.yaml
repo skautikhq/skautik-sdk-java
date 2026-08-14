@@ -67,6 +67,21 @@ paths:
       operationId: listExports
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                - id: exp_74c0ab5e91
+                  status: pending
+                  format: ndjson
+                  created_at: 2026-08-12T10:04:00Z
+                  expires_at: 0001-01-01T00:00:00Z
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
+              schema:
+                $ref: "#/components/schemas/ExportPage"
           description: The request succeeded.
         "401":
           content:
@@ -102,6 +117,7 @@ paths:
       tags:
       - Exports
       x-accepts:
+      - application/json
       - application/problem+json
     post:
       description: |-
@@ -133,12 +149,13 @@ paths:
             application/json:
               example:
                 data:
-                  created_at: 2026-08-12T10:04:00Z
-                  format: ndjson
-                  id: exp_74c0ab
+                  id: exp_74c0ab5e91
                   status: pending
+                  format: ndjson
+                  created_at: 2026-08-12T10:04:00Z
+                  expires_at: 0001-01-01T00:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/ExportResponse"
           description: The request succeeded.
         "401":
           content:
@@ -202,15 +219,16 @@ paths:
             application/json:
               example:
                 data:
-                  byte_size: 4821004
-                  download_url: https://exports.skautik.com/exp_74c0ab.ndjson?sig=…
-                  expires_at: 2026-08-12T11:12:00Z
+                  id: exp_74c0ab5e91
+                  status: ready
                   format: ndjson
-                  id: exp_74c0ab
-                  record_count: 1284
-                  status: completed
+                  record_count: 18432
+                  byte_size: 24518720
+                  download_url: https://exports.skautik.com/exp_74c0ab5e91.ndjson.gz
+                  created_at: 2026-08-12T10:04:00Z
+                  expires_at: 0001-01-01T00:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/ExportResponse"
           description: The request succeeded.
         "401":
           content:
@@ -257,6 +275,22 @@ paths:
       operationId: listGenerations
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                - id: gen_5c1e9a2b3d
+                  kind: staging
+                  status: completed
+                  property_id: prop_8f2a41c9d0
+                  source_image_id: img_2b7d4f1908
+                  created_at: 0001-01-01T00:00:00Z
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
+              schema:
+                $ref: "#/components/schemas/GenerationPage"
           description: The request succeeded.
         "401":
           content:
@@ -292,6 +326,7 @@ paths:
       tags:
       - Image generations
       x-accepts:
+      - application/json
       - application/problem+json
     post:
       description: |-
@@ -318,16 +353,14 @@ paths:
             application/json:
               example:
                 data:
-                  created_at: 2026-08-13T14:39:51Z
-                  id: gen_41bd169388ff4bee8706b822e4def3c5
-                  kind: virtual_staging
-                  property_id: prop_f06bd367019344dd91b559046f8e0d4c
-                  room_type: living room
-                  source_image_id: img_ce1c9e04db6140eda7c6934af60daebb
+                  id: gen_5c1e9a2b3d
+                  kind: staging
                   status: queued
-                  style: scandinavian
+                  property_id: prop_8f2a41c9d0
+                  source_image_id: img_2b7d4f1908
+                  created_at: 0001-01-01T00:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/GenerationResponse"
           description: The request succeeded.
         "401":
           content:
@@ -462,18 +495,14 @@ paths:
             application/json:
               example:
                 data:
-                  created_at: 2026-08-13T14:39:51Z
-                  finished_at: 2026-08-13T14:40:07Z
-                  id: gen_41bd169388ff4bee8706b822e4def3c5
-                  image_url: https://images.skautik.com/generations/…/41bd1693.jpg
-                  kind: virtual_staging
-                  property_id: prop_f06bd367019344dd91b559046f8e0d4c
-                  room_type: living room
-                  source_image_id: img_ce1c9e04db6140eda7c6934af60daebb
+                  id: gen_5c1e9a2b3d
+                  kind: staging
                   status: completed
-                  style: scandinavian
+                  property_id: prop_8f2a41c9d0
+                  source_image_id: img_2b7d4f1908
+                  created_at: 0001-01-01T00:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/GenerationResponse"
           description: The request succeeded.
         "401":
           content:
@@ -552,20 +581,29 @@ paths:
             application/json:
               example:
                 data:
-                - active: true
-                  created_at: 2026-08-12T10:04:00Z
-                  deletion_policy: explicit_only
+                - id: src_immoscout
+                  name: Nightly listing sync
+                  format: openimmo
                   delivery:
-                    type: fetch_url
-                    url: https://partner:***@feeds.example.com/stock.csv
-                  format: csv
-                  id: src_1d77a0
-                  last_delivery_at: 2026-08-13T12:00:04Z
-                  name: Head office CRM
-                  next_expected_at: 2026-08-13T16:00:00Z
-                  schedule: 0 */4 * * *
+                    type: fetch
+                    url: https://partner.example.com/exports/latest.zip
+                    username: skautik
+                  schedule: 15 3 * * *
+                  mapping:
+                    Kaufpreis: price
+                    Objektnummer: external_id
+                  deletion_policy: withdraw
+                  active: true
+                  last_delivery_at: 2026-08-13T03:15:04Z
+                  next_expected_at: 2026-08-14T03:15:00Z
+                  created_at: 0001-01-01T00:00:00Z
+                  updated_at: 0001-01-01T00:00:00Z
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/ImportSourcePage"
           description: The request succeeded.
         "401":
           content:
@@ -631,19 +669,25 @@ paths:
             application/json:
               example:
                 data:
-                  active: true
-                  created_at: 2026-08-12T10:04:00Z
-                  deletion_policy: explicit_only
+                  id: src_immoscout
+                  name: Nightly listing sync
+                  format: openimmo
                   delivery:
-                    type: fetch_url
-                    url: https://feeds.example.com/stock.csv
-                  format: csv
-                  id: src_1d77a0
-                  name: Head office CRM
-                  next_expected_at: 2026-08-12T12:00:00Z
-                  schedule: 0 */4 * * *
+                    type: fetch
+                    url: https://partner.example.com/exports/latest.zip
+                    username: skautik
+                  schedule: 15 3 * * *
+                  mapping:
+                    Kaufpreis: price
+                    Objektnummer: external_id
+                  deletion_policy: withdraw
+                  active: true
+                  last_delivery_at: 2026-08-13T03:15:04Z
+                  next_expected_at: 2026-08-14T03:15:00Z
+                  created_at: 0001-01-01T00:00:00Z
+                  updated_at: 0001-01-01T00:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/ImportSourceResponse"
           description: The request succeeded.
         "401":
           content:
@@ -757,6 +801,29 @@ paths:
         style: simple
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                  id: src_immoscout
+                  name: Nightly listing sync
+                  format: openimmo
+                  delivery:
+                    type: fetch
+                    url: https://partner.example.com/exports/latest.zip
+                    username: skautik
+                  schedule: 15 3 * * *
+                  mapping:
+                    Kaufpreis: price
+                    Objektnummer: external_id
+                  deletion_policy: withdraw
+                  active: true
+                  last_delivery_at: 2026-08-13T03:15:04Z
+                  next_expected_at: 2026-08-14T03:15:00Z
+                  created_at: 0001-01-01T00:00:00Z
+                  updated_at: 0001-01-01T00:00:00Z
+              schema:
+                $ref: "#/components/schemas/ImportSourceResponse"
           description: The request succeeded.
         "401":
           content:
@@ -792,6 +859,7 @@ paths:
       tags:
       - Imports
       x-accepts:
+      - application/json
       - application/problem+json
     patch:
       description: |-
@@ -811,6 +879,29 @@ paths:
         style: simple
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                  id: src_immoscout
+                  name: Nightly listing sync
+                  format: openimmo
+                  delivery:
+                    type: fetch
+                    url: https://partner.example.com/exports/latest.zip
+                    username: skautik
+                  schedule: 15 3 * * *
+                  mapping:
+                    Kaufpreis: price
+                    Objektnummer: external_id
+                  deletion_policy: withdraw
+                  active: true
+                  last_delivery_at: 2026-08-13T03:15:04Z
+                  next_expected_at: 2026-08-14T03:15:00Z
+                  created_at: 0001-01-01T00:00:00Z
+                  updated_at: 0001-01-01T00:00:00Z
+              schema:
+                $ref: "#/components/schemas/ImportSourceResponse"
           description: The request succeeded.
         "401":
           content:
@@ -846,6 +937,7 @@ paths:
       tags:
       - Imports
       x-accepts:
+      - application/json
       - application/problem+json
   /imports:
     get:
@@ -881,6 +973,32 @@ paths:
         style: form
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                - id: imp_3d9b7e2145
+                  source_id: src_immoscout
+                  format: openimmo
+                  mode: incremental
+                  status: completed
+                  dry_run: false
+                  filename: transfer-2026-08-12.zip
+                  bytes: 4718592
+                  counts:
+                    read: 412
+                    created: 37
+                    updated: 361
+                    withdrawn: 9
+                    unchanged: 0
+                    failed: 0
+                  created_at: 0001-01-01T00:00:00Z
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
+              schema:
+                $ref: "#/components/schemas/ImportPage"
           description: The request succeeded.
         "401":
           content:
@@ -916,6 +1034,7 @@ paths:
       tags:
       - Imports
       x-accepts:
+      - application/json
       - application/problem+json
     post:
       description: |-
@@ -947,14 +1066,23 @@ paths:
             application/json:
               example:
                 data:
-                  created_at: 2026-08-12T10:04:00Z
-                  dry_run: false
+                  id: imp_3d9b7e2145
                   format: openimmo
-                  id: imp_5a91c0
                   mode: incremental
-                  status: validating
+                  status: queued
+                  dry_run: false
+                  filename: transfer-2026-08-12.zip
+                  bytes: 4718592
+                  counts:
+                    read: 0
+                    created: 0
+                    updated: 0
+                    withdrawn: 0
+                    unchanged: 0
+                    failed: 0
+                  created_at: 0001-01-01T00:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/ImportResponse"
           description: The request succeeded.
         "202":
           content:
@@ -1130,21 +1258,24 @@ paths:
             application/json:
               example:
                 data:
-                  counts:
-                    created: 12
-                    failed: 3
-                    read: 214
-                    unchanged: 0
-                    updated: 196
-                    withdrawn: 3
-                  finished_at: 2026-08-12T10:05:41Z
+                  id: imp_3d9b7e2145
+                  source_id: src_immoscout
                   format: openimmo
-                  id: imp_5a91c0
                   mode: incremental
-                  started_at: 2026-08-12T10:04:02Z
                   status: completed
+                  dry_run: false
+                  filename: transfer-2026-08-12.zip
+                  bytes: 4718592
+                  counts:
+                    read: 412
+                    created: 37
+                    updated: 361
+                    withdrawn: 9
+                    unchanged: 0
+                    failed: 0
+                  created_at: 0001-01-01T00:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/ImportResponse"
           description: The request succeeded.
         "401":
           content:
@@ -1222,25 +1353,21 @@ paths:
             application/json:
               example:
                 data:
-                - changed:
-                  - price
-                  - status
-                  external_id: AG-4471-0812
-                  outcome: updated
+                - location: row 14
+                  external_id: OBJ-10041
                   property_id: prop_8f2a41c9d0
-                - errors:
-                  - code: missing
-                    detail: A sale listing needs a price.
-                    field: preise.kaufpreis
-                  external_id: AG-4471-0904
-                  location: "immobilie[17]"
-                  outcome: failed
-                  property_id: null
+                  outcome: updated
+                - location: row 15
+                  external_id: OBJ-10042
+                  outcome: rejected
+                  errors:
+                  - price must be a positive number
                 meta:
                   has_more: false
                   limit: 50
+                  next_cursor: null
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/ImportRecordPage"
           description: The request succeeded.
         "401":
           content:
@@ -1337,22 +1464,21 @@ paths:
             application/json:
               example:
                 data:
-                - channel: web
-                  consent_text: I agree to be contacted about this property.
-                  consented_at: 2026-08-13T10:43:26Z
-                  created_at: 2026-08-13T10:43:26Z
-                  id: inq_db6f3d5316884c649ea1848c278bbf44
-                  message: Is the balcony south facing?
-                  property_id: prop_f954911b55e14b65b762ee55f01e03b7
-                  sender_email: anna@example.com
+                - id: inq_db6f3d5316
+                  property_id: prop_8f2a41c9d0
                   sender_name: Anna Schmidt
-                  sender_phone: +49 30 555
+                  sender_email: anna.schmidt@example.com
+                  sender_phone: +49 30 5550172
+                  message: "Is the balcony south facing, and is the kitchen included?"
                   status: new
+                  channel: web
+                  created_at: 0001-01-01T00:00:00Z
                 meta:
                   has_more: false
                   limit: 50
+                  next_cursor: null
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/InquiryPage"
           description: The request succeeded.
         "401":
           content:
@@ -1411,6 +1537,21 @@ paths:
         style: simple
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                  id: inq_db6f3d5316
+                  property_id: prop_8f2a41c9d0
+                  sender_name: Anna Schmidt
+                  sender_email: anna.schmidt@example.com
+                  sender_phone: +49 30 5550172
+                  message: "Is the balcony south facing, and is the kitchen included?"
+                  status: new
+                  channel: web
+                  created_at: 0001-01-01T00:00:00Z
+              schema:
+                $ref: "#/components/schemas/InquiryResponse"
           description: The request succeeded.
         "401":
           content:
@@ -1446,6 +1587,7 @@ paths:
       tags:
       - Inquiries
       x-accepts:
+      - application/json
       - application/problem+json
     patch:
       description: |-
@@ -1475,6 +1617,21 @@ paths:
         required: true
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                  id: inq_db6f3d5316
+                  property_id: prop_8f2a41c9d0
+                  sender_name: Anna Schmidt
+                  sender_email: anna.schmidt@example.com
+                  sender_phone: +49 30 5550172
+                  message: "Is the balcony south facing, and is the kitchen included?"
+                  status: new
+                  channel: web
+                  created_at: 0001-01-01T00:00:00Z
+              schema:
+                $ref: "#/components/schemas/InquiryResponse"
           description: The request succeeded.
         "401":
           content:
@@ -1511,6 +1668,7 @@ paths:
       - Inquiries
       x-content-type: application/json
       x-accepts:
+      - application/json
       - application/problem+json
   /inquiries/{inquiry_id}/read:
     post:
@@ -1615,19 +1773,17 @@ paths:
             application/json:
               example:
                 data:
-                - area_unit: sqm
-                  country: DE
-                  coverage: systematic
-                  currency: EUR
-                  district_count: 12
-                  id: berlin-de
-                  name: Berlin
-                  property_count: 1284
+                - city: Berlin
+                  periods:
+                  - 2026-07
+                  - 2026-06
+                  - 2026-05
                 meta:
                   has_more: false
                   limit: 50
+                  next_cursor: null
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/CityPage"
           description: The request succeeded.
         "401":
           content:
@@ -1688,19 +1844,32 @@ paths:
             application/json:
               example:
                 data:
-                  computed_at: 2026-08-11T04:00:00Z
-                  country: DE
-                  id: berlin-de
-                  name: Berlin
-                  price_distribution:
+                  city: Berlin
+                  district: Kreuzberg
+                  property_type: apartment
+                  period: 2026-07
+                  metrics:
+                  - name: median_price
+                    value: 429000
+                    unit: total
                     currency: EUR
-                    median: 41500000
-                    median_price_per_area: 560000
-                    p25: 31500000
-                    p75: 58000000
-                  property_count: 1284
+                    change_pct: 1.8
+                    sample_size: 1482
+                    computed_at: 2026-08-01T00:00:00Z
+                  - name: median_price_per_area
+                    value: 5797
+                    unit: sqm
+                    currency: EUR
+                    change_pct: 2.4
+                    sample_size: 1482
+                    computed_at: 2026-08-01T00:00:00Z
+                  - name: median_days_listed
+                    value: 38
+                    unit: days
+                    sample_size: 1482
+                    computed_at: 2026-08-01T00:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/MarketResponse"
           description: The request succeeded.
         "401":
           content:
@@ -1757,6 +1926,20 @@ paths:
         style: simple
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                - district: Kreuzberg
+                  listing_count: 1482
+                - district: Neukölln
+                  listing_count: 1197
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
+              schema:
+                $ref: "#/components/schemas/DistrictPage"
           description: The request succeeded.
         "401":
           content:
@@ -1792,6 +1975,7 @@ paths:
       tags:
       - Markets
       x-accepts:
+      - application/json
       - application/problem+json
   /markets/{city}/districts/{district}:
     get:
@@ -1938,23 +2122,28 @@ paths:
             application/json:
               example:
                 data:
+                  city: Berlin
+                  property_type: apartment
+                  transaction_type: sale
                   interval: month
-                  market_id: berlin-de
                   series:
-                  - listing_count: 1211
+                  - period: 2026-05
+                    listing_count: 1391
+                    median_price: 419000
+                    median_price_per_area: 5640
                     median_days_listed: 41
-                    median_price: 41000000
-                    median_price_per_area: 554000
-                    period: 2026-06
-                  - listing_count: 1284
+                  - period: 2026-06
+                    listing_count: 1435
+                    median_price: 424500
+                    median_price_per_area: 5712
+                    median_days_listed: 39
+                  - period: 2026-07
+                    listing_count: 1482
+                    median_price: 429000
+                    median_price_per_area: 5797
                     median_days_listed: 38
-                    median_price: 41500000
-                    median_price_per_area: 560000
-                    period: 2026-07
-                meta:
-                  computed_at: 2026-08-11T04:00:00Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/SeriesResponse"
           description: The request succeeded.
         "401":
           content:
@@ -2251,17 +2440,85 @@ paths:
               example:
                 data:
                 - id: prop_8f2a41c9d0
-                  price: 42900000
-                  title: Top-floor apartment…
+                  type: apartment
+                  title: Top-floor apartment with a south-facing balcony
+                  description: "Altbau flat on a quiet side street, two minutes from\
+                    \ Görlitzer Park."
+                  listing:
+                    transaction_type: sale
+                    status: active
+                    price: 429000
+                    currency: EUR
+                    price_per_sqm: 5797.3
+                    published_at: 2026-07-28T09:12:00Z
+                  size:
+                    living_area_sqm: 74
+                  rooms:
+                    bedrooms: 2
+                    bathrooms: 1
+                    total_rooms: 3
+                    floor: 4
+                    floors_in_building: 4
+                  building:
+                    year_built: 1908
+                    construction_type: altbau
+                    condition: renovated
+                    heating_type: district
+                  address:
+                    street: Oranienstrasse
+                    number: "12"
+                    postal_code: "10999"
+                    city: Berlin
+                    district: Kreuzberg
+                    country: DE
+                  location:
+                    latitude: 52.4993
+                    longitude: 13.4184
+                    precision: street
+                  energy:
+                    label: C
+                    consumption_kwh: 112.4
+                  source: api
+                  created_at: 2026-07-28T09:12:00Z
+                  updated_at: 2026-08-11T14:03:22Z
                 - id: prop_1b77e0a4f2
-                  price: 38500000
-                  title: Garden flat…
+                  type: apartment
+                  title: Garden flat with a separate studio
+                  listing:
+                    transaction_type: sale
+                    status: active
+                    price: 385000
+                    currency: EUR
+                    price_per_sqm: 4750.62
+                  size:
+                    living_area_sqm: 81
+                  rooms:
+                    bedrooms: 3
+                    bathrooms: 1
+                    total_rooms: 4
+                    floor: 0
+                  building:
+                    year_built: 1962
+                    condition: good
+                  address:
+                    street: Weichselstrasse
+                    postal_code: "12045"
+                    city: Berlin
+                    district: Neukölln
+                    country: DE
+                  location:
+                    latitude: 52.4812
+                    longitude: 13.4331
+                    precision: area
+                  source: import
+                  created_at: 2026-06-02T08:00:00Z
+                  updated_at: 2026-08-09T11:20:10Z
                 meta:
-                  has_more: true
+                  has_more: false
                   limit: 50
-                  next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+                  next_cursor: null
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/PropertyPage"
           description: The request succeeded.
         "401":
           content:
@@ -2571,38 +2828,50 @@ paths:
             application/json:
               example:
                 data:
-                  address:
-                    city: Berlin
-                    country: DE
-                    district: Kreuzberg
-                    postal_code: "10999"
-                    street: Oranienstrasse
-                  bathrooms: 1
-                  bedrooms: 2
-                  currency: EUR
-                  energy_label: C
-                  floor: 4
                   id: prop_8f2a41c9d0
-                  last_verified_at: 2026-08-11T04:00:00Z
-                  listed_at: 2026-07-28T09:12:04Z
-                  living_area: 74
+                  type: apartment
+                  title: Top-floor apartment with a south-facing balcony
+                  description: "Altbau flat on a quiet side street, two minutes from\
+                    \ Görlitzer Park."
+                  listing:
+                    transaction_type: sale
+                    status: active
+                    price: 429000
+                    currency: EUR
+                    price_per_sqm: 5797.3
+                    published_at: 2026-07-28T09:12:00Z
+                  size:
+                    living_area_sqm: 74
+                  rooms:
+                    bedrooms: 2
+                    bathrooms: 1
+                    total_rooms: 3
+                    floor: 4
+                    floors_in_building: 4
+                  building:
+                    year_built: 1908
+                    construction_type: altbau
+                    condition: renovated
+                    heating_type: district
+                  address:
+                    street: Oranienstrasse
+                    number: "12"
+                    postal_code: "10999"
+                    city: Berlin
+                    district: Kreuzberg
+                    country: DE
                   location:
                     latitude: 52.4993
                     longitude: 13.4184
                     precision: street
-                  price: 42900000
-                  price_per_area: 579700
-                  price_period: null
-                  property_type: apartment
-                  rooms: 3
-                  status: active
-                  title: Top-floor apartment with a south-facing balcony
-                  total_floors: 4
-                  transaction_type: sale
-                  updated_at: 2026-08-11T04:00:00Z
-                  year_built: 1908
+                  energy:
+                    label: C
+                    consumption_kwh: 112.4
+                  source: api
+                  created_at: 2026-07-28T09:12:00Z
+                  updated_at: 2026-08-11T14:03:22Z
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/PropertyResponse"
           description: The request succeeded.
         "401":
           content:
@@ -2671,6 +2940,54 @@ paths:
         style: simple
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                  id: prop_8f2a41c9d0
+                  type: apartment
+                  title: Top-floor apartment with a south-facing balcony
+                  description: "Altbau flat on a quiet side street, two minutes from\
+                    \ Görlitzer Park."
+                  listing:
+                    transaction_type: sale
+                    status: active
+                    price: 429000
+                    currency: EUR
+                    price_per_sqm: 5797.3
+                    published_at: 2026-07-28T09:12:00Z
+                  size:
+                    living_area_sqm: 74
+                  rooms:
+                    bedrooms: 2
+                    bathrooms: 1
+                    total_rooms: 3
+                    floor: 4
+                    floors_in_building: 4
+                  building:
+                    year_built: 1908
+                    construction_type: altbau
+                    condition: renovated
+                    heating_type: district
+                  address:
+                    street: Oranienstrasse
+                    number: "12"
+                    postal_code: "10999"
+                    city: Berlin
+                    district: Kreuzberg
+                    country: DE
+                  location:
+                    latitude: 52.4993
+                    longitude: 13.4184
+                    precision: street
+                  energy:
+                    label: C
+                    consumption_kwh: 112.4
+                  source: api
+                  created_at: 2026-07-28T09:12:00Z
+                  updated_at: 2026-08-11T14:03:22Z
+              schema:
+                $ref: "#/components/schemas/PropertyResponse"
           description: The request succeeded.
         "401":
           content:
@@ -2719,6 +3036,7 @@ paths:
       tags:
       - Properties
       x-accepts:
+      - application/json
       - application/problem+json
   /properties/{property_id}/images:
     get:
@@ -2739,6 +3057,26 @@ paths:
         style: simple
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                - id: img_2b7d4f1908
+                  url: https://images.skautik.com/prop_8f2a41c9d0/1.jpg
+                  position: 1
+                  is_primary: true
+                  room_type: living_room
+                - id: img_7e1c9a4b52
+                  url: https://images.skautik.com/prop_8f2a41c9d0/2.jpg
+                  position: 2
+                  is_primary: false
+                  room_type: kitchen
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
+              schema:
+                $ref: "#/components/schemas/ImagePage"
           description: The request succeeded.
         "401":
           content:
@@ -2774,6 +3112,7 @@ paths:
       tags:
       - Properties
       x-accepts:
+      - application/json
       - application/problem+json
     post:
       description: |-
@@ -2801,6 +3140,17 @@ paths:
         required: true
       responses:
         "201":
+          content:
+            application/json:
+              example:
+                data:
+                  id: img_2b7d4f1908
+                  url: https://images.skautik.com/prop_8f2a41c9d0/1.jpg
+                  position: 1
+                  is_primary: true
+                  room_type: living_room
+              schema:
+                $ref: "#/components/schemas/ImageResponse"
           description: The request succeeded.
         "401":
           content:
@@ -2849,6 +3199,7 @@ paths:
       - Properties
       x-content-type: multipart/form-data
       x-accepts:
+      - application/json
       - application/problem+json
   /properties/{property_id}/images/{image_id}:
     delete:
@@ -2939,14 +3290,20 @@ paths:
             application/json:
               example:
                 data:
-                - currency: EUR
-                  observed_at: 2026-07-28T09:12:04Z
-                  price: 44900000
-                - currency: EUR
-                  observed_at: 2026-08-09T06:31:11Z
-                  price: 42900000
+                - price: 449000
+                  currency: EUR
+                  observed_at: 2026-07-28T09:12:00Z
+                  source: listing
+                - price: 429000
+                  currency: EUR
+                  observed_at: 2026-08-11T14:03:22Z
+                  source: listing
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/PriceObservationPage"
           description: The request succeeded.
         "401":
           content:
@@ -3017,6 +3374,48 @@ paths:
         style: form
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                - id: prop_1b77e0a4f2
+                  type: apartment
+                  title: Garden flat with a separate studio
+                  listing:
+                    transaction_type: sale
+                    status: active
+                    price: 385000
+                    currency: EUR
+                    price_per_sqm: 4750.62
+                  size:
+                    living_area_sqm: 81
+                  rooms:
+                    bedrooms: 3
+                    bathrooms: 1
+                    total_rooms: 4
+                    floor: 0
+                  building:
+                    year_built: 1962
+                    condition: good
+                  address:
+                    street: Weichselstrasse
+                    postal_code: "12045"
+                    city: Berlin
+                    district: Neukölln
+                    country: DE
+                  location:
+                    latitude: 52.4812
+                    longitude: 13.4331
+                    precision: area
+                  source: import
+                  created_at: 2026-06-02T08:00:00Z
+                  updated_at: 2026-08-09T11:20:10Z
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
+              schema:
+                $ref: "#/components/schemas/PropertyPage"
           description: The request succeeded.
         "401":
           content:
@@ -3052,6 +3451,7 @@ paths:
       tags:
       - Properties
       x-accepts:
+      - application/json
       - application/problem+json
   /webhooks:
     get:
@@ -3068,16 +3468,21 @@ paths:
             application/json:
               example:
                 data:
-                - active: true
-                  created_at: 2026-08-13T10:43:37Z
+                - id: whk_1b7e6c19a1
+                  url: https://example.com/hooks/skautik
                   events:
                   - property.created
+                  - property.updated
                   - property.withdrawn
-                  id: whk_1b7e6c19a139404cb173d23fcb3331c4
+                  active: true
+                  created_at: 2026-08-13T10:43:37Z
                   updated_at: 2026-08-13T10:43:37Z
-                  url: https://example.com/hooks/skautik
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
               schema:
-                $ref: "#/components/schemas/Envelope"
+                $ref: "#/components/schemas/WebhookPage"
           description: The request succeeded.
         "401":
           content:
@@ -3306,6 +3711,21 @@ paths:
         style: simple
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                  id: whk_1b7e6c19a1
+                  url: https://example.com/hooks/skautik
+                  events:
+                  - property.created
+                  - property.updated
+                  - property.withdrawn
+                  active: true
+                  created_at: 2026-08-13T10:43:37Z
+                  updated_at: 2026-08-13T10:43:37Z
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
           description: The request succeeded.
         "401":
           content:
@@ -3341,6 +3761,7 @@ paths:
       tags:
       - Webhooks
       x-accepts:
+      - application/json
       - application/problem+json
     patch:
       description: |-
@@ -3370,6 +3791,21 @@ paths:
         required: false
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                  id: whk_1b7e6c19a1
+                  url: https://example.com/hooks/skautik
+                  events:
+                  - property.created
+                  - property.updated
+                  - property.withdrawn
+                  active: true
+                  created_at: 2026-08-13T10:43:37Z
+                  updated_at: 2026-08-13T10:43:37Z
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
           description: The request succeeded.
         "401":
           content:
@@ -3406,6 +3842,7 @@ paths:
       - Webhooks
       x-content-type: application/json
       x-accepts:
+      - application/json
       - application/problem+json
   /webhooks/{webhook_id}/deliveries:
     get:
@@ -3451,6 +3888,24 @@ paths:
         style: form
       responses:
         "200":
+          content:
+            application/json:
+              example:
+                data:
+                - id: dlv_9c4e1f2308
+                  event: property.created
+                  status: delivered
+                  attempts: 1
+                  max_attempts: 6
+                  response_status: 200
+                  delivered_at: 2026-08-13T10:44:02Z
+                  created_at: 2026-08-13T10:44:01Z
+                meta:
+                  has_more: false
+                  limit: 50
+                  next_cursor: null
+              schema:
+                $ref: "#/components/schemas/DeliveryPage"
           description: The request succeeded.
         "401":
           content:
@@ -3486,6 +3941,7 @@ paths:
       tags:
       - Webhooks
       x-accepts:
+      - application/json
       - application/problem+json
   /webhooks/{webhook_id}/rotate-secret:
     post:
@@ -3613,6 +4069,14 @@ paths:
 components:
   schemas:
     Address:
+      example:
+        city: city
+        country: country
+        district: district
+        number: number
+        postal_code: postal_code
+        province: province
+        street: street
       properties:
         city:
           type: string
@@ -3629,6 +4093,12 @@ components:
         street:
           type: string
     Building:
+      example:
+        condition: condition
+        construction_type: construction_type
+        heating_type: heating_type
+        year_built: 0
+        year_renovated: 6
       properties:
         condition:
           type: string
@@ -3641,6 +4111,11 @@ components:
         year_renovated:
           type: integer
     City:
+      example:
+        city: city
+        periods:
+        - periods
+        - periods
       properties:
         city:
           type: string
@@ -3652,7 +4127,43 @@ components:
       required:
       - city
       - periods
+    CityPage:
+      description: "A page of City records, with the cursor for the next one."
+      example:
+        data:
+        - city: city
+          periods:
+          - periods
+          - periods
+        - city: city
+          periods:
+          - periods
+          - periods
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/City"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
     Delivery:
+      example:
+        attempts: 0
+        created_at: 2000-01-23T04:56:07.000+00:00
+        delivered_at: 2000-01-23T04:56:07.000+00:00
+        event: event
+        id: id
+        max_attempts: 6
+        next_retry_at: 2000-01-23T04:56:07.000+00:00
+        response_status: 1
+        status: status
       properties:
         attempts:
           type: integer
@@ -3682,7 +4193,46 @@ components:
       - id
       - max_attempts
       - status
+    DeliveryPage:
+      description: "A page of Delivery records, with the cursor for the next one."
+      example:
+        data:
+        - attempts: 0
+          created_at: 2000-01-23T04:56:07.000+00:00
+          delivered_at: 2000-01-23T04:56:07.000+00:00
+          event: event
+          id: id
+          max_attempts: 6
+          next_retry_at: 2000-01-23T04:56:07.000+00:00
+          response_status: 1
+          status: status
+        - attempts: 0
+          created_at: 2000-01-23T04:56:07.000+00:00
+          delivered_at: 2000-01-23T04:56:07.000+00:00
+          event: event
+          id: id
+          max_attempts: 6
+          next_retry_at: 2000-01-23T04:56:07.000+00:00
+          response_status: 1
+          status: status
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/Delivery"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
     District:
+      example:
+        district: district
+        listing_count: 0
       properties:
         district:
           type: string
@@ -3691,7 +4241,32 @@ components:
       required:
       - district
       - listing_count
+    DistrictPage:
+      description: "A page of District records, with the cursor for the next one."
+      example:
+        data:
+        - district: district
+          listing_count: 0
+        - district: district
+          listing_count: 0
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/District"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
     Energy:
+      example:
+        consumption_kwh: 1.4658129805029452
+        label: label
       properties:
         consumption_kwh:
           type: number
@@ -3713,6 +4288,17 @@ components:
       required:
       - data
     Export:
+      example:
+        byte_size: 0
+        created_at: 2000-01-23T04:56:07.000+00:00
+        download_url: download_url
+        expires_at: 2000-01-23T04:56:07.000+00:00
+        failure_reason: failure_reason
+        finished_at: 2000-01-23T04:56:07.000+00:00
+        format: format
+        id: id
+        record_count: 6
+        status: status
       properties:
         byte_size:
           type: integer
@@ -3743,7 +4329,77 @@ components:
       - format
       - id
       - status
+    ExportPage:
+      description: "A page of Export records, with the cursor for the next one."
+      example:
+        data:
+        - byte_size: 0
+          created_at: 2000-01-23T04:56:07.000+00:00
+          download_url: download_url
+          expires_at: 2000-01-23T04:56:07.000+00:00
+          failure_reason: failure_reason
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          format: format
+          id: id
+          record_count: 6
+          status: status
+        - byte_size: 0
+          created_at: 2000-01-23T04:56:07.000+00:00
+          download_url: download_url
+          expires_at: 2000-01-23T04:56:07.000+00:00
+          failure_reason: failure_reason
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          format: format
+          id: id
+          record_count: 6
+          status: status
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/Export"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
+    ExportResponse:
+      description: One Export.
+      example:
+        data:
+          byte_size: 0
+          created_at: 2000-01-23T04:56:07.000+00:00
+          download_url: download_url
+          expires_at: 2000-01-23T04:56:07.000+00:00
+          failure_reason: failure_reason
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          format: format
+          id: id
+          record_count: 6
+          status: status
+      properties:
+        data:
+          $ref: "#/components/schemas/Export"
+      required:
+      - data
     Generation:
+      example:
+        created_at: 2000-01-23T04:56:07.000+00:00
+        failure_reason: failure_reason
+        finished_at: 2000-01-23T04:56:07.000+00:00
+        id: id
+        image_url: image_url
+        kind: kind
+        prompt: prompt
+        property_id: property_id
+        room_type: room_type
+        source_image_id: source_image_id
+        status: status
+        style: style
       properties:
         created_at:
           format: date-time
@@ -3776,7 +4432,76 @@ components:
       - id
       - kind
       - status
+    GenerationPage:
+      description: "A page of Generation records, with the cursor for the next one."
+      example:
+        data:
+        - created_at: 2000-01-23T04:56:07.000+00:00
+          failure_reason: failure_reason
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          id: id
+          image_url: image_url
+          kind: kind
+          prompt: prompt
+          property_id: property_id
+          room_type: room_type
+          source_image_id: source_image_id
+          status: status
+          style: style
+        - created_at: 2000-01-23T04:56:07.000+00:00
+          failure_reason: failure_reason
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          id: id
+          image_url: image_url
+          kind: kind
+          prompt: prompt
+          property_id: property_id
+          room_type: room_type
+          source_image_id: source_image_id
+          status: status
+          style: style
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/Generation"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
+    GenerationResponse:
+      description: One Generation.
+      example:
+        data:
+          created_at: 2000-01-23T04:56:07.000+00:00
+          failure_reason: failure_reason
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          id: id
+          image_url: image_url
+          kind: kind
+          prompt: prompt
+          property_id: property_id
+          room_type: room_type
+          source_image_id: source_image_id
+          status: status
+          style: style
+      properties:
+        data:
+          $ref: "#/components/schemas/Generation"
+      required:
+      - data
     Image:
+      example:
+        id: id
+        is_primary: true
+        position: 5
+        room_type: room_type
+        url: url
       properties:
         id:
           type: string
@@ -3793,7 +4518,69 @@ components:
       - is_primary
       - position
       - url
+    ImagePage:
+      description: "A page of Image records, with the cursor for the next one."
+      example:
+        data:
+        - id: id
+          is_primary: true
+          position: 5
+          room_type: room_type
+          url: url
+        - id: id
+          is_primary: true
+          position: 5
+          room_type: room_type
+          url: url
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/Image"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
+    ImageResponse:
+      description: One Image.
+      example:
+        data:
+          id: id
+          is_primary: true
+          position: 5
+          room_type: room_type
+          url: url
+      properties:
+        data:
+          $ref: "#/components/schemas/Image"
+      required:
+      - data
     Import:
+      example:
+        bytes: 0
+        counts:
+          created: 6
+          failed: 1
+          read: 5
+          unchanged: 5
+          updated: 2
+          withdrawn: 7
+        created_at: 2000-01-23T04:56:07.000+00:00
+        dry_run: true
+        failure_reason: failure_reason
+        filename: filename
+        finished_at: 2000-01-23T04:56:07.000+00:00
+        format: format
+        id: id
+        mode: mode
+        source_id: source_id
+        started_at: 2000-01-23T04:56:07.000+00:00
+        status: status
       properties:
         bytes:
           type: integer
@@ -3833,6 +4620,13 @@ components:
       - mode
       - status
     ImportCounts:
+      example:
+        created: 6
+        failed: 1
+        read: 5
+        unchanged: 5
+        updated: 2
+        withdrawn: 7
       properties:
         created:
           type: integer
@@ -3853,7 +4647,71 @@ components:
       - unchanged
       - updated
       - withdrawn
+    ImportPage:
+      description: "A page of Import records, with the cursor for the next one."
+      example:
+        data:
+        - bytes: 0
+          counts:
+            created: 6
+            failed: 1
+            read: 5
+            unchanged: 5
+            updated: 2
+            withdrawn: 7
+          created_at: 2000-01-23T04:56:07.000+00:00
+          dry_run: true
+          failure_reason: failure_reason
+          filename: filename
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          format: format
+          id: id
+          mode: mode
+          source_id: source_id
+          started_at: 2000-01-23T04:56:07.000+00:00
+          status: status
+        - bytes: 0
+          counts:
+            created: 6
+            failed: 1
+            read: 5
+            unchanged: 5
+            updated: 2
+            withdrawn: 7
+          created_at: 2000-01-23T04:56:07.000+00:00
+          dry_run: true
+          failure_reason: failure_reason
+          filename: filename
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          format: format
+          id: id
+          mode: mode
+          source_id: source_id
+          started_at: 2000-01-23T04:56:07.000+00:00
+          status: status
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/Import"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
     ImportRecord:
+      example:
+        errors:
+        - errors
+        - errors
+        external_id: external_id
+        location: location
+        outcome: outcome
+        property_id: property_id
       properties:
         errors:
           items:
@@ -3871,7 +4729,84 @@ components:
       required:
       - location
       - outcome
+    ImportRecordPage:
+      description: "A page of ImportRecord records, with the cursor for the next one."
+      example:
+        data:
+        - errors:
+          - errors
+          - errors
+          external_id: external_id
+          location: location
+          outcome: outcome
+          property_id: property_id
+        - errors:
+          - errors
+          - errors
+          external_id: external_id
+          location: location
+          outcome: outcome
+          property_id: property_id
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/ImportRecord"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
+    ImportResponse:
+      description: One Import.
+      example:
+        data:
+          bytes: 0
+          counts:
+            created: 6
+            failed: 1
+            read: 5
+            unchanged: 5
+            updated: 2
+            withdrawn: 7
+          created_at: 2000-01-23T04:56:07.000+00:00
+          dry_run: true
+          failure_reason: failure_reason
+          filename: filename
+          finished_at: 2000-01-23T04:56:07.000+00:00
+          format: format
+          id: id
+          mode: mode
+          source_id: source_id
+          started_at: 2000-01-23T04:56:07.000+00:00
+          status: status
+      properties:
+        data:
+          $ref: "#/components/schemas/Import"
+      required:
+      - data
     ImportSource:
+      example:
+        active: true
+        created_at: 2000-01-23T04:56:07.000+00:00
+        deletion_policy: deletion_policy
+        delivery:
+          type: type
+          url: url
+          username: username
+        format: format
+        id: id
+        last_delivery_at: 2000-01-23T04:56:07.000+00:00
+        mapping:
+          key: mapping
+        name: name
+        next_expected_at: 2000-01-23T04:56:07.000+00:00
+        schedule: schedule
+        updated_at: 2000-01-23T04:56:07.000+00:00
       properties:
         active:
           type: boolean
@@ -3911,7 +4846,96 @@ components:
       - id
       - name
       - updated_at
+    ImportSourcePage:
+      description: "A page of ImportSource records, with the cursor for the next one."
+      example:
+        data:
+        - active: true
+          created_at: 2000-01-23T04:56:07.000+00:00
+          deletion_policy: deletion_policy
+          delivery:
+            type: type
+            url: url
+            username: username
+          format: format
+          id: id
+          last_delivery_at: 2000-01-23T04:56:07.000+00:00
+          mapping:
+            key: mapping
+          name: name
+          next_expected_at: 2000-01-23T04:56:07.000+00:00
+          schedule: schedule
+          updated_at: 2000-01-23T04:56:07.000+00:00
+        - active: true
+          created_at: 2000-01-23T04:56:07.000+00:00
+          deletion_policy: deletion_policy
+          delivery:
+            type: type
+            url: url
+            username: username
+          format: format
+          id: id
+          last_delivery_at: 2000-01-23T04:56:07.000+00:00
+          mapping:
+            key: mapping
+          name: name
+          next_expected_at: 2000-01-23T04:56:07.000+00:00
+          schedule: schedule
+          updated_at: 2000-01-23T04:56:07.000+00:00
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/ImportSource"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
+    ImportSourceResponse:
+      description: One ImportSource.
+      example:
+        data:
+          active: true
+          created_at: 2000-01-23T04:56:07.000+00:00
+          deletion_policy: deletion_policy
+          delivery:
+            type: type
+            url: url
+            username: username
+          format: format
+          id: id
+          last_delivery_at: 2000-01-23T04:56:07.000+00:00
+          mapping:
+            key: mapping
+          name: name
+          next_expected_at: 2000-01-23T04:56:07.000+00:00
+          schedule: schedule
+          updated_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        data:
+          $ref: "#/components/schemas/ImportSource"
+      required:
+      - data
     Inquiry:
+      example:
+        channel: channel
+        consent_text: consent_text
+        consented_at: 2000-01-23T04:56:07.000+00:00
+        created_at: 2000-01-23T04:56:07.000+00:00
+        id: id
+        message: message
+        property_id: property_id
+        read_at: 2000-01-23T04:56:07.000+00:00
+        replied_at: 2000-01-23T04:56:07.000+00:00
+        sender_email: sender_email
+        sender_name: sender_name
+        sender_phone: sender_phone
+        status: status
       properties:
         channel:
           type: string
@@ -3952,7 +4976,84 @@ components:
       - sender_email
       - sender_name
       - status
+    InquiryPage:
+      description: "A page of Inquiry records, with the cursor for the next one."
+      example:
+        data:
+        - channel: channel
+          consent_text: consent_text
+          consented_at: 2000-01-23T04:56:07.000+00:00
+          created_at: 2000-01-23T04:56:07.000+00:00
+          id: id
+          message: message
+          property_id: property_id
+          read_at: 2000-01-23T04:56:07.000+00:00
+          replied_at: 2000-01-23T04:56:07.000+00:00
+          sender_email: sender_email
+          sender_name: sender_name
+          sender_phone: sender_phone
+          status: status
+        - channel: channel
+          consent_text: consent_text
+          consented_at: 2000-01-23T04:56:07.000+00:00
+          created_at: 2000-01-23T04:56:07.000+00:00
+          id: id
+          message: message
+          property_id: property_id
+          read_at: 2000-01-23T04:56:07.000+00:00
+          replied_at: 2000-01-23T04:56:07.000+00:00
+          sender_email: sender_email
+          sender_name: sender_name
+          sender_phone: sender_phone
+          status: status
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/Inquiry"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
+    InquiryResponse:
+      description: One Inquiry.
+      example:
+        data:
+          channel: channel
+          consent_text: consent_text
+          consented_at: 2000-01-23T04:56:07.000+00:00
+          created_at: 2000-01-23T04:56:07.000+00:00
+          id: id
+          message: message
+          property_id: property_id
+          read_at: 2000-01-23T04:56:07.000+00:00
+          replied_at: 2000-01-23T04:56:07.000+00:00
+          sender_email: sender_email
+          sender_name: sender_name
+          sender_phone: sender_phone
+          status: status
+      properties:
+        data:
+          $ref: "#/components/schemas/Inquiry"
+      required:
+      - data
     Listing:
+      example:
+        available_from: 2000-01-23T04:56:07.000+00:00
+        currency: currency
+        deposit: 5.637376656633329
+        price: 2.3021358869347655
+        price_per_sqm: 7.061401241503109
+        price_period: price_period
+        published_at: 2000-01-23T04:56:07.000+00:00
+        service_charges: 9.301444243932576
+        status: status
+        transaction_type: transaction_type
       properties:
         available_from:
           format: date-time
@@ -3980,6 +5081,10 @@ components:
       - status
       - transaction_type
     Location:
+      example:
+        latitude: 3.616076749251911
+        longitude: 2.027123023002322
+        precision: precision
       properties:
         latitude:
           type: number
@@ -3992,6 +5097,26 @@ components:
       - longitude
       - precision
     Market:
+      example:
+        city: city
+        district: district
+        metrics:
+        - change_pct: 0.8008281904610115
+          computed_at: 2000-01-23T04:56:07.000+00:00
+          currency: currency
+          name: name
+          sample_size: 6
+          unit: unit
+          value: 1.4658129805029452
+        - change_pct: 0.8008281904610115
+          computed_at: 2000-01-23T04:56:07.000+00:00
+          currency: currency
+          name: name
+          sample_size: 6
+          unit: unit
+          value: 1.4658129805029452
+        period: period
+        property_type: property_type
       properties:
         city:
           type: string
@@ -4011,6 +5136,25 @@ components:
       - metrics
       - period
     MarketContext:
+      example:
+        city: city
+        district: district
+        metrics:
+        - change_pct: 0.8008281904610115
+          computed_at: 2000-01-23T04:56:07.000+00:00
+          currency: currency
+          name: name
+          sample_size: 6
+          unit: unit
+          value: 1.4658129805029452
+        - change_pct: 0.8008281904610115
+          computed_at: 2000-01-23T04:56:07.000+00:00
+          currency: currency
+          name: name
+          sample_size: 6
+          unit: unit
+          value: 1.4658129805029452
+        period: period
       properties:
         city:
           type: string
@@ -4028,6 +5172,14 @@ components:
       - metrics
       - period
     MarketMetric:
+      example:
+        change_pct: 0.8008281904610115
+        computed_at: 2000-01-23T04:56:07.000+00:00
+        currency: currency
+        name: name
+        sample_size: 6
+        unit: unit
+        value: 1.4658129805029452
       properties:
         change_pct:
           type: number
@@ -4047,7 +5199,64 @@ components:
       required:
       - computed_at
       - name
+    MarketResponse:
+      description: One Market.
+      example:
+        data:
+          city: city
+          district: district
+          metrics:
+          - change_pct: 0.8008281904610115
+            computed_at: 2000-01-23T04:56:07.000+00:00
+            currency: currency
+            name: name
+            sample_size: 6
+            unit: unit
+            value: 1.4658129805029452
+          - change_pct: 0.8008281904610115
+            computed_at: 2000-01-23T04:56:07.000+00:00
+            currency: currency
+            name: name
+            sample_size: 6
+            unit: unit
+            value: 1.4658129805029452
+          period: period
+          property_type: property_type
+      properties:
+        data:
+          $ref: "#/components/schemas/Market"
+      required:
+      - data
+    PageMeta:
+      description: "Paging, on every collection. Follow next_cursor until has_more\
+        \ is false: cursors are stable across inserts, so paging never skips or repeats\
+        \ a record the way an offset does."
+      example:
+        has_more: true
+        limit: 50
+        next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        has_more:
+          description: Whether another page exists.
+          example: true
+          type: boolean
+        limit:
+          description: Records this page was asked for.
+          example: 50
+          type: integer
+        next_cursor:
+          description: Pass as `cursor` to fetch the next page. Null on the last one.
+          example: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+          nullable: true
+          type: string
+      required:
+      - has_more
     PriceObservation:
+      example:
+        currency: currency
+        observed_at: 2000-01-23T04:56:07.000+00:00
+        price: 4.145608029883936
+        source: source
       properties:
         currency:
           type: string
@@ -4061,6 +5270,33 @@ components:
       required:
       - currency
       - observed_at
+    PriceObservationPage:
+      description: "A page of PriceObservation records, with the cursor for the next\
+        \ one."
+      example:
+        data:
+        - currency: currency
+          observed_at: 2000-01-23T04:56:07.000+00:00
+          price: 4.145608029883936
+          source: source
+        - currency: currency
+          observed_at: 2000-01-23T04:56:07.000+00:00
+          price: 4.145608029883936
+          source: source
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/PriceObservation"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
     Problem:
       description: "An RFC 9457 problem document, returned by every failure."
       properties:
@@ -4092,6 +5328,98 @@ components:
           example: https://skautik.com/developers/docs/errors#not_found
           type: string
     Property:
+      example:
+        address:
+          city: city
+          country: country
+          district: district
+          number: number
+          postal_code: postal_code
+          province: province
+          street: street
+        building:
+          condition: condition
+          construction_type: construction_type
+          heating_type: heating_type
+          year_built: 0
+          year_renovated: 6
+        created_at: 2000-01-23T04:56:07.000+00:00
+        description: description
+        energy:
+          consumption_kwh: 1.4658129805029452
+          label: label
+        external_id: external_id
+        id: id
+        images:
+        - id: id
+          is_primary: true
+          position: 5
+          room_type: room_type
+          url: url
+        - id: id
+          is_primary: true
+          position: 5
+          room_type: room_type
+          url: url
+        last_verified_at: 2000-01-23T04:56:07.000+00:00
+        listing:
+          available_from: 2000-01-23T04:56:07.000+00:00
+          currency: currency
+          deposit: 5.637376656633329
+          price: 2.3021358869347655
+          price_per_sqm: 7.061401241503109
+          price_period: price_period
+          published_at: 2000-01-23T04:56:07.000+00:00
+          service_charges: 9.301444243932576
+          status: status
+          transaction_type: transaction_type
+        location:
+          latitude: 3.616076749251911
+          longitude: 2.027123023002322
+          precision: precision
+        market:
+          city: city
+          district: district
+          metrics:
+          - change_pct: 0.8008281904610115
+            computed_at: 2000-01-23T04:56:07.000+00:00
+            currency: currency
+            name: name
+            sample_size: 6
+            unit: unit
+            value: 1.4658129805029452
+          - change_pct: 0.8008281904610115
+            computed_at: 2000-01-23T04:56:07.000+00:00
+            currency: currency
+            name: name
+            sample_size: 6
+            unit: unit
+            value: 1.4658129805029452
+          period: period
+        price_history:
+        - currency: currency
+          observed_at: 2000-01-23T04:56:07.000+00:00
+          price: 4.145608029883936
+          source: source
+        - currency: currency
+          observed_at: 2000-01-23T04:56:07.000+00:00
+          price: 4.145608029883936
+          source: source
+        rooms:
+          bathrooms: 7
+          bedrooms: 1
+          floor: 1
+          floors_in_building: 1
+          half_bathrooms: 6
+          total_rooms: 7
+        size:
+          living_area_sqm: 1.1730742509559433
+          plot_area_sqm: 4.965218492984954
+          usable_area_sqm: 5.025004791520295
+        source: source
+        title: title
+        type: type
+        updated_at: 2000-01-23T04:56:07.000+00:00
       properties:
         address:
           $ref: "#/components/schemas/Address"
@@ -4151,7 +5479,314 @@ components:
       - title
       - type
       - updated_at
+    PropertyPage:
+      description: "A page of Property records, with the cursor for the next one."
+      example:
+        data:
+        - address:
+            city: city
+            country: country
+            district: district
+            number: number
+            postal_code: postal_code
+            province: province
+            street: street
+          building:
+            condition: condition
+            construction_type: construction_type
+            heating_type: heating_type
+            year_built: 0
+            year_renovated: 6
+          created_at: 2000-01-23T04:56:07.000+00:00
+          description: description
+          energy:
+            consumption_kwh: 1.4658129805029452
+            label: label
+          external_id: external_id
+          id: id
+          images:
+          - id: id
+            is_primary: true
+            position: 5
+            room_type: room_type
+            url: url
+          - id: id
+            is_primary: true
+            position: 5
+            room_type: room_type
+            url: url
+          last_verified_at: 2000-01-23T04:56:07.000+00:00
+          listing:
+            available_from: 2000-01-23T04:56:07.000+00:00
+            currency: currency
+            deposit: 5.637376656633329
+            price: 2.3021358869347655
+            price_per_sqm: 7.061401241503109
+            price_period: price_period
+            published_at: 2000-01-23T04:56:07.000+00:00
+            service_charges: 9.301444243932576
+            status: status
+            transaction_type: transaction_type
+          location:
+            latitude: 3.616076749251911
+            longitude: 2.027123023002322
+            precision: precision
+          market:
+            city: city
+            district: district
+            metrics:
+            - change_pct: 0.8008281904610115
+              computed_at: 2000-01-23T04:56:07.000+00:00
+              currency: currency
+              name: name
+              sample_size: 6
+              unit: unit
+              value: 1.4658129805029452
+            - change_pct: 0.8008281904610115
+              computed_at: 2000-01-23T04:56:07.000+00:00
+              currency: currency
+              name: name
+              sample_size: 6
+              unit: unit
+              value: 1.4658129805029452
+            period: period
+          price_history:
+          - currency: currency
+            observed_at: 2000-01-23T04:56:07.000+00:00
+            price: 4.145608029883936
+            source: source
+          - currency: currency
+            observed_at: 2000-01-23T04:56:07.000+00:00
+            price: 4.145608029883936
+            source: source
+          rooms:
+            bathrooms: 7
+            bedrooms: 1
+            floor: 1
+            floors_in_building: 1
+            half_bathrooms: 6
+            total_rooms: 7
+          size:
+            living_area_sqm: 1.1730742509559433
+            plot_area_sqm: 4.965218492984954
+            usable_area_sqm: 5.025004791520295
+          source: source
+          title: title
+          type: type
+          updated_at: 2000-01-23T04:56:07.000+00:00
+        - address:
+            city: city
+            country: country
+            district: district
+            number: number
+            postal_code: postal_code
+            province: province
+            street: street
+          building:
+            condition: condition
+            construction_type: construction_type
+            heating_type: heating_type
+            year_built: 0
+            year_renovated: 6
+          created_at: 2000-01-23T04:56:07.000+00:00
+          description: description
+          energy:
+            consumption_kwh: 1.4658129805029452
+            label: label
+          external_id: external_id
+          id: id
+          images:
+          - id: id
+            is_primary: true
+            position: 5
+            room_type: room_type
+            url: url
+          - id: id
+            is_primary: true
+            position: 5
+            room_type: room_type
+            url: url
+          last_verified_at: 2000-01-23T04:56:07.000+00:00
+          listing:
+            available_from: 2000-01-23T04:56:07.000+00:00
+            currency: currency
+            deposit: 5.637376656633329
+            price: 2.3021358869347655
+            price_per_sqm: 7.061401241503109
+            price_period: price_period
+            published_at: 2000-01-23T04:56:07.000+00:00
+            service_charges: 9.301444243932576
+            status: status
+            transaction_type: transaction_type
+          location:
+            latitude: 3.616076749251911
+            longitude: 2.027123023002322
+            precision: precision
+          market:
+            city: city
+            district: district
+            metrics:
+            - change_pct: 0.8008281904610115
+              computed_at: 2000-01-23T04:56:07.000+00:00
+              currency: currency
+              name: name
+              sample_size: 6
+              unit: unit
+              value: 1.4658129805029452
+            - change_pct: 0.8008281904610115
+              computed_at: 2000-01-23T04:56:07.000+00:00
+              currency: currency
+              name: name
+              sample_size: 6
+              unit: unit
+              value: 1.4658129805029452
+            period: period
+          price_history:
+          - currency: currency
+            observed_at: 2000-01-23T04:56:07.000+00:00
+            price: 4.145608029883936
+            source: source
+          - currency: currency
+            observed_at: 2000-01-23T04:56:07.000+00:00
+            price: 4.145608029883936
+            source: source
+          rooms:
+            bathrooms: 7
+            bedrooms: 1
+            floor: 1
+            floors_in_building: 1
+            half_bathrooms: 6
+            total_rooms: 7
+          size:
+            living_area_sqm: 1.1730742509559433
+            plot_area_sqm: 4.965218492984954
+            usable_area_sqm: 5.025004791520295
+          source: source
+          title: title
+          type: type
+          updated_at: 2000-01-23T04:56:07.000+00:00
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/Property"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
+    PropertyResponse:
+      description: One Property.
+      example:
+        data:
+          address:
+            city: city
+            country: country
+            district: district
+            number: number
+            postal_code: postal_code
+            province: province
+            street: street
+          building:
+            condition: condition
+            construction_type: construction_type
+            heating_type: heating_type
+            year_built: 0
+            year_renovated: 6
+          created_at: 2000-01-23T04:56:07.000+00:00
+          description: description
+          energy:
+            consumption_kwh: 1.4658129805029452
+            label: label
+          external_id: external_id
+          id: id
+          images:
+          - id: id
+            is_primary: true
+            position: 5
+            room_type: room_type
+            url: url
+          - id: id
+            is_primary: true
+            position: 5
+            room_type: room_type
+            url: url
+          last_verified_at: 2000-01-23T04:56:07.000+00:00
+          listing:
+            available_from: 2000-01-23T04:56:07.000+00:00
+            currency: currency
+            deposit: 5.637376656633329
+            price: 2.3021358869347655
+            price_per_sqm: 7.061401241503109
+            price_period: price_period
+            published_at: 2000-01-23T04:56:07.000+00:00
+            service_charges: 9.301444243932576
+            status: status
+            transaction_type: transaction_type
+          location:
+            latitude: 3.616076749251911
+            longitude: 2.027123023002322
+            precision: precision
+          market:
+            city: city
+            district: district
+            metrics:
+            - change_pct: 0.8008281904610115
+              computed_at: 2000-01-23T04:56:07.000+00:00
+              currency: currency
+              name: name
+              sample_size: 6
+              unit: unit
+              value: 1.4658129805029452
+            - change_pct: 0.8008281904610115
+              computed_at: 2000-01-23T04:56:07.000+00:00
+              currency: currency
+              name: name
+              sample_size: 6
+              unit: unit
+              value: 1.4658129805029452
+            period: period
+          price_history:
+          - currency: currency
+            observed_at: 2000-01-23T04:56:07.000+00:00
+            price: 4.145608029883936
+            source: source
+          - currency: currency
+            observed_at: 2000-01-23T04:56:07.000+00:00
+            price: 4.145608029883936
+            source: source
+          rooms:
+            bathrooms: 7
+            bedrooms: 1
+            floor: 1
+            floors_in_building: 1
+            half_bathrooms: 6
+            total_rooms: 7
+          size:
+            living_area_sqm: 1.1730742509559433
+            plot_area_sqm: 4.965218492984954
+            usable_area_sqm: 5.025004791520295
+          source: source
+          title: title
+          type: type
+          updated_at: 2000-01-23T04:56:07.000+00:00
+      properties:
+        data:
+          $ref: "#/components/schemas/Property"
+      required:
+      - data
     Rooms:
+      example:
+        bathrooms: 7
+        bedrooms: 1
+        floor: 1
+        floors_in_building: 1
+        half_bathrooms: 6
+        total_rooms: 7
       properties:
         bathrooms:
           type: integer
@@ -4166,6 +5801,22 @@ components:
         total_rooms:
           type: integer
     Series:
+      example:
+        city: city
+        interval: interval
+        property_type: property_type
+        series:
+        - listing_count: 0
+          median_days_listed: 6
+          median_price: 1.4658129805029452
+          median_price_per_area: 5.962133916683182
+          period: period
+        - listing_count: 0
+          median_days_listed: 6
+          median_price: 1.4658129805029452
+          median_price_per_area: 5.962133916683182
+          period: period
+        transaction_type: transaction_type
       properties:
         city:
           type: string
@@ -4185,6 +5836,12 @@ components:
       - interval
       - series
     SeriesPoint:
+      example:
+        listing_count: 0
+        median_days_listed: 6
+        median_price: 1.4658129805029452
+        median_price_per_area: 5.962133916683182
+        period: period
       properties:
         listing_count:
           type: integer
@@ -4199,7 +5856,35 @@ components:
       required:
       - listing_count
       - period
+    SeriesResponse:
+      description: One Series.
+      example:
+        data:
+          city: city
+          interval: interval
+          property_type: property_type
+          series:
+          - listing_count: 0
+            median_days_listed: 6
+            median_price: 1.4658129805029452
+            median_price_per_area: 5.962133916683182
+            period: period
+          - listing_count: 0
+            median_days_listed: 6
+            median_price: 1.4658129805029452
+            median_price_per_area: 5.962133916683182
+            period: period
+          transaction_type: transaction_type
+      properties:
+        data:
+          $ref: "#/components/schemas/Series"
+      required:
+      - data
     Size:
+      example:
+        living_area_sqm: 1.1730742509559433
+        plot_area_sqm: 4.965218492984954
+        usable_area_sqm: 5.025004791520295
       properties:
         living_area_sqm:
           type: number
@@ -4208,6 +5893,10 @@ components:
         usable_area_sqm:
           type: number
     SourceDelivery:
+      example:
+        type: type
+        url: url
+        username: username
       properties:
         type:
           type: string
@@ -4218,6 +5907,15 @@ components:
       required:
       - type
     Webhook:
+      example:
+        active: true
+        created_at: 2000-01-23T04:56:07.000+00:00
+        events:
+        - events
+        - events
+        id: id
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        url: url
       properties:
         active:
           type: boolean
@@ -4243,6 +5941,57 @@ components:
       - id
       - updated_at
       - url
+    WebhookPage:
+      description: "A page of Webhook records, with the cursor for the next one."
+      example:
+        data:
+        - active: true
+          created_at: 2000-01-23T04:56:07.000+00:00
+          events:
+          - events
+          - events
+          id: id
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          url: url
+        - active: true
+          created_at: 2000-01-23T04:56:07.000+00:00
+          events:
+          - events
+          - events
+          id: id
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          url: url
+        meta:
+          has_more: true
+          limit: 50
+          next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/Webhook"
+          type: array
+          default: null
+        meta:
+          $ref: "#/components/schemas/PageMeta"
+      required:
+      - data
+    WebhookResponse:
+      description: One Webhook.
+      example:
+        data:
+          active: true
+          created_at: 2000-01-23T04:56:07.000+00:00
+          events:
+          - events
+          - events
+          id: id
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          url: url
+      properties:
+        data:
+          $ref: "#/components/schemas/Webhook"
+      required:
+      - data
     createExport_request:
       properties:
         fields:
