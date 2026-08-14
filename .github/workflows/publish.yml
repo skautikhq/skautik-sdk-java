@@ -1,0 +1,43 @@
+name: Publish
+
+# Generated. Edit this in skautikhq/skautik-sdk, not here.
+on:
+    push:
+        tags: ["v*"]
+    workflow_dispatch:
+        inputs:
+            dry_run:
+                description: Build everything, publish nothing
+                type: boolean
+                default: true
+
+env:
+    DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        environment: release
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-java@v4
+              with:
+                  distribution: temurin
+                  java-version: 21
+                  server-id: central
+                  server-username: MAVEN_USERNAME
+                  server-password: MAVEN_PASSWORD
+                  gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+                  gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+            - run: mvn -q -B -DskipTests package
+
+            - name: Publish
+              if: env.DRY_RUN != 'true'
+              # Central requires every artefact signed, which is what the
+              # sign-artifacts profile is for.
+              run: mvn -B -DskipTests -P sign-artifacts deploy
+              env:
+                  MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+                  MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+                  MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}

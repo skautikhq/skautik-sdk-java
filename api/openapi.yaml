@@ -1,0 +1,3998 @@
+openapi: 3.1.0
+info:
+  contact:
+    name: Skautik
+    url: https://skautik.com/developers/docs
+  description: |-
+    The Skautik partner API.
+
+    Every endpoint is authenticated by an API key and gated on a per-resource
+    scope, so a key issued for market analysis cannot read anyone's enquiries and a
+    read-only key cannot withdraw a listing.
+
+    Responses are enveloped: the payload is under `data`, and anything about the
+    response rather than the resource is under `meta`. Failures are RFC 9457 problem
+    documents carrying a stable `code` to branch on.
+
+    Writes accept an `Idempotency-Key`, and replaying one returns the original
+    response rather than repeating the work.
+
+    This document is generated from the API's own route tree, so an endpoint that
+    appears here exists and one that exists appears here.
+  title: Skautik Partner API
+  version: 1.0.0
+servers:
+- description: Production
+  url: https://api.skautik.com/v1/api
+security:
+- apiKey: []
+tags:
+- description: "The catalogue, and your own inventory within it. Read endpoints span\
+    \ everything we hold; write endpoints only ever touch records your organisation\
+    \ published."
+  name: Properties
+- description: "Where we have coverage, how each market is subdivided, and the aggregate\
+    \ statistics computed across it."
+  name: Markets
+- description: Move inventory in from whatever system already holds it. A one-off
+    import handles a migration; an import source keeps a CRM and Skautik in step indefinitely.
+  name: Imports
+- description: "Subscribe to changes rather than polling for them. A webhook costs\
+    \ nothing against your request quota, which makes it much cheaper than re-reading\
+    \ a market on a timer."
+  name: Webhooks
+- description: "Bulk extracts for volumes that would be unreasonable to page through.\
+    \ An export is asynchronous: you request one, we build it, and you fetch the file\
+    \ when it is ready."
+  name: Exports
+- description: Endpoints about your key rather than about property.
+  name: Account and status
+- description: "Enquiries people have made about your properties, and the state you\
+    \ have moved each one to. Scoped to the properties your organisation owns: an\
+    \ enquiry belongs to whoever owns the property it is about."
+  name: Inquiries
+- description: "Transform a photograph you have already uploaded: stage an empty room,\
+    \ remove clutter, or correct how a picture was taken. Each request is queued and\
+    \ produced in the background."
+  name: Image generations
+paths:
+  /exports:
+    get:
+      description: |-
+        Recent exports for your organisation, newest first.
+
+        Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.
+
+        Requires the `exports:create` scope.
+      operationId: listExports
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List exports
+      tags:
+      - Exports
+      x-accepts:
+      - application/problem+json
+    post:
+      description: |-
+        Queue a bulk extract of the catalogue.
+
+        Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.
+
+        Requires the `exports:create` scope.
+      operationId: createExport
+      requestBody:
+        content:
+          application/json:
+            example:
+              fields:
+              - external_id
+              - price
+              - living_area_sqm
+              - address_city
+              filters:
+                city: Berlin
+                status: active
+              format: ndjson
+            schema:
+              $ref: "#/components/schemas/createExport_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: 2026-08-12T10:04:00Z
+                  format: ndjson
+                  id: exp_74c0ab
+                  status: pending
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Request an export
+      tags:
+      - Exports
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /exports/{export_id}:
+    get:
+      description: |-
+        Status, and the download URL once it is ready.
+
+        Download URLs are signed and expire one hour after issue, and are minted per request rather than stored, so ask again if one lapses. The file itself is kept for seven days; after that the export still appears in your history with no link, because the object has been swept.
+
+        Requires the `exports:create` scope.
+      operationId: getExport
+      parameters:
+      - description: Export identifier.
+        example: exp_74c0ab
+        explode: false
+        in: path
+        name: export_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                  byte_size: 4821004
+                  download_url: https://exports.skautik.com/exp_74c0ab.ndjson?sig=…
+                  expires_at: 2026-08-12T11:12:00Z
+                  format: ndjson
+                  id: exp_74c0ab
+                  record_count: 1284
+                  status: completed
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve an export
+      tags:
+      - Exports
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /generations:
+    get:
+      description: |-
+        Recent requests for your organisation, newest first.
+
+        Requires the `images:write` scope.
+      operationId: listGenerations
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List generations
+      tags:
+      - Image generations
+      x-accepts:
+      - application/problem+json
+    post:
+      description: |-
+        Queue a transformation of one of your property images.
+
+        Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.
+
+        Requires the `images:write` scope.
+      operationId: createGeneration
+      requestBody:
+        content:
+          application/json:
+            example:
+              kind: virtual_staging
+              room_type: living room
+              source_image_id: img_ce1c9e04db6140eda7c6934af60daebb
+              style: scandinavian
+            schema:
+              $ref: "#/components/schemas/createGeneration_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: 2026-08-13T14:39:51Z
+                  id: gen_41bd169388ff4bee8706b822e4def3c5
+                  kind: virtual_staging
+                  property_id: prop_f06bd367019344dd91b559046f8e0d4c
+                  room_type: living room
+                  source_image_id: img_ce1c9e04db6140eda7c6934af60daebb
+                  status: queued
+                  style: scandinavian
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "The source image does not exist, or is not on one of your\
+            \ properties. The two are indistinguishable on purpose."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Request a generation
+      tags:
+      - Image generations
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /generations/kinds:
+    get:
+      description: |-
+        The transformations available, and what each does.
+
+        Served from the same list the API validates against, so it cannot fall behind. It also names what is deliberately not available and why, which is more useful than an absence you have to infer.
+
+        Requires the `images:write` scope.
+      operationId: listGenerationKinds
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                  kinds:
+                  - description: "Furnish an empty room in a chosen style, leaving\
+                      \ the architecture untouched."
+                    kind: virtual_staging
+                  - description: Remove personal clutter from a room without changing
+                      the furniture or the fabric of the building.
+                    kind: decluttering
+                  - description: "Correct exposure, white balance, and straightness,\
+                      \ without altering what the photograph shows."
+                    kind: enhancement
+                  not_available:
+                  - kind: floorplan_render
+                    reason: "Named in the schema and not implemented. Rendering a\
+                      \ floor plan needs a provider we have not integrated, and a\
+                      \ plausible but wrong plan of somebody's home is worse than\
+                      \ none."
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List what can be generated
+      tags:
+      - Image generations
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /generations/{generation_id}:
+    get:
+      description: |-
+        Status, and the image once it is ready.
+
+        Moves through queued, running, and then completed or failed. A failed generation carries the reason, including when the model declined rather than errored: those are different problems and only one is worth retrying.
+
+        Requires the `images:write` scope.
+      operationId: getGeneration
+      parameters:
+      - description: Generation identifier.
+        example: gen_5c1e9a2b3d
+        explode: false
+        in: path
+        name: generation_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: 2026-08-13T14:39:51Z
+                  finished_at: 2026-08-13T14:40:07Z
+                  id: gen_41bd169388ff4bee8706b822e4def3c5
+                  image_url: https://images.skautik.com/generations/…/41bd1693.jpg
+                  kind: virtual_staging
+                  property_id: prop_f06bd367019344dd91b559046f8e0d4c
+                  room_type: living room
+                  source_image_id: img_ce1c9e04db6140eda7c6934af60daebb
+                  status: completed
+                  style: scandinavian
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve a generation
+      tags:
+      - Image generations
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /healthz:
+    get:
+      description: |-
+        Unauthenticated liveness check.
+
+        Served at the host root rather than under the versioned prefix, and answered without a key. Use it to tell an outage from a credential problem: a healthy host that refuses your calls is an authentication question, not an availability one.
+      operationId: getHealth
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                status: ok
+                version: 2026-08-01
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+      security: []
+      summary: Service status
+      tags:
+      - Account and status
+      x-accepts:
+      - application/json
+    servers:
+    - description: "The host itself, outside the versioned API."
+      url: https://api.skautik.com
+  /import-sources:
+    get:
+      description: |-
+        Every standing connector your organisation has configured.
+
+        Credentials are never returned. A fetched source often holds the login for your own server in its URL, so the URL comes back with the password removed.
+
+        Requires the `imports:write` scope.
+      operationId: listImportSources
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                - active: true
+                  created_at: 2026-08-12T10:04:00Z
+                  deletion_policy: explicit_only
+                  delivery:
+                    type: fetch_url
+                    url: https://partner:***@feeds.example.com/stock.csv
+                  format: csv
+                  id: src_1d77a0
+                  last_delivery_at: 2026-08-13T12:00:04Z
+                  name: Head office CRM
+                  next_expected_at: 2026-08-13T16:00:00Z
+                  schedule: 0 */4 * * *
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List import sources
+      tags:
+      - Imports
+      x-accepts:
+      - application/json
+      - application/problem+json
+    post:
+      description: |-
+        A standing connector that imports on a schedule.
+
+        Configure once and stop thinking about it. A source holds the format, the delivery method, the field mapping, and the deletion policy, and every run against it produces an import you can inspect.
+
+        Requires the `imports:write` scope.
+      operationId: createImportSource
+      requestBody:
+        content:
+          application/json:
+            example:
+              deletion_policy: explicit_only
+              delivery:
+                type: fetch_url
+                url: https://feeds.example.com/stock.csv
+              format: csv
+              name: Head office CRM
+              schedule: 0 */4 * * *
+            schema:
+              $ref: "#/components/schemas/createImportSource_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              example:
+                data:
+                  active: true
+                  created_at: 2026-08-12T10:04:00Z
+                  deletion_policy: explicit_only
+                  delivery:
+                    type: fetch_url
+                    url: https://feeds.example.com/stock.csv
+                  format: csv
+                  id: src_1d77a0
+                  name: Head office CRM
+                  next_expected_at: 2026-08-12T12:00:00Z
+                  schedule: 0 */4 * * *
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Create an import source
+      tags:
+      - Imports
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /import-sources/{source_id}:
+    delete:
+      description: |-
+        Stop importing from this connector.
+
+        Deleting a source stops future runs. It does not withdraw the properties it created, which stay under your organisation until you withdraw them yourself.
+
+        Requires the `imports:write` scope.
+      operationId: deleteImportSource
+      parameters:
+      - description: Source identifier.
+        example: src_immoscout
+        explode: false
+        in: path
+        name: source_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Delete an import source
+      tags:
+      - Imports
+      x-accepts:
+      - application/problem+json
+    get:
+      description: |-
+        Configuration and recent run health.
+
+        Requires the `imports:write` scope.
+      operationId: getImportSource
+      parameters:
+      - description: Source identifier.
+        example: src_immoscout
+        explode: false
+        in: path
+        name: source_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve an import source
+      tags:
+      - Imports
+      x-accepts:
+      - application/problem+json
+    patch:
+      description: |-
+        Change the mapping, schedule, or deletion policy.
+
+        Requires the `imports:write` scope.
+      operationId: updateImportSource
+      parameters:
+      - description: Source identifier.
+        example: src_immoscout
+        explode: false
+        in: path
+        name: source_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Update an import source
+      tags:
+      - Imports
+      x-accepts:
+      - application/problem+json
+  /imports:
+    get:
+      description: |-
+        Import history for your organisation.
+
+        Requires the `imports:write` scope.
+      operationId: listImports
+      parameters:
+      - description: Only imports produced by one source.
+        example: src_immoscout
+        explode: true
+        in: query
+        name: source_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by outcome.
+        example: validating
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          enum:
+          - validating
+          - processing
+          - completed
+          - partial
+          - failed
+          type: string
+        style: form
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List imports
+      tags:
+      - Imports
+      x-accepts:
+      - application/problem+json
+    post:
+      description: |-
+        Upload a file, or point us at one, and process it.
+
+        Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.
+
+        Requires the `imports:write` scope.
+      operationId: createImport
+      parameters:
+      - description: Prevents a retried upload from being processed twice.
+        example: a7f3c9e2-4b1d-4e8a-9c2f-1d3b5a7c9e01
+        explode: false
+        in: header
+        name: Idempotency-Key
+        required: false
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/createImport_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: 2026-08-12T10:04:00Z
+                  dry_run: false
+                  format: openimmo
+                  id: imp_5a91c0
+                  mode: incremental
+                  status: validating
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "202":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Accepted for processing. Poll or await import.completed.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "415":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The payload is not the declared format.
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The file parsed but no record in it was usable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Start an import
+      tags:
+      - Imports
+      x-content-type: multipart/form-data
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /imports/formats:
+    get:
+      description: |-
+        What an import may carry: the formats that work today, every CSV column, and the limits.
+
+        Served from the same tables the parser reads, so it cannot fall behind what is actually accepted. Worth calling once when you build the integration rather than transcribing the column list from this page.
+
+        Requires the `imports:write` scope.
+      operationId: importFormats
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                  csv_columns:
+                  - address_city
+                  - address_country
+                  - address_district
+                  - address_number
+                  - address_postal_code
+                  - address_province
+                  - address_street
+                  - bathrooms
+                  - bedrooms
+                  - condition
+                  - construction_type
+                  - currency
+                  - deposit
+                  - description
+                  - energy_consumption_kwh
+                  - energy_label
+                  - external_id
+                  - floor
+                  - floors_in_building
+                  - half_bathrooms
+                  - heating_type
+                  - latitude
+                  - living_area_sqm
+                  - location_precision
+                  - longitude
+                  - plot_area_sqm
+                  - price
+                  - price_period
+                  - service_charges
+                  - status
+                  - title
+                  - total_rooms
+                  - transaction_type
+                  - type
+                  - usable_area_sqm
+                  - year_built
+                  - year_renovated
+                  formats:
+                  - csv
+                  - json
+                  limits:
+                    max_bytes: 33554432
+                    max_records: 10000
+                    required_field: external_id
+                  modes:
+                  - incremental
+                  - full_sync
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List accepted formats and columns
+      tags:
+      - Imports
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /imports/{import_id}:
+    get:
+      description: |-
+        Progress, counts, and a summary of what changed.
+
+        Requires the `imports:write` scope.
+      operationId: getImport
+      parameters:
+      - description: Import identifier.
+        example: imp_3d9b7e2145
+        explode: false
+        in: path
+        name: import_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                  counts:
+                    created: 12
+                    failed: 3
+                    read: 214
+                    unchanged: 0
+                    updated: 196
+                    withdrawn: 3
+                  finished_at: 2026-08-12T10:05:41Z
+                  format: openimmo
+                  id: imp_5a91c0
+                  mode: incremental
+                  started_at: 2026-08-12T10:04:02Z
+                  status: completed
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve an import
+      tags:
+      - Imports
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /imports/{import_id}/records:
+    get:
+      description: |-
+        Per-record outcome, including why any failed.
+
+        Filter to failed to get the working list for a fix. Each entry names the source identifier and the line or element it came from, so a problem can be found in your export rather than guessed at.
+
+        Requires the `imports:write` scope.
+      operationId: listImportRecords
+      parameters:
+      - description: Import identifier.
+        example: imp_3d9b7e2145
+        explode: false
+        in: path
+        name: import_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Narrow to one outcome.
+        example: created
+        explode: true
+        in: query
+        name: outcome
+        required: false
+        schema:
+          enum:
+          - created
+          - updated
+          - withdrawn
+          - unchanged
+          - failed
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                - changed:
+                  - price
+                  - status
+                  external_id: AG-4471-0812
+                  outcome: updated
+                  property_id: prop_8f2a41c9d0
+                - errors:
+                  - code: missing
+                    detail: A sale listing needs a price.
+                    field: preise.kaufpreis
+                  external_id: AG-4471-0904
+                  location: "immobilie[17]"
+                  outcome: failed
+                  property_id: null
+                meta:
+                  has_more: false
+                  limit: 50
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List import records
+      tags:
+      - Imports
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /inquiries:
+    get:
+      description: |-
+        Enquiries about your properties, newest first.
+
+        Cursor paginated like every other collection. Filter by property or by status to build a work queue rather than paging the lot.
+
+        Requires the `inquiries:read` scope.
+      operationId: listInquiries
+      parameters:
+      - description: Only enquiries about this property.
+        example: prop_9ad0ddd2e01949ddb471899aba67d577
+        explode: true
+        in: query
+        name: property_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Only enquiries in this state.
+        example: new
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          enum:
+          - new
+          - read
+          - replied
+          - closed
+          - spam
+          type: string
+        style: form
+      - description: Page size. Clamped to 200.
+        example: 50
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          type: integer
+        style: form
+      - description: Opaque cursor from the previous page's meta.next_cursor.
+        example: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+        explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                - channel: web
+                  consent_text: I agree to be contacted about this property.
+                  consented_at: 2026-08-13T10:43:26Z
+                  created_at: 2026-08-13T10:43:26Z
+                  id: inq_db6f3d5316884c649ea1848c278bbf44
+                  message: Is the balcony south facing?
+                  property_id: prop_f954911b55e14b65b762ee55f01e03b7
+                  sender_email: anna@example.com
+                  sender_name: Anna Schmidt
+                  sender_phone: +49 30 555
+                  status: new
+                meta:
+                  has_more: false
+                  limit: 50
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List inquiries
+      tags:
+      - Inquiries
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /inquiries/{inquiry_id}:
+    get:
+      description: |-
+        One enquiry in full.
+
+        An enquiry about a property your organisation does not own answers exactly as a missing one does, so the API cannot be used to probe for records you cannot read.
+
+        Requires the `inquiries:read` scope.
+      operationId: getInquiry
+      parameters:
+      - description: Inquiry identifier.
+        example: inq_db6f3d5316884c649ea1848c278bbf44
+        explode: false
+        in: path
+        name: inquiry_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve an inquiry
+      tags:
+      - Inquiries
+      x-accepts:
+      - application/problem+json
+    patch:
+      description: |-
+        Move an enquiry through your workflow.
+
+        Setting replied records when it happened, and that record survives a later move to closed: the fact that somebody was answered is not undone by filing the conversation away.
+
+        Requires the `inquiries:read` scope.
+      operationId: updateInquiry
+      parameters:
+      - description: Inquiry identifier.
+        example: inq_db6f3d5316884c649ea1848c278bbf44
+        explode: false
+        in: path
+        name: inquiry_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              status: replied
+            schema:
+              $ref: "#/components/schemas/updateInquiry_request"
+        required: true
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Set the status
+      tags:
+      - Inquiries
+      x-content-type: application/json
+      x-accepts:
+      - application/problem+json
+  /inquiries/{inquiry_id}/read:
+    post:
+      description: |-
+        Record that you have seen it.
+
+        read_at is set once and does not move on later calls. It answers when you first saw the enquiry, which is what the person waiting for a reply cares about; overwriting it would answer when you last looked, which nobody asked. Marking read will not pull a status backwards: an enquiry you have already replied to stays replied.
+
+        Requires the `inquiries:read` scope.
+      operationId: markInquiryRead
+      parameters:
+      - description: Inquiry identifier.
+        example: inq_db6f3d5316884c649ea1848c278bbf44
+        explode: false
+        in: path
+        name: inquiry_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "201":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Mark as read
+      tags:
+      - Inquiries
+      x-accepts:
+      - application/problem+json
+  /markets:
+    get:
+      description: |-
+        Every market with coverage, and how deep that coverage runs.
+
+        Call this before hardcoding a market identifier. Coverage expands, and a market absent here has no systematic inventory yet rather than no property.
+
+        Requires the `markets:read` scope.
+      operationId: listMarkets
+      parameters:
+      - description: ISO 3166-1 alpha-2 filter.
+        example: DE
+        explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Records per page, 1 to 200."
+        example: 100
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          type: integer
+        style: form
+      - description: "Opaque pointer from the previous response. Omit for the first\
+          \ page. Cursors are stable across inserts, so paging never skips or repeats\
+          \ a record the way an offset does."
+        example: eyJpZCI6IjhmMmEifQ
+        explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                - area_unit: sqm
+                  country: DE
+                  coverage: systematic
+                  currency: EUR
+                  district_count: 12
+                  id: berlin-de
+                  name: Berlin
+                  property_count: 1284
+                meta:
+                  has_more: false
+                  limit: 50
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List markets
+      tags:
+      - Markets
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /markets/{city}:
+    get:
+      description: |-
+        One market with supply and price distribution.
+
+        Requires the `markets:read` scope.
+      operationId: getMarket
+      parameters:
+      - description: "Market identifier, such as berlin-de."
+        example: berlin-de
+        explode: false
+        in: path
+        name: market_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                  computed_at: 2026-08-11T04:00:00Z
+                  country: DE
+                  id: berlin-de
+                  name: Berlin
+                  price_distribution:
+                    currency: EUR
+                    median: 41500000
+                    median_price_per_area: 560000
+                    p25: 31500000
+                    p75: 58000000
+                  property_count: 1284
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve a market
+      tags:
+      - Markets
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /markets/{city}/districts:
+    get:
+      description: |-
+        Subdivisions of a market, for building your own filters.
+
+        Requires the `markets:read` scope.
+      operationId: listDistricts
+      parameters:
+      - description: Market identifier.
+        example: berlin-de
+        explode: false
+        in: path
+        name: market_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List districts
+      tags:
+      - Markets
+      x-accepts:
+      - application/problem+json
+  /markets/{city}/districts/{district}:
+    get:
+      description: |-
+        District-level supply, price distribution, and amenity context.
+
+        Requires the `markets:read` scope.
+
+        Availability: Growth and above.
+      operationId: getDistrict
+      parameters:
+      - description: Market identifier.
+        example: berlin-de
+        explode: false
+        in: path
+        name: market_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: District identifier.
+        example: kreuzberg
+        explode: false
+        in: path
+        name: district_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve a district
+      tags:
+      - Markets
+      x-accepts:
+      - application/problem+json
+  /markets/{city}/statistics:
+    get:
+      description: |-
+        Supply and price series over time, by property type.
+
+        Computed from the catalogue we hold, which means these describe asking behaviour rather than transacted prices. They are not appraisals and must not be used for lending decisions.
+
+        Requires the `markets:read` scope.
+      operationId: marketStatistics
+      parameters:
+      - description: Market identifier.
+        example: berlin-de
+        explode: false
+        in: path
+        name: market_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Narrow to one property type.
+        example:
+        - apartment
+        explode: true
+        in: query
+        name: property_type
+        required: false
+        schema:
+          items:
+            enum:
+            - apartment
+            - house
+            - studio
+            - land
+            - commercial
+            type: string
+          type: array
+          default: null
+        style: form
+      - description: sale or rent.
+        example: sale
+        explode: true
+        in: query
+        name: transaction_type
+        required: false
+        schema:
+          enum:
+          - sale
+          - rent
+          type: string
+        style: form
+      - description: Granularity of the returned series.
+        example: month
+        explode: true
+        in: query
+        name: interval
+        required: false
+        schema:
+          default: month
+          enum:
+          - week
+          - month
+          - quarter
+          type: string
+        style: form
+      - description: RFC 3339 lower bound on the series.
+        example: 2026-08-01T00:00:00Z
+        explode: true
+        in: query
+        name: since
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                  interval: month
+                  market_id: berlin-de
+                  series:
+                  - listing_count: 1211
+                    median_days_listed: 41
+                    median_price: 41000000
+                    median_price_per_area: 554000
+                    period: 2026-06
+                  - listing_count: 1284
+                    median_days_listed: 38
+                    median_price: 41500000
+                    median_price_per_area: 560000
+                    period: 2026-07
+                meta:
+                  computed_at: 2026-08-11T04:00:00Z
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Market statistics
+      tags:
+      - Markets
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /me:
+    get:
+      description: |-
+        Which organisation a key belongs to, its plan, and its remaining quota.
+
+        Useful in a health check: it proves a key is valid without spending a meaningful request, and it reports both limits without waiting to be refused by either. Read burst_per_second and pace yourself, rather than discovering the burst limit through a 429.
+
+        Requires the `properties:read` scope.
+      operationId: getMe
+      responses:
+        "200":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "An organisation on a negotiated plan reports quota as { \"\
+            metered\": false } rather than a limit of zero, which would read as an\
+            \ allowance of nothing."
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Key introspection
+      tags:
+      - Account and status
+      x-accepts:
+      - application/problem+json
+  /properties:
+    get:
+      description: |-
+        Page through the catalogue with filters.
+
+        The workhorse read endpoint. Filters combine with AND. Anything omitted is unconstrained, so an unfiltered call returns the whole catalogue in cursor order.
+
+        Requires the `properties:read` scope.
+      operationId: listProperties
+      parameters:
+      - description: Market identifier from the markets endpoint.
+        example: berlin-de
+        explode: true
+        in: query
+        name: market
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: District within the market. Repeatable for a union.
+        example:
+        - kreuzberg
+        explode: true
+        in: query
+        name: district
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+          default: null
+        style: form
+      - description: Restrict to sales or rentals.
+        example: sale
+        explode: true
+        in: query
+        name: transaction_type
+        required: false
+        schema:
+          enum:
+          - sale
+          - rent
+          type: string
+        style: form
+      - description: Repeatable for a union.
+        example:
+        - apartment
+        explode: true
+        in: query
+        name: property_type
+        required: false
+        schema:
+          items:
+            enum:
+            - apartment
+            - house
+            - studio
+            - land
+            - commercial
+            type: string
+          type: array
+          default: null
+        style: form
+      - description: "Inclusive lower bound, in minor units."
+        example: 25000000
+        explode: true
+        in: query
+        name: price_min
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: "Inclusive upper bound, in minor units."
+        example: 75000000
+        explode: true
+        in: query
+        name: price_max
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Inclusive lower bound on bedroom count.
+        example: 2
+        explode: true
+        in: query
+        name: bedrooms_min
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: "Inclusive lower bound on living area, in square metres."
+        example: 60
+        explode: true
+        in: query
+        name: area_min
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Defaults to active. Pass explicitly to include withdrawn records.
+        example: active
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          default: active
+          enum:
+          - active
+          - under_offer
+          - withdrawn
+          - archived
+          type: string
+        style: form
+      - description: RFC 3339 timestamp. The efficient way to keep a mirror in step
+          without re-reading everything.
+        example: 2026-08-01T00:00:00Z
+        explode: true
+        in: query
+        name: updated_since
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Records per page, 1 to 200."
+        example: 100
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          type: integer
+        style: form
+      - description: "Opaque pointer from the previous response. Omit for the first\
+          \ page. Cursors are stable across inserts, so paging never skips or repeats\
+          \ a record the way an offset does."
+        example: eyJpZCI6IjhmMmEifQ
+        explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Field to order by. Prefix with a minus for descending. Ties\
+          \ break on id, so paging is deterministic."
+        example: -listed_at
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: -listed_at
+          enum:
+          - listed_at
+          - -listed_at
+          - price
+          - -price
+          - area
+          - -area
+          type: string
+        style: form
+      - description: Comma-separated list of fields to return. Trims payloads substantially
+          when you only need a few.
+        example:
+        - id
+        - title
+        - price
+        - address_city
+        explode: false
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+          default: null
+        style: form
+      - description: Comma-separated related resources to inline rather than fetch
+          separately.
+        example:
+        - images
+        - price_history
+        explode: false
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            enum:
+            - images
+            - price_history
+            - market
+            type: string
+          type: array
+          default: null
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                - id: prop_8f2a41c9d0
+                  price: 42900000
+                  title: Top-floor apartment…
+                - id: prop_1b77e0a4f2
+                  price: 38500000
+                  title: Garden flat…
+                meta:
+                  has_more: true
+                  limit: 50
+                  next_cursor: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List properties
+      tags:
+      - Properties
+      x-accepts:
+      - application/json
+      - application/problem+json
+    post:
+      description: |-
+        Publish a record from your own inventory.
+
+        Send an Idempotency-Key so a retried request cannot create a duplicate listing. Records created this way belong to your organisation and are the only ones your key may modify.
+
+        Requires the `properties:write` scope.
+      operationId: createProperty
+      parameters:
+      - description: Unique per logical creation. Replaying the same key returns the
+          original result rather than creating a second record.
+        example: a2f1c7e4-…
+        explode: false
+        in: header
+        name: Idempotency-Key
+        required: false
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              address:
+                city: Berlin
+                country: DE
+                postal_code: "10999"
+                street: Oranienstrasse
+              bedrooms: 2
+              currency: EUR
+              living_area: 74
+              price: 42900000
+              property_type: apartment
+              title: Top-floor apartment with a south-facing balcony
+              transaction_type: sale
+            schema:
+              $ref: "#/components/schemas/createProperty_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Created. The Location header carries the new resource URL.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "409":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: An Idempotency-Key was reused with a different body.
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The body parsed but failed validation. See the errors array.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Create a property
+      tags:
+      - Properties
+      x-content-type: application/json
+      x-accepts:
+      - application/problem+json
+  /properties/search:
+    post:
+      description: |-
+        Semantic and geographic search that is too complex for a query string.
+
+        Takes a natural-language query, a drawn polygon, or both. Results come back ranked by relevance rather than by a sortable column, so this endpoint ignores the sort parameter. It is a POST because a polygon does not belong in a URL, not because it changes anything.
+
+        Requires the `properties:read` scope.
+      operationId: searchProperties
+      requestBody:
+        content:
+          application/json:
+            example:
+              filters:
+                market: berlin-de
+                price_max: 50000000
+                transaction_type: sale
+              limit: 20
+              query: "quiet two bedroom near a park, needs a home office"
+            schema:
+              $ref: "#/components/schemas/searchProperties_request"
+        required: false
+      responses:
+        "201":
+          content:
+            application/json:
+              example:
+                data:
+                - id: prop_8f2a41c9d0
+                  matched_on:
+                  - quiet street
+                  - park within 300m
+                  - study alcove
+                  relevance: 0.87
+                  title: Top-floor apartment…
+                meta:
+                  has_more: false
+                  limit: 20
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Search properties
+      tags:
+      - Properties
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /properties/{property_id}:
+    delete:
+      description: |-
+        Take one of your records off the market.
+
+        Withdrawal is not deletion. The record moves to withdrawn, disappears from search, and keeps its price history so past analysis stays intelligible. A record owned by an import source is refused, because the next run would bring it straight back: withdraw it at the source instead.
+
+        Requires the `properties:write` scope.
+      operationId: deleteProperty
+      parameters:
+      - description: Property to withdraw.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Withdrawn. No body.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "409":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "managed_by_import. Withdraw it at the source, or delete the\
+            \ source first."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Withdraw a property
+      tags:
+      - Properties
+      x-accepts:
+      - application/problem+json
+    get:
+      description: |-
+        One property with its full attribute set.
+
+        Requires the `properties:read` scope.
+      operationId: getProperty
+      parameters:
+      - description: Identifier returned by any collection endpoint.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Related resources to inline.
+        example:
+        - images
+        explode: false
+        in: query
+        name: expand
+        required: false
+        schema:
+          items:
+            enum:
+            - images
+            - price_history
+            - market
+            type: string
+          type: array
+          default: null
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                  address:
+                    city: Berlin
+                    country: DE
+                    district: Kreuzberg
+                    postal_code: "10999"
+                    street: Oranienstrasse
+                  bathrooms: 1
+                  bedrooms: 2
+                  currency: EUR
+                  energy_label: C
+                  floor: 4
+                  id: prop_8f2a41c9d0
+                  last_verified_at: 2026-08-11T04:00:00Z
+                  listed_at: 2026-07-28T09:12:04Z
+                  living_area: 74
+                  location:
+                    latitude: 52.4993
+                    longitude: 13.4184
+                    precision: street
+                  price: 42900000
+                  price_per_area: 579700
+                  price_period: null
+                  property_type: apartment
+                  rooms: 3
+                  status: active
+                  title: Top-floor apartment with a south-facing balcony
+                  total_floors: 4
+                  transaction_type: sale
+                  updated_at: 2026-08-11T04:00:00Z
+                  year_built: 1908
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "Unknown identifier, or a record your key cannot see. Treat\
+            \ as absence."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve a property
+      tags:
+      - Properties
+      x-accepts:
+      - application/json
+      - application/problem+json
+    patch:
+      description: |-
+        Change fields on a record you published.
+
+        A partial update: send only what changes. Send If-Match with the ETag from your last read to avoid overwriting a concurrent edit. A record owned by an import source is refused here, because the next run would revert whatever you wrote: change it in the system that feeds the import instead.
+
+        Requires the `properties:write` scope.
+      operationId: updateProperty
+      parameters:
+      - description: Property to update.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ETag from your last read. Rejected with 412 if the record moved
+          on.
+        example: '"3f8a2c1d9b"'
+        explode: false
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The record exists but your organisation did not publish it.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "409":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "managed_by_import. The record belongs to an import source,\
+            \ which is authoritative for it. The body names the source."
+        "412":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: If-Match did not match. Re-read and reapply your change.
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Update a property
+      tags:
+      - Properties
+      x-accepts:
+      - application/problem+json
+  /properties/{property_id}/images:
+    get:
+      description: |-
+        Image records for a property, in display order.
+
+        Requires the `properties:read` scope.
+      operationId: listPropertyImages
+      parameters:
+      - description: Property identifier.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List images
+      tags:
+      - Properties
+      x-accepts:
+      - application/problem+json
+    post:
+      description: |-
+        Attach an image to a record you published.
+
+        Multipart upload. JPEG, PNG, or WebP up to 12 MB. Upload only images you hold the rights to: property photography is usually licensed to an agent rather than owned outright.
+
+        Requires the `images:write` scope.
+      operationId: uploadPropertyImage
+      parameters:
+      - description: Property to attach to.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/uploadPropertyImage_request"
+        required: true
+      responses:
+        "201":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "413":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: File exceeds the size limit.
+        "415":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Unsupported image format.
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Upload an image
+      tags:
+      - Properties
+      x-content-type: multipart/form-data
+      x-accepts:
+      - application/problem+json
+  /properties/{property_id}/images/{image_id}:
+    delete:
+      description: |-
+        Remove an image from a record you published.
+
+        Requires the `images:write` scope.
+      operationId: deletePropertyImage
+      parameters:
+      - description: Property identifier.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Image identifier.
+        example: img_2b7d4f1908
+        explode: false
+        in: path
+        name: image_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Delete an image
+      tags:
+      - Properties
+      x-accepts:
+      - application/problem+json
+  /properties/{property_id}/price-history:
+    get:
+      description: |-
+        Every asking price we observed while tracking the listing.
+
+        These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.
+
+        Requires the `properties:read` scope.
+      operationId: propertyPriceHistory
+      parameters:
+      - description: Property identifier.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                - currency: EUR
+                  observed_at: 2026-07-28T09:12:04Z
+                  price: 44900000
+                - currency: EUR
+                  observed_at: 2026-08-09T06:31:11Z
+                  price: 42900000
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Price history
+      tags:
+      - Properties
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /properties/{property_id}/similar:
+    get:
+      description: |-
+        Comparable records, for context or valuation support.
+
+        Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.
+
+        Requires the `properties:read` scope.
+
+        Availability: Growth and above.
+      operationId: similarProperties
+      parameters:
+      - description: Property to compare against.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Comparables to return, 1 to 50."
+        example: 10
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Similar properties
+      tags:
+      - Properties
+      x-accepts:
+      - application/problem+json
+  /webhooks:
+    get:
+      description: |-
+        Every endpoint your organisation has registered.
+
+        The signing secret is never included. It is shown once when the endpoint is created, and an endpoint list that returned it would hand it to everyone who can read this call.
+
+        Requires the `webhooks:manage` scope.
+      operationId: listWebhooks
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                - active: true
+                  created_at: 2026-08-13T10:43:37Z
+                  events:
+                  - property.created
+                  - property.withdrawn
+                  id: whk_1b7e6c19a139404cb173d23fcb3331c4
+                  updated_at: 2026-08-13T10:43:37Z
+                  url: https://example.com/hooks/skautik
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List webhooks
+      tags:
+      - Webhooks
+      x-accepts:
+      - application/json
+      - application/problem+json
+    post:
+      description: |-
+        Register an HTTPS endpoint for a set of events.
+
+        The response includes a signing secret, shown once. Store it immediately: every delivery is signed with it, and a handler that does not verify the signature will accept forged calls from anyone who learns the URL.
+
+        Requires the `webhooks:manage` scope.
+      operationId: createWebhook
+      requestBody:
+        content:
+          application/json:
+            example:
+              events:
+              - property.created
+              - property.withdrawn
+              url: https://example.com/hooks/skautik
+            schema:
+              $ref: "#/components/schemas/createWebhook_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Created. signing_secret appears in this response only.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "URL is not HTTPS, unreachable, or an event name is unknown."
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Create a webhook
+      tags:
+      - Webhooks
+      x-content-type: application/json
+      x-accepts:
+      - application/problem+json
+  /webhooks/events:
+    get:
+      description: |-
+        The events an endpoint may subscribe to, with what each means.
+
+        Served from the same list the API validates against, so it cannot fall behind what is actually deliverable.
+
+        Requires the `webhooks:manage` scope.
+      operationId: listWebhookEvents
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                data:
+                - description: A property was added to your organisation.
+                  name: property.created
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List available events
+      tags:
+      - Webhooks
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /webhooks/{webhook_id}:
+    delete:
+      description: |-
+        Stop deliveries and forget the endpoint.
+
+        Requires the `webhooks:manage` scope.
+      operationId: deleteWebhook
+      parameters:
+      - description: Webhook identifier.
+        example: whk_1b7e6c19a139404cb173d23fcb3331c4
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Delete a webhook
+      tags:
+      - Webhooks
+      x-accepts:
+      - application/problem+json
+    get:
+      description: |-
+        One endpoint with its recent delivery health.
+
+        Requires the `webhooks:manage` scope.
+      operationId: getWebhook
+      parameters:
+      - description: Webhook identifier.
+        example: whk_1b7e6c19a139404cb173d23fcb3331c4
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Retrieve a webhook
+      tags:
+      - Webhooks
+      x-accepts:
+      - application/problem+json
+    patch:
+      description: |-
+        Change the URL, the events, or whether it is active.
+
+        A partial update: anything you omit is left alone. Setting active to false stops deliveries without losing the registration, which is what to reach for while you are fixing a handler.
+
+        Requires the `webhooks:manage` scope.
+      operationId: updateWebhook
+      parameters:
+      - description: Webhook identifier.
+        example: whk_1b7e6c19a139404cb173d23fcb3331c4
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              active: false
+            schema:
+              $ref: "#/components/schemas/updateWebhook_request"
+        required: false
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Update a webhook
+      tags:
+      - Webhooks
+      x-content-type: application/json
+      x-accepts:
+      - application/problem+json
+  /webhooks/{webhook_id}/deliveries:
+    get:
+      description: |-
+        Recent attempts, their response codes, and retry state.
+
+        Retained for 30 days. The place to look when a handler silently stopped working.
+
+        Requires the `webhooks:manage` scope.
+      operationId: listDeliveries
+      parameters:
+      - description: Webhook identifier.
+        example: whk_1b7e6c19a139404cb173d23fcb3331c4
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Filter by outcome.
+        example: succeeded
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          enum:
+          - succeeded
+          - failed
+          - pending
+          type: string
+        style: form
+      - description: "How many attempts to return, newest first. Capped at 100."
+        example: 100
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: List deliveries
+      tags:
+      - Webhooks
+      x-accepts:
+      - application/problem+json
+  /webhooks/{webhook_id}/rotate-secret:
+    post:
+      description: |-
+        Issue a new secret and stop the old one immediately.
+
+        What to reach for if a secret leaks. The previous secret stops working the moment this returns, so deliveries signed with it will fail verification: deploy the new one before rotating, or accept a gap.
+
+        Requires the `webhooks:manage` scope.
+      operationId: rotateWebhookSecret
+      parameters:
+      - description: Webhook identifier.
+        example: whk_1b7e6c19a139404cb173d23fcb3331c4
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "201":
+          content:
+            application/json:
+              example:
+                data:
+                  note: The previous secret stopped working immediately.
+                  secret: whsec_4_j7SxmfWXaoJnLbkypLXAw-Pjs8J74_OyWb-oj7fik
+              schema:
+                $ref: "#/components/schemas/Envelope"
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Rotate the signing secret
+      tags:
+      - Webhooks
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /webhooks/{webhook_id}/test:
+    post:
+      description: |-
+        Fire a synthetic event to prove your handler works.
+
+        Sends a webhook.test event with the same signing and retry behaviour as a real delivery, so you can verify signature checking before anything real depends on it.
+
+        Requires the `webhooks:manage` scope.
+      operationId: testWebhook
+      parameters:
+      - description: Webhook identifier.
+        example: whk_1b7e6c19a139404cb173d23fcb3331c4
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "201":
+          description: The request succeeded.
+        "401":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The API key is missing or not valid.
+        "403":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The key does not carry the scope this endpoint requires.
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: "No such record, or one belonging to another organisation."
+        "422":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The request was understood and something in it is not acceptable.
+        "429":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: The rate limit or the plan's monthly allowance is exhausted.
+      summary: Send a test delivery
+      tags:
+      - Webhooks
+      x-accepts:
+      - application/problem+json
+components:
+  schemas:
+    Envelope:
+      description: "Every success puts the payload under `data`, and anything about\
+        \ the response rather than the resource under `meta`. A single record and\
+        \ a collection differ only in whether `data` is an object or an array, so\
+        \ one deserialiser handles both."
+      example:
+        data: ""
+        meta: "{}"
+      properties:
+        data: {}
+        meta:
+          description: "Pagination, or figures about the response itself."
+          type: object
+      required:
+      - data
+    Problem:
+      description: "An RFC 9457 problem document, returned by every failure."
+      properties:
+        code:
+          description: "A stable identifier to branch on, unlike the prose."
+          example: not_found
+          type: string
+        detail:
+          example: "No property with that id, or one belonging to another organisation."
+          type: string
+        errors:
+          description: "Field-level problems, when the failure is a validation one."
+          items:
+            $ref: "#/components/schemas/Problem_errors_inner"
+          type: array
+          default: null
+        request_id:
+          description: Quote this when asking about a specific failure.
+          example: req_8f2a41c9d0
+          type: string
+        status:
+          example: 404
+          type: integer
+        title:
+          example: Not found
+          type: string
+        type:
+          description: A link to the documentation for this failure.
+          example: https://skautik.com/developers/docs/errors#not_found
+          type: string
+    createExport_request:
+      properties:
+        fields:
+          description: Restrict columns. Omit for the full record.
+          example:
+          - id
+          - title
+          - price
+          - address
+          items:
+            type: string
+          type: array
+          default: null
+        filters:
+          additionalProperties:
+            nullable: true
+          description: Same keys the list endpoint accepts.
+          example:
+            price_max: 60000000
+            property_type: apartment
+        format:
+          description: Output format. Parquet is named in the schema and is not implemented;
+            asking for it is refused rather than answered with a corrupt file.
+          enum:
+          - ndjson
+          - csv
+          example: ndjson
+          type: string
+      required:
+      - format
+    createGeneration_request:
+      properties:
+        kind:
+          description: The transformation to apply. floorplan_render is named in the
+            schema and is not implemented; asking for it is refused rather than answered
+            with a fabricated plan.
+          enum:
+          - virtual_staging
+          - decluttering
+          - enhancement
+          example: virtual_staging
+          type: string
+        prompt:
+          description: "Up to 500 characters of additional direction. It is added\
+            \ to the instruction for the chosen kind and never replaces it, so it\
+            \ cannot be used to make the model do something unrelated."
+          example: A bright Scandinavian living room with oak floors and a linen sofa
+          type: string
+        room_type:
+          description: "For virtual_staging: what the room is. Improves the result\
+            \ markedly. Defaults to a generic room."
+          example: living room
+          type: string
+        source_image_id:
+          description: "The image to transform. Must belong to one of your own properties;\
+            \ anything else answers 404, the same as an image that does not exist."
+          example: img_ce1c9e04db6140eda7c6934af60daebb
+          type: string
+        style:
+          description: "For virtual_staging: the furnishing style. Defaults to contemporary."
+          example: scandinavian
+          type: string
+      required:
+      - kind
+      - source_image_id
+    createImportSource_request:
+      properties:
+        deletion_policy:
+          default: explicit_only
+          description: "explicit_only honours deletion markers alone. absence_withdraws\
+            \ also withdraws anything missing from a full delivery, and should only\
+            \ be used where the format is a complete statement of stock."
+          enum:
+          - explicit_only
+          - absence_withdraws
+          example: explicit_only
+          type: string
+        delivery:
+          additionalProperties:
+            nullable: true
+          description: "How data arrives. fetch_url pulls from a URL you give us on\
+            \ a schedule; api_push means you send us each delivery. SFTP drops are\
+            \ named in the schema and are not running yet, so asking for one is refused\
+            \ rather than answered with credentials for a host that would never accept\
+            \ them."
+          example:
+            compression: gzip
+            url: https://example.com/hooks/skautik
+        format:
+          description: Format this source delivers. Only csv and json parse today;
+            the others are named in the schema and are refused here rather than accepted
+            into a connector that would fail every run.
+          enum:
+          - csv
+          - json
+          example: csv
+          type: string
+        mapping:
+          additionalProperties:
+            nullable: true
+          description: "Field mapping, for formats that need one. Omit for OpenImmo\
+            \ and RESO, which are already standardised."
+          example:
+            Kaufpreis: price
+            Objektnummer: external_id
+            Wohnflaeche: living_area
+        name:
+          description: Your own label for the connector.
+          example: Nightly listing sync
+          type: string
+        schedule:
+          description: "How often to pull, for fetched sources. Cron expression in\
+            \ UTC. Ignored for drops and pushes, which run on arrival."
+          example: 15 3 * * *
+          type: string
+      required:
+      - delivery
+      - format
+      - name
+    createImport_request:
+      properties:
+        dry_run:
+          default: false
+          description: Validate and report what would change without writing anything.
+            Run this first on any migration.
+          example: false
+          type: boolean
+        file:
+          description: The payload. Mutually exclusive with url.
+          example: listings.csv
+          format: binary
+          type: string
+        format:
+          description: Which format the payload is in.
+          enum:
+          - openimmo
+          - blm
+          - kyero
+          - csv
+          - json
+          example: openimmo
+          type: string
+        mode:
+          default: incremental
+          description: "incremental updates what the payload contains. full_sync additionally\
+            \ withdraws anything absent, and is refused unless the source is configured\
+            \ for it."
+          enum:
+          - incremental
+          - full_sync
+          example: incremental
+          type: string
+        source_id:
+          description: Apply a stored import source's mapping and settings rather
+            than the defaults.
+          example: src_immoscout
+          type: string
+        url:
+          description: Where to fetch the payload from. Mutually exclusive with file.
+          example: https://example.com/hooks/skautik
+          type: string
+      required:
+      - format
+    updateInquiry_request:
+      properties:
+        status:
+          description: The state to move it to.
+          enum:
+          - new
+          - read
+          - replied
+          - closed
+          - spam
+          example: new
+          type: string
+      required:
+      - status
+    createProperty_request:
+      properties:
+        address:
+          additionalProperties:
+            nullable: true
+          description: At minimum a city and country; more improves geocoding precision.
+          example:
+            city: Berlin
+            country: DE
+            postal_code: "10999"
+            street: Oranienstrasse 12
+        currency:
+          description: ISO 4217 code.
+          example: EUR
+          type: string
+        external_id:
+          description: "Your identifier for this property. Optional, but set it if\
+            \ the record might later arrive through an import: without one the import\
+            \ has nothing to match on and creates a duplicate."
+          example: AG-4471-0812
+          type: string
+        price:
+          description: Amount in minor units.
+          example: 48900000
+          type: integer
+        property_type:
+          description: One of the supported property types.
+          example: apartment
+          type: string
+        title:
+          description: Headline for the listing.
+          example: Top-floor apartment with a south-facing balcony
+          type: string
+        transaction_type:
+          description: sale or rent.
+          example: sale
+          type: string
+      required:
+      - address
+      - currency
+      - price
+      - property_type
+      - title
+      - transaction_type
+    searchProperties_request:
+      properties:
+        bounds:
+          additionalProperties:
+            nullable: true
+          description: "Rectangle with sw_lat, sw_lng, ne_lat, ne_lng. Mutually exclusive\
+            \ with polygon."
+          example:
+            east: 13.4791
+            north: 52.5401
+            south: 52.4812
+            west: 13.3702
+        filters:
+          additionalProperties:
+            nullable: true
+          description: Same keys the list endpoint accepts as query parameters.
+          example:
+            price_max: 60000000
+            property_type: apartment
+        limit:
+          default: 50
+          description: "Results to return, 1 to 200."
+          example: 50
+          type: integer
+        polygon:
+          description: "Closed ring of [longitude, latitude] pairs, GeoJSON order."
+          example:
+          - - 13.3702
+            - 52.4812
+          - - 13.4791
+            - 52.4812
+          - - 13.4791
+            - 52.5401
+          - - 13.3702
+            - 52.5401
+          - - 13.3702
+            - 52.4812
+          items:
+            type: string
+          type: array
+          default: null
+        query:
+          description: Plain-language description of what is wanted.
+          example: "\"quiet two bedroom near a park, needs a home office\""
+          type: string
+    uploadPropertyImage_request:
+      properties:
+        file:
+          description: Image payload.
+          example: listings.csv
+          format: binary
+          type: string
+        position:
+          description: Display order. The image at position 0 is the primary one.
+          example: 1
+          type: integer
+      required:
+      - file
+    createWebhook_request:
+      properties:
+        events:
+          description: Event names to subscribe to. Every name must be one of the
+            events listed above; an unrecognised one is refused rather than silently
+            never firing.
+          example:
+          - property.created
+          - inquiry.created
+          items:
+            type: string
+          type: array
+          default: null
+        url:
+          description: HTTPS endpoint. Plain HTTP is rejected.
+          example: https://example.com/hooks/skautik
+          type: string
+      required:
+      - events
+      - url
+    updateWebhook_request:
+      properties:
+        active:
+          description: False pauses deliveries; the registration and its secret survive.
+          example: true
+          type: boolean
+        events:
+          description: Replaces the whole subscription list rather than adding to
+            it.
+          example:
+          - property.created
+          - property.withdrawn
+          items:
+            type: string
+          type: array
+          default: null
+        url:
+          description: New HTTPS endpoint.
+          example: https://example.com/hooks/skautik
+          type: string
+    Problem_errors_inner:
+      properties:
+        code:
+          example: invalid
+          type: string
+        detail:
+          example: Must be a positive whole number of minor units.
+          type: string
+        field:
+          example: price
+          type: string
+  securitySchemes:
+    apiKey:
+      description: "An API key, sent as `Authorization: Bearer sk_live_…`. Keys are\
+        \ created in the developer console and carry a fixed set of scopes; a call\
+        \ whose key lacks the scope its endpoint requires is refused rather than partially\
+        \ served."
+      scheme: bearer
+      type: http
+
