@@ -2226,27 +2226,50 @@ paths:
         Requires the `properties:read` scope.
       operationId: listProperties
       parameters:
-      - description: Market identifier from the markets endpoint.
-        example: berlin-de
+      - description: "City to restrict to, as it appears on a property's address."
+        example: Berlin
         explode: true
         in: query
-        name: market
+        name: city
         required: false
         schema:
           type: string
         style: form
-      - description: District within the market. Repeatable for a union.
-        example:
-        - kreuzberg
+      - description: District within the city.
+        example: Kreuzberg
         explode: true
         in: query
         name: district
         required: false
         schema:
-          items:
-            type: string
-          type: array
-          default: null
+          type: string
+        style: form
+      - description: Postal code to restrict to.
+        example: "10999"
+        explode: true
+        in: query
+        name: postal_code
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Kind of property.
+        example: apartment
+        explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          enum:
+          - apartment
+          - house
+          - studio
+          - villa
+          - penthouse
+          - loft
+          - townhouse
+          - other
+          type: string
         style: form
       - description: Restrict to sales or rentals.
         example: sale
@@ -2260,88 +2283,68 @@ paths:
           - rent
           type: string
         style: form
-      - description: Repeatable for a union.
-        example:
-        - apartment
-        explode: true
-        in: query
-        name: property_type
-        required: false
-        schema:
-          items:
-            enum:
-            - apartment
-            - house
-            - studio
-            - land
-            - commercial
-            type: string
-          type: array
-          default: null
-        style: form
-      - description: "Inclusive lower bound, in minor units."
-        example: 25000000
-        explode: true
-        in: query
-        name: price_min
-        required: false
-        schema:
-          type: integer
-        style: form
-      - description: "Inclusive upper bound, in minor units."
-        example: 75000000
-        explode: true
-        in: query
-        name: price_max
-        required: false
-        schema:
-          type: integer
-        style: form
-      - description: Inclusive lower bound on bedroom count.
-        example: 2
-        explode: true
-        in: query
-        name: bedrooms_min
-        required: false
-        schema:
-          type: integer
-        style: form
-      - description: "Inclusive lower bound on living area, in square metres."
-        example: 60
-        explode: true
-        in: query
-        name: area_min
-        required: false
-        schema:
-          type: number
-        style: form
-      - description: Defaults to active. Pass explicitly to include withdrawn records.
+      - description: Listing status. Omit for every status rather than only active
+          ones.
         example: active
         explode: true
         in: query
         name: status
         required: false
         schema:
-          default: active
           enum:
           - active
-          - under_offer
-          - withdrawn
           - archived
+          - sold
+          - flagged
           type: string
         style: form
-      - description: RFC 3339 timestamp. The efficient way to keep a mirror in step
-          without re-reading everything.
-        example: 2026-08-01T00:00:00Z
+      - description: "Your own identifier for a record, to find what an import created."
+        example: OBJ-10041
         explode: true
         in: query
-        name: updated_since
+        name: external_id
         required: false
         schema:
           type: string
         style: form
-      - description: "Records per page, 1 to 200."
-        example: 100
+      - description: Inclusive lower bound on the asking price.
+        example: 250000
+        explode: true
+        in: query
+        name: min_price
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Inclusive upper bound on the asking price.
+        example: 750000
+        explode: true
+        in: query
+        name: max_price
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: "Inclusive lower bound on living area, in square metres."
+        example: 60
+        explode: true
+        in: query
+        name: min_living_area
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Inclusive lower bound on bedroom count.
+        example: 2
+        explode: true
+        in: query
+        name: min_bedrooms
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: Records per page.
+        example: 50
         explode: true
         in: query
         name: limit
@@ -2353,7 +2356,7 @@ paths:
       - description: "Opaque pointer from the previous response. Omit for the first\
           \ page. Cursors are stable across inserts, so paging never skips or repeats\
           \ a record the way an offset does."
-        example: eyJpZCI6IjhmMmEifQ
+        example: eyJpZCI6InByb3BfMWI3N2UwYTRmMiJ9
         explode: true
         in: query
         name: cursor
@@ -2361,46 +2364,18 @@ paths:
         schema:
           type: string
         style: form
-      - description: "Field to order by. Prefix with a minus for descending. Ties\
-          \ break on id, so paging is deterministic."
-        example: -listed_at
+      - description: Field to order by. Prefix with a minus for descending.
+        example: -created_at
         explode: true
         in: query
         name: sort
         required: false
         schema:
-          default: -listed_at
-          enum:
-          - listed_at
-          - -listed_at
-          - price
-          - -price
-          - area
-          - -area
           type: string
         style: form
-      - description: Comma-separated list of fields to return. Trims payloads substantially
-          when you only need a few.
-        example:
-        - id
-        - title
-        - price
-        - address_city
-        explode: false
-        in: query
-        name: fields
-        required: false
-        schema:
-          items:
-            type: string
-          type: array
-          default: null
-        style: form
-      - description: Comma-separated related resources to inline rather than fetch
-          separately.
+      - description: Related records to inline rather than fetch separately.
         example:
         - images
-        - price_history
         explode: false
         in: query
         name: expand
@@ -2819,16 +2794,7 @@ paths:
         Requires the `properties:read` scope.
       operationId: getProperty
       parameters:
-      - description: Identifier returned by any collection endpoint.
-        example: prop_8f2a41c9d0
-        explode: false
-        in: path
-        name: property_id
-        required: true
-        schema:
-          type: string
-        style: simple
-      - description: Related resources to inline.
+      - description: Related records to inline rather than fetch separately.
         example:
         - images
         explode: false
@@ -2845,6 +2811,15 @@ paths:
           type: array
           default: null
         style: form
+      - description: Identifier returned by any collection endpoint.
+        example: prop_8f2a41c9d0
+        explode: false
+        in: path
+        name: property_id
+        required: true
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
           content:

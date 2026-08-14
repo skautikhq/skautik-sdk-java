@@ -530,7 +530,7 @@ public class PropertiesApi {
    * Retrieve a property
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
-   * @param expand Related resources to inline. (optional)
+   * @param expand Related records to inline rather than fetch separately. (optional)
    * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
@@ -542,7 +542,7 @@ public class PropertiesApi {
    * Retrieve a property
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
-   * @param expand Related resources to inline. (optional)
+   * @param expand Related records to inline rather than fetch separately. (optional)
    * @param headers Optional headers to include in the request
    * @return PropertyResponse
    * @throws ApiException if fails to make API call
@@ -556,7 +556,7 @@ public class PropertiesApi {
    * Retrieve a property
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
-   * @param expand Related resources to inline. (optional)
+   * @param expand Related records to inline rather than fetch separately. (optional)
    * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
@@ -568,7 +568,7 @@ public class PropertiesApi {
    * Retrieve a property
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
-   * @param expand Related resources to inline. (optional)
+   * @param expand Related records to inline rather than fetch separately. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
@@ -666,104 +666,104 @@ public class PropertiesApi {
   /**
    * List properties
    * Page through the catalogue with filters.  The workhorse read endpoint. Filters combine with AND. Anything omitted is unconstrained, so an unfiltered call returns the whole catalogue in cursor order.  Requires the &#x60;properties:read&#x60; scope.
-   * @param market Market identifier from the markets endpoint. (optional)
-   * @param district District within the market. Repeatable for a union. (optional)
+   * @param city City to restrict to, as it appears on a property&#39;s address. (optional)
+   * @param district District within the city. (optional)
+   * @param postalCode Postal code to restrict to. (optional)
+   * @param type Kind of property. (optional)
    * @param transactionType Restrict to sales or rentals. (optional)
-   * @param propertyType Repeatable for a union. (optional)
-   * @param priceMin Inclusive lower bound, in minor units. (optional)
-   * @param priceMax Inclusive upper bound, in minor units. (optional)
-   * @param bedroomsMin Inclusive lower bound on bedroom count. (optional)
-   * @param areaMin Inclusive lower bound on living area, in square metres. (optional)
-   * @param status Defaults to active. Pass explicitly to include withdrawn records. (optional, default to active)
-   * @param updatedSince RFC 3339 timestamp. The efficient way to keep a mirror in step without re-reading everything. (optional)
-   * @param limit Records per page, 1 to 200. (optional, default to 50)
+   * @param status Listing status. Omit for every status rather than only active ones. (optional)
+   * @param externalId Your own identifier for a record, to find what an import created. (optional)
+   * @param minPrice Inclusive lower bound on the asking price. (optional)
+   * @param maxPrice Inclusive upper bound on the asking price. (optional)
+   * @param minLivingArea Inclusive lower bound on living area, in square metres. (optional)
+   * @param minBedrooms Inclusive lower bound on bedroom count. (optional)
+   * @param limit Records per page. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
-   * @param sort Field to order by. Prefix with a minus for descending. Ties break on id, so paging is deterministic. (optional, default to -listed_at)
-   * @param fields Comma-separated list of fields to return. Trims payloads substantially when you only need a few. (optional)
-   * @param expand Comma-separated related resources to inline rather than fetch separately. (optional)
+   * @param sort Field to order by. Prefix with a minus for descending. (optional)
+   * @param expand Related records to inline rather than fetch separately. (optional)
    * @return PropertyPage
    * @throws ApiException if fails to make API call
    */
-  public PropertyPage listProperties(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand) throws ApiException {
-    return listProperties(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, null);
+  public PropertyPage listProperties(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand) throws ApiException {
+    return listProperties(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, null);
   }
 
   /**
    * List properties
    * Page through the catalogue with filters.  The workhorse read endpoint. Filters combine with AND. Anything omitted is unconstrained, so an unfiltered call returns the whole catalogue in cursor order.  Requires the &#x60;properties:read&#x60; scope.
-   * @param market Market identifier from the markets endpoint. (optional)
-   * @param district District within the market. Repeatable for a union. (optional)
+   * @param city City to restrict to, as it appears on a property&#39;s address. (optional)
+   * @param district District within the city. (optional)
+   * @param postalCode Postal code to restrict to. (optional)
+   * @param type Kind of property. (optional)
    * @param transactionType Restrict to sales or rentals. (optional)
-   * @param propertyType Repeatable for a union. (optional)
-   * @param priceMin Inclusive lower bound, in minor units. (optional)
-   * @param priceMax Inclusive upper bound, in minor units. (optional)
-   * @param bedroomsMin Inclusive lower bound on bedroom count. (optional)
-   * @param areaMin Inclusive lower bound on living area, in square metres. (optional)
-   * @param status Defaults to active. Pass explicitly to include withdrawn records. (optional, default to active)
-   * @param updatedSince RFC 3339 timestamp. The efficient way to keep a mirror in step without re-reading everything. (optional)
-   * @param limit Records per page, 1 to 200. (optional, default to 50)
+   * @param status Listing status. Omit for every status rather than only active ones. (optional)
+   * @param externalId Your own identifier for a record, to find what an import created. (optional)
+   * @param minPrice Inclusive lower bound on the asking price. (optional)
+   * @param maxPrice Inclusive upper bound on the asking price. (optional)
+   * @param minLivingArea Inclusive lower bound on living area, in square metres. (optional)
+   * @param minBedrooms Inclusive lower bound on bedroom count. (optional)
+   * @param limit Records per page. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
-   * @param sort Field to order by. Prefix with a minus for descending. Ties break on id, so paging is deterministic. (optional, default to -listed_at)
-   * @param fields Comma-separated list of fields to return. Trims payloads substantially when you only need a few. (optional)
-   * @param expand Comma-separated related resources to inline rather than fetch separately. (optional)
+   * @param sort Field to order by. Prefix with a minus for descending. (optional)
+   * @param expand Related records to inline rather than fetch separately. (optional)
    * @param headers Optional headers to include in the request
    * @return PropertyPage
    * @throws ApiException if fails to make API call
    */
-  public PropertyPage listProperties(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
-    ApiResponse<PropertyPage> localVarResponse = listPropertiesWithHttpInfo(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, headers);
+  public PropertyPage listProperties(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyPage> localVarResponse = listPropertiesWithHttpInfo(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, headers);
     return localVarResponse.getData();
   }
 
   /**
    * List properties
    * Page through the catalogue with filters.  The workhorse read endpoint. Filters combine with AND. Anything omitted is unconstrained, so an unfiltered call returns the whole catalogue in cursor order.  Requires the &#x60;properties:read&#x60; scope.
-   * @param market Market identifier from the markets endpoint. (optional)
-   * @param district District within the market. Repeatable for a union. (optional)
+   * @param city City to restrict to, as it appears on a property&#39;s address. (optional)
+   * @param district District within the city. (optional)
+   * @param postalCode Postal code to restrict to. (optional)
+   * @param type Kind of property. (optional)
    * @param transactionType Restrict to sales or rentals. (optional)
-   * @param propertyType Repeatable for a union. (optional)
-   * @param priceMin Inclusive lower bound, in minor units. (optional)
-   * @param priceMax Inclusive upper bound, in minor units. (optional)
-   * @param bedroomsMin Inclusive lower bound on bedroom count. (optional)
-   * @param areaMin Inclusive lower bound on living area, in square metres. (optional)
-   * @param status Defaults to active. Pass explicitly to include withdrawn records. (optional, default to active)
-   * @param updatedSince RFC 3339 timestamp. The efficient way to keep a mirror in step without re-reading everything. (optional)
-   * @param limit Records per page, 1 to 200. (optional, default to 50)
+   * @param status Listing status. Omit for every status rather than only active ones. (optional)
+   * @param externalId Your own identifier for a record, to find what an import created. (optional)
+   * @param minPrice Inclusive lower bound on the asking price. (optional)
+   * @param maxPrice Inclusive upper bound on the asking price. (optional)
+   * @param minLivingArea Inclusive lower bound on living area, in square metres. (optional)
+   * @param minBedrooms Inclusive lower bound on bedroom count. (optional)
+   * @param limit Records per page. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
-   * @param sort Field to order by. Prefix with a minus for descending. Ties break on id, so paging is deterministic. (optional, default to -listed_at)
-   * @param fields Comma-separated list of fields to return. Trims payloads substantially when you only need a few. (optional)
-   * @param expand Comma-separated related resources to inline rather than fetch separately. (optional)
+   * @param sort Field to order by. Prefix with a minus for descending. (optional)
+   * @param expand Related records to inline rather than fetch separately. (optional)
    * @return ApiResponse&lt;PropertyPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand) throws ApiException {
-    return listPropertiesWithHttpInfo(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, null);
+  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand) throws ApiException {
+    return listPropertiesWithHttpInfo(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, null);
   }
 
   /**
    * List properties
    * Page through the catalogue with filters.  The workhorse read endpoint. Filters combine with AND. Anything omitted is unconstrained, so an unfiltered call returns the whole catalogue in cursor order.  Requires the &#x60;properties:read&#x60; scope.
-   * @param market Market identifier from the markets endpoint. (optional)
-   * @param district District within the market. Repeatable for a union. (optional)
+   * @param city City to restrict to, as it appears on a property&#39;s address. (optional)
+   * @param district District within the city. (optional)
+   * @param postalCode Postal code to restrict to. (optional)
+   * @param type Kind of property. (optional)
    * @param transactionType Restrict to sales or rentals. (optional)
-   * @param propertyType Repeatable for a union. (optional)
-   * @param priceMin Inclusive lower bound, in minor units. (optional)
-   * @param priceMax Inclusive upper bound, in minor units. (optional)
-   * @param bedroomsMin Inclusive lower bound on bedroom count. (optional)
-   * @param areaMin Inclusive lower bound on living area, in square metres. (optional)
-   * @param status Defaults to active. Pass explicitly to include withdrawn records. (optional, default to active)
-   * @param updatedSince RFC 3339 timestamp. The efficient way to keep a mirror in step without re-reading everything. (optional)
-   * @param limit Records per page, 1 to 200. (optional, default to 50)
+   * @param status Listing status. Omit for every status rather than only active ones. (optional)
+   * @param externalId Your own identifier for a record, to find what an import created. (optional)
+   * @param minPrice Inclusive lower bound on the asking price. (optional)
+   * @param maxPrice Inclusive upper bound on the asking price. (optional)
+   * @param minLivingArea Inclusive lower bound on living area, in square metres. (optional)
+   * @param minBedrooms Inclusive lower bound on bedroom count. (optional)
+   * @param limit Records per page. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
-   * @param sort Field to order by. Prefix with a minus for descending. Ties break on id, so paging is deterministic. (optional, default to -listed_at)
-   * @param fields Comma-separated list of fields to return. Trims payloads substantially when you only need a few. (optional)
-   * @param expand Comma-separated related resources to inline rather than fetch separately. (optional)
+   * @param sort Field to order by. Prefix with a minus for descending. (optional)
+   * @param expand Related records to inline rather than fetch separately. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;PropertyPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listPropertiesRequestBuilder(market, district, transactionType, propertyType, priceMin, priceMax, bedroomsMin, areaMin, status, updatedSince, limit, cursor, sort, fields, expand, headers);
+  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listPropertiesRequestBuilder(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -810,7 +810,7 @@ public class PropertiesApi {
     }
   }
 
-  private HttpRequest.Builder listPropertiesRequestBuilder(@javax.annotation.Nullable String market, @javax.annotation.Nullable List<String> district, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable Integer priceMin, @javax.annotation.Nullable Integer priceMax, @javax.annotation.Nullable Integer bedroomsMin, @javax.annotation.Nullable BigDecimal areaMin, @javax.annotation.Nullable String status, @javax.annotation.Nullable String updatedSince, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> fields, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder listPropertiesRequestBuilder(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -819,34 +819,34 @@ public class PropertiesApi {
     List<Pair> localVarQueryParams = new ArrayList<>();
     StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "market";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("market", market));
+    localVarQueryParameterBaseName = "city";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("city", city));
     localVarQueryParameterBaseName = "district";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("multi", "district", district));
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("district", district));
+    localVarQueryParameterBaseName = "postal_code";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("postal_code", postalCode));
+    localVarQueryParameterBaseName = "type";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("type", type));
     localVarQueryParameterBaseName = "transaction_type";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("transaction_type", transactionType));
-    localVarQueryParameterBaseName = "property_type";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("multi", "property_type", propertyType));
-    localVarQueryParameterBaseName = "price_min";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("price_min", priceMin));
-    localVarQueryParameterBaseName = "price_max";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("price_max", priceMax));
-    localVarQueryParameterBaseName = "bedrooms_min";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("bedrooms_min", bedroomsMin));
-    localVarQueryParameterBaseName = "area_min";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("area_min", areaMin));
     localVarQueryParameterBaseName = "status";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("status", status));
-    localVarQueryParameterBaseName = "updated_since";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("updated_since", updatedSince));
+    localVarQueryParameterBaseName = "external_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("external_id", externalId));
+    localVarQueryParameterBaseName = "min_price";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("min_price", minPrice));
+    localVarQueryParameterBaseName = "max_price";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("max_price", maxPrice));
+    localVarQueryParameterBaseName = "min_living_area";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("min_living_area", minLivingArea));
+    localVarQueryParameterBaseName = "min_bedrooms";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("min_bedrooms", minBedrooms));
     localVarQueryParameterBaseName = "limit";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("limit", limit));
     localVarQueryParameterBaseName = "cursor";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("cursor", cursor));
     localVarQueryParameterBaseName = "sort";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("sort", sort));
-    localVarQueryParameterBaseName = "fields";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("csv", "fields", fields));
     localVarQueryParameterBaseName = "expand";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("csv", "expand", expand));
 
