@@ -868,6 +868,12 @@ paths:
       requestBody:
         content:
           application/json:
+            example:
+              active: true
+              mapping:
+                Kaufpreis: price
+                Objektnummer: external_id
+              schedule: 15 3 * * *
             schema:
               $ref: "#/components/schemas/SourceUpdate"
         required: true
@@ -2993,6 +2999,11 @@ paths:
       requestBody:
         content:
           application/json:
+            example:
+              listing:
+                price: 419000
+                status: active
+              title: Top-floor apartment with a south-facing balcony and new windows
             schema:
               $ref: "#/components/schemas/PropertyInput"
         required: true
