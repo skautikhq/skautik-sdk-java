@@ -180,10 +180,10 @@ public class ImportsApi {
   /**
    * Start an import
    * Upload a file, or point us at one, and process it.  Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.  Requires the &#x60;imports:write&#x60; scope.
-   * @param format  (required)
-   * @param mode  (optional, default to incremental)
-   * @param sourceId  (optional)
-   * @param dryRun  (optional)
+   * @param format Format of the file being sent. (required)
+   * @param mode Incremental updates what the file contains and leaves the rest alone. A full sync also withdraws anything absent from it, which is why it is not the default. (optional, default to incremental)
+   * @param sourceId Import source this transfer belongs to, when it comes from a standing connector rather than a one-off upload. (optional)
+   * @param dryRun Parse and report what would change without writing anything. Worth doing once with a new mapping. (optional)
    * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
    * @param _file The payload. Mutually exclusive with url. (optional)
@@ -197,10 +197,10 @@ public class ImportsApi {
   /**
    * Start an import
    * Upload a file, or point us at one, and process it.  Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.  Requires the &#x60;imports:write&#x60; scope.
-   * @param format  (required)
-   * @param mode  (optional, default to incremental)
-   * @param sourceId  (optional)
-   * @param dryRun  (optional)
+   * @param format Format of the file being sent. (required)
+   * @param mode Incremental updates what the file contains and leaves the rest alone. A full sync also withdraws anything absent from it, which is why it is not the default. (optional, default to incremental)
+   * @param sourceId Import source this transfer belongs to, when it comes from a standing connector rather than a one-off upload. (optional)
+   * @param dryRun Parse and report what would change without writing anything. Worth doing once with a new mapping. (optional)
    * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
    * @param _file The payload. Mutually exclusive with url. (optional)
@@ -216,10 +216,10 @@ public class ImportsApi {
   /**
    * Start an import
    * Upload a file, or point us at one, and process it.  Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.  Requires the &#x60;imports:write&#x60; scope.
-   * @param format  (required)
-   * @param mode  (optional, default to incremental)
-   * @param sourceId  (optional)
-   * @param dryRun  (optional)
+   * @param format Format of the file being sent. (required)
+   * @param mode Incremental updates what the file contains and leaves the rest alone. A full sync also withdraws anything absent from it, which is why it is not the default. (optional, default to incremental)
+   * @param sourceId Import source this transfer belongs to, when it comes from a standing connector rather than a one-off upload. (optional)
+   * @param dryRun Parse and report what would change without writing anything. Worth doing once with a new mapping. (optional)
    * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
    * @param _file The payload. Mutually exclusive with url. (optional)
@@ -233,10 +233,10 @@ public class ImportsApi {
   /**
    * Start an import
    * Upload a file, or point us at one, and process it.  Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.  Requires the &#x60;imports:write&#x60; scope.
-   * @param format  (required)
-   * @param mode  (optional, default to incremental)
-   * @param sourceId  (optional)
-   * @param dryRun  (optional)
+   * @param format Format of the file being sent. (required)
+   * @param mode Incremental updates what the file contains and leaves the rest alone. A full sync also withdraws anything absent from it, which is why it is not the default. (optional, default to incremental)
+   * @param sourceId Import source this transfer belongs to, when it comes from a standing connector rather than a one-off upload. (optional)
+   * @param dryRun Parse and report what would change without writing anything. Worth doing once with a new mapping. (optional)
    * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
    * @param _file The payload. Mutually exclusive with url. (optional)

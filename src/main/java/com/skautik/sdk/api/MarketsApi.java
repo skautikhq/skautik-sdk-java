@@ -175,57 +175,57 @@ public class MarketsApi {
   /**
    * Retrieve a district
    * District-level supply, price distribution, and amenity context.  Requires the &#x60;markets:read&#x60; scope.  Availability: Growth and above.
-   * @param marketId Market identifier. (required)
-   * @param districtId District identifier. (required)
+   * @param city Market identifier. (required)
+   * @param district District identifier. (required)
    * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
    * @param propertyType Restrict the figures to one kind of property. (optional)
    * @throws ApiException if fails to make API call
    */
-  public void getDistrict(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
-    getDistrict(marketId, districtId, period, propertyType, null);
+  public void getDistrict(@javax.annotation.Nonnull String city, @javax.annotation.Nonnull String district, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
+    getDistrict(city, district, period, propertyType, null);
   }
 
   /**
    * Retrieve a district
    * District-level supply, price distribution, and amenity context.  Requires the &#x60;markets:read&#x60; scope.  Availability: Growth and above.
-   * @param marketId Market identifier. (required)
-   * @param districtId District identifier. (required)
+   * @param city Market identifier. (required)
+   * @param district District identifier. (required)
    * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
    * @param propertyType Restrict the figures to one kind of property. (optional)
    * @param headers Optional headers to include in the request
    * @throws ApiException if fails to make API call
    */
-  public void getDistrict(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
-    getDistrictWithHttpInfo(marketId, districtId, period, propertyType, headers);
+  public void getDistrict(@javax.annotation.Nonnull String city, @javax.annotation.Nonnull String district, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    getDistrictWithHttpInfo(city, district, period, propertyType, headers);
   }
 
   /**
    * Retrieve a district
    * District-level supply, price distribution, and amenity context.  Requires the &#x60;markets:read&#x60; scope.  Availability: Growth and above.
-   * @param marketId Market identifier. (required)
-   * @param districtId District identifier. (required)
+   * @param city Market identifier. (required)
+   * @param district District identifier. (required)
    * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
    * @param propertyType Restrict the figures to one kind of property. (optional)
    * @return ApiResponse&lt;Void&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> getDistrictWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
-    return getDistrictWithHttpInfo(marketId, districtId, period, propertyType, null);
+  public ApiResponse<Void> getDistrictWithHttpInfo(@javax.annotation.Nonnull String city, @javax.annotation.Nonnull String district, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
+    return getDistrictWithHttpInfo(city, district, period, propertyType, null);
   }
 
   /**
    * Retrieve a district
    * District-level supply, price distribution, and amenity context.  Requires the &#x60;markets:read&#x60; scope.  Availability: Growth and above.
-   * @param marketId Market identifier. (required)
-   * @param districtId District identifier. (required)
+   * @param city Market identifier. (required)
+   * @param district District identifier. (required)
    * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
    * @param propertyType Restrict the figures to one kind of property. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;Void&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> getDistrictWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getDistrictRequestBuilder(marketId, districtId, period, propertyType, headers);
+  public ApiResponse<Void> getDistrictWithHttpInfo(@javax.annotation.Nonnull String city, @javax.annotation.Nonnull String district, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getDistrictRequestBuilder(city, district, period, propertyType, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -261,21 +261,21 @@ public class MarketsApi {
     }
   }
 
-  private HttpRequest.Builder getDistrictRequestBuilder(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'marketId' is set
-    if (marketId == null) {
-      throw new ApiException(400, "Missing the required parameter 'marketId' when calling getDistrict");
+  private HttpRequest.Builder getDistrictRequestBuilder(@javax.annotation.Nonnull String city, @javax.annotation.Nonnull String district, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'city' is set
+    if (city == null) {
+      throw new ApiException(400, "Missing the required parameter 'city' when calling getDistrict");
     }
-    // verify the required parameter 'districtId' is set
-    if (districtId == null) {
-      throw new ApiException(400, "Missing the required parameter 'districtId' when calling getDistrict");
+    // verify the required parameter 'district' is set
+    if (district == null) {
+      throw new ApiException(400, "Missing the required parameter 'district' when calling getDistrict");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/markets/{city}/districts/{district}"
-        .replace("{market_id}", ApiClient.urlEncode(marketId.toString()))
-        .replace("{district_id}", ApiClient.urlEncode(districtId.toString()));
+        .replace("{city}", ApiClient.urlEncode(city.toString()))
+        .replace("{district}", ApiClient.urlEncode(district.toString()));
 
     List<Pair> localVarQueryParams = new ArrayList<>();
     StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
@@ -313,56 +313,56 @@ public class MarketsApi {
   /**
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier, such as berlin-de. (required)
+   * @param city Market identifier, such as berlin-de. (required)
    * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
    * @param propertyType Restrict the figures to one kind of property. (optional)
    * @return MarketResponse
    * @throws ApiException if fails to make API call
    */
-  public MarketResponse getMarket(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
-    return getMarket(marketId, period, propertyType, null);
+  public MarketResponse getMarket(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
+    return getMarket(city, period, propertyType, null);
   }
 
   /**
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier, such as berlin-de. (required)
+   * @param city Market identifier, such as berlin-de. (required)
    * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
    * @param propertyType Restrict the figures to one kind of property. (optional)
    * @param headers Optional headers to include in the request
    * @return MarketResponse
    * @throws ApiException if fails to make API call
    */
-  public MarketResponse getMarket(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
-    ApiResponse<MarketResponse> localVarResponse = getMarketWithHttpInfo(marketId, period, propertyType, headers);
+  public MarketResponse getMarket(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    ApiResponse<MarketResponse> localVarResponse = getMarketWithHttpInfo(city, period, propertyType, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier, such as berlin-de. (required)
+   * @param city Market identifier, such as berlin-de. (required)
    * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
    * @param propertyType Restrict the figures to one kind of property. (optional)
    * @return ApiResponse&lt;MarketResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
-    return getMarketWithHttpInfo(marketId, period, propertyType, null);
+  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
+    return getMarketWithHttpInfo(city, period, propertyType, null);
   }
 
   /**
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier, such as berlin-de. (required)
+   * @param city Market identifier, such as berlin-de. (required)
    * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
    * @param propertyType Restrict the figures to one kind of property. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;MarketResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getMarketRequestBuilder(marketId, period, propertyType, headers);
+  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getMarketRequestBuilder(city, period, propertyType, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -409,16 +409,16 @@ public class MarketsApi {
     }
   }
 
-  private HttpRequest.Builder getMarketRequestBuilder(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'marketId' is set
-    if (marketId == null) {
-      throw new ApiException(400, "Missing the required parameter 'marketId' when calling getMarket");
+  private HttpRequest.Builder getMarketRequestBuilder(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'city' is set
+    if (city == null) {
+      throw new ApiException(400, "Missing the required parameter 'city' when calling getMarket");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/markets/{city}"
-        .replace("{market_id}", ApiClient.urlEncode(marketId.toString()));
+        .replace("{city}", ApiClient.urlEncode(city.toString()));
 
     List<Pair> localVarQueryParams = new ArrayList<>();
     StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
@@ -456,48 +456,48 @@ public class MarketsApi {
   /**
    * List districts
    * Subdivisions of a market, for building your own filters.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier. (required)
+   * @param city Market identifier. (required)
    * @return DistrictList
    * @throws ApiException if fails to make API call
    */
-  public DistrictList listDistricts(@javax.annotation.Nonnull String marketId) throws ApiException {
-    return listDistricts(marketId, null);
+  public DistrictList listDistricts(@javax.annotation.Nonnull String city) throws ApiException {
+    return listDistricts(city, null);
   }
 
   /**
    * List districts
    * Subdivisions of a market, for building your own filters.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier. (required)
+   * @param city Market identifier. (required)
    * @param headers Optional headers to include in the request
    * @return DistrictList
    * @throws ApiException if fails to make API call
    */
-  public DistrictList listDistricts(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
-    ApiResponse<DistrictList> localVarResponse = listDistrictsWithHttpInfo(marketId, headers);
+  public DistrictList listDistricts(@javax.annotation.Nonnull String city, Map<String, String> headers) throws ApiException {
+    ApiResponse<DistrictList> localVarResponse = listDistrictsWithHttpInfo(city, headers);
     return localVarResponse.getData();
   }
 
   /**
    * List districts
    * Subdivisions of a market, for building your own filters.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier. (required)
+   * @param city Market identifier. (required)
    * @return ApiResponse&lt;DistrictList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<DistrictList> listDistrictsWithHttpInfo(@javax.annotation.Nonnull String marketId) throws ApiException {
-    return listDistrictsWithHttpInfo(marketId, null);
+  public ApiResponse<DistrictList> listDistrictsWithHttpInfo(@javax.annotation.Nonnull String city) throws ApiException {
+    return listDistrictsWithHttpInfo(city, null);
   }
 
   /**
    * List districts
    * Subdivisions of a market, for building your own filters.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier. (required)
+   * @param city Market identifier. (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;DistrictList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<DistrictList> listDistrictsWithHttpInfo(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listDistrictsRequestBuilder(marketId, headers);
+  public ApiResponse<DistrictList> listDistrictsWithHttpInfo(@javax.annotation.Nonnull String city, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listDistrictsRequestBuilder(city, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -544,16 +544,16 @@ public class MarketsApi {
     }
   }
 
-  private HttpRequest.Builder listDistrictsRequestBuilder(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'marketId' is set
-    if (marketId == null) {
-      throw new ApiException(400, "Missing the required parameter 'marketId' when calling listDistricts");
+  private HttpRequest.Builder listDistrictsRequestBuilder(@javax.annotation.Nonnull String city, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'city' is set
+    if (city == null) {
+      throw new ApiException(400, "Missing the required parameter 'city' when calling listDistricts");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/markets/{city}/districts"
-        .replace("{market_id}", ApiClient.urlEncode(marketId.toString()));
+        .replace("{city}", ApiClient.urlEncode(city.toString()));
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
@@ -683,7 +683,7 @@ public class MarketsApi {
   /**
    * Market statistics
    * Supply and price series over time, by property type.  Computed from the catalogue we hold, which means these describe asking behaviour rather than transacted prices. They are not appraisals and must not be used for lending decisions.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier. (required)
+   * @param city Market identifier. (required)
    * @param propertyType Narrow to one property type. (optional)
    * @param transactionType sale or rent. (optional)
    * @param interval Granularity of the returned series. (optional)
@@ -691,14 +691,14 @@ public class MarketsApi {
    * @return SeriesResponse
    * @throws ApiException if fails to make API call
    */
-  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
-    return marketStatistics(marketId, propertyType, transactionType, interval, since, null);
+  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
+    return marketStatistics(city, propertyType, transactionType, interval, since, null);
   }
 
   /**
    * Market statistics
    * Supply and price series over time, by property type.  Computed from the catalogue we hold, which means these describe asking behaviour rather than transacted prices. They are not appraisals and must not be used for lending decisions.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier. (required)
+   * @param city Market identifier. (required)
    * @param propertyType Narrow to one property type. (optional)
    * @param transactionType sale or rent. (optional)
    * @param interval Granularity of the returned series. (optional)
@@ -707,15 +707,15 @@ public class MarketsApi {
    * @return SeriesResponse
    * @throws ApiException if fails to make API call
    */
-  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
-    ApiResponse<SeriesResponse> localVarResponse = marketStatisticsWithHttpInfo(marketId, propertyType, transactionType, interval, since, headers);
+  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
+    ApiResponse<SeriesResponse> localVarResponse = marketStatisticsWithHttpInfo(city, propertyType, transactionType, interval, since, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Market statistics
    * Supply and price series over time, by property type.  Computed from the catalogue we hold, which means these describe asking behaviour rather than transacted prices. They are not appraisals and must not be used for lending decisions.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier. (required)
+   * @param city Market identifier. (required)
    * @param propertyType Narrow to one property type. (optional)
    * @param transactionType sale or rent. (optional)
    * @param interval Granularity of the returned series. (optional)
@@ -723,14 +723,14 @@ public class MarketsApi {
    * @return ApiResponse&lt;SeriesResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
-    return marketStatisticsWithHttpInfo(marketId, propertyType, transactionType, interval, since, null);
+  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
+    return marketStatisticsWithHttpInfo(city, propertyType, transactionType, interval, since, null);
   }
 
   /**
    * Market statistics
    * Supply and price series over time, by property type.  Computed from the catalogue we hold, which means these describe asking behaviour rather than transacted prices. They are not appraisals and must not be used for lending decisions.  Requires the &#x60;markets:read&#x60; scope.
-   * @param marketId Market identifier. (required)
+   * @param city Market identifier. (required)
    * @param propertyType Narrow to one property type. (optional)
    * @param transactionType sale or rent. (optional)
    * @param interval Granularity of the returned series. (optional)
@@ -739,8 +739,8 @@ public class MarketsApi {
    * @return ApiResponse&lt;SeriesResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = marketStatisticsRequestBuilder(marketId, propertyType, transactionType, interval, since, headers);
+  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = marketStatisticsRequestBuilder(city, propertyType, transactionType, interval, since, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -787,16 +787,16 @@ public class MarketsApi {
     }
   }
 
-  private HttpRequest.Builder marketStatisticsRequestBuilder(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'marketId' is set
-    if (marketId == null) {
-      throw new ApiException(400, "Missing the required parameter 'marketId' when calling marketStatistics");
+  private HttpRequest.Builder marketStatisticsRequestBuilder(@javax.annotation.Nonnull String city, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'city' is set
+    if (city == null) {
+      throw new ApiException(400, "Missing the required parameter 'city' when calling marketStatistics");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/markets/{city}/statistics"
-        .replace("{market_id}", ApiClient.urlEncode(marketId.toString()));
+        .replace("{city}", ApiClient.urlEncode(city.toString()));
 
     List<Pair> localVarQueryParams = new ArrayList<>();
     StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
