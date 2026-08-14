@@ -20,8 +20,8 @@ import com.skautik.sdk.Pair;
 
 import com.skautik.sdk.model.InquiryPage;
 import com.skautik.sdk.model.InquiryResponse;
+import com.skautik.sdk.model.InquiryStatusInput;
 import com.skautik.sdk.model.Problem;
-import com.skautik.sdk.model.UpdateInquiryRequest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -292,60 +292,64 @@ public class InquiriesApi {
   /**
    * List inquiries
    * Enquiries about your properties, newest first.  Cursor paginated like every other collection. Filter by property or by status to build a work queue rather than paging the lot.  Requires the &#x60;inquiries:read&#x60; scope.
-   * @param propertyId Only enquiries about this property. (optional)
    * @param status Only enquiries in this state. (optional)
+   * @param propertyId Only enquiries about this property. (optional)
    * @param limit Page size. Clamped to 200. (optional, default to 50)
    * @param cursor Opaque cursor from the previous page&#39;s meta.next_cursor. (optional)
+   * @param sort Field to order by. Prefix with a minus for descending. (optional)
    * @return InquiryPage
    * @throws ApiException if fails to make API call
    */
-  public InquiryPage listInquiries(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
-    return listInquiries(propertyId, status, limit, cursor, null);
+  public InquiryPage listInquiries(@javax.annotation.Nullable String status, @javax.annotation.Nullable String propertyId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort) throws ApiException {
+    return listInquiries(status, propertyId, limit, cursor, sort, null);
   }
 
   /**
    * List inquiries
    * Enquiries about your properties, newest first.  Cursor paginated like every other collection. Filter by property or by status to build a work queue rather than paging the lot.  Requires the &#x60;inquiries:read&#x60; scope.
-   * @param propertyId Only enquiries about this property. (optional)
    * @param status Only enquiries in this state. (optional)
+   * @param propertyId Only enquiries about this property. (optional)
    * @param limit Page size. Clamped to 200. (optional, default to 50)
    * @param cursor Opaque cursor from the previous page&#39;s meta.next_cursor. (optional)
+   * @param sort Field to order by. Prefix with a minus for descending. (optional)
    * @param headers Optional headers to include in the request
    * @return InquiryPage
    * @throws ApiException if fails to make API call
    */
-  public InquiryPage listInquiries(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
-    ApiResponse<InquiryPage> localVarResponse = listInquiriesWithHttpInfo(propertyId, status, limit, cursor, headers);
+  public InquiryPage listInquiries(@javax.annotation.Nullable String status, @javax.annotation.Nullable String propertyId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, Map<String, String> headers) throws ApiException {
+    ApiResponse<InquiryPage> localVarResponse = listInquiriesWithHttpInfo(status, propertyId, limit, cursor, sort, headers);
     return localVarResponse.getData();
   }
 
   /**
    * List inquiries
    * Enquiries about your properties, newest first.  Cursor paginated like every other collection. Filter by property or by status to build a work queue rather than paging the lot.  Requires the &#x60;inquiries:read&#x60; scope.
-   * @param propertyId Only enquiries about this property. (optional)
    * @param status Only enquiries in this state. (optional)
+   * @param propertyId Only enquiries about this property. (optional)
    * @param limit Page size. Clamped to 200. (optional, default to 50)
    * @param cursor Opaque cursor from the previous page&#39;s meta.next_cursor. (optional)
+   * @param sort Field to order by. Prefix with a minus for descending. (optional)
    * @return ApiResponse&lt;InquiryPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<InquiryPage> listInquiriesWithHttpInfo(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
-    return listInquiriesWithHttpInfo(propertyId, status, limit, cursor, null);
+  public ApiResponse<InquiryPage> listInquiriesWithHttpInfo(@javax.annotation.Nullable String status, @javax.annotation.Nullable String propertyId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort) throws ApiException {
+    return listInquiriesWithHttpInfo(status, propertyId, limit, cursor, sort, null);
   }
 
   /**
    * List inquiries
    * Enquiries about your properties, newest first.  Cursor paginated like every other collection. Filter by property or by status to build a work queue rather than paging the lot.  Requires the &#x60;inquiries:read&#x60; scope.
-   * @param propertyId Only enquiries about this property. (optional)
    * @param status Only enquiries in this state. (optional)
+   * @param propertyId Only enquiries about this property. (optional)
    * @param limit Page size. Clamped to 200. (optional, default to 50)
    * @param cursor Opaque cursor from the previous page&#39;s meta.next_cursor. (optional)
+   * @param sort Field to order by. Prefix with a minus for descending. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;InquiryPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<InquiryPage> listInquiriesWithHttpInfo(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listInquiriesRequestBuilder(propertyId, status, limit, cursor, headers);
+  public ApiResponse<InquiryPage> listInquiriesWithHttpInfo(@javax.annotation.Nullable String status, @javax.annotation.Nullable String propertyId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listInquiriesRequestBuilder(status, propertyId, limit, cursor, sort, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -392,7 +396,7 @@ public class InquiriesApi {
     }
   }
 
-  private HttpRequest.Builder listInquiriesRequestBuilder(@javax.annotation.Nullable String propertyId, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder listInquiriesRequestBuilder(@javax.annotation.Nullable String status, @javax.annotation.Nullable String propertyId, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, Map<String, String> headers) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -401,14 +405,16 @@ public class InquiriesApi {
     List<Pair> localVarQueryParams = new ArrayList<>();
     StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "property_id";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("property_id", propertyId));
     localVarQueryParameterBaseName = "status";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("status", status));
+    localVarQueryParameterBaseName = "property_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("property_id", propertyId));
     localVarQueryParameterBaseName = "limit";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("limit", limit));
     localVarQueryParameterBaseName = "cursor";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("cursor", cursor));
+    localVarQueryParameterBaseName = "sort";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("sort", sort));
 
     if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
       StringJoiner queryJoiner = new StringJoiner("&");
@@ -543,25 +549,25 @@ public class InquiriesApi {
    * Set the status
    * Move an enquiry through your workflow.  Setting replied records when it happened, and that record survives a later move to closed: the fact that somebody was answered is not undone by filing the conversation away.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
-   * @param updateInquiryRequest  (required)
+   * @param inquiryStatusInput  (required)
    * @return InquiryResponse
    * @throws ApiException if fails to make API call
    */
-  public InquiryResponse updateInquiry(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest) throws ApiException {
-    return updateInquiry(inquiryId, updateInquiryRequest, null);
+  public InquiryResponse updateInquiry(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull InquiryStatusInput inquiryStatusInput) throws ApiException {
+    return updateInquiry(inquiryId, inquiryStatusInput, null);
   }
 
   /**
    * Set the status
    * Move an enquiry through your workflow.  Setting replied records when it happened, and that record survives a later move to closed: the fact that somebody was answered is not undone by filing the conversation away.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
-   * @param updateInquiryRequest  (required)
+   * @param inquiryStatusInput  (required)
    * @param headers Optional headers to include in the request
    * @return InquiryResponse
    * @throws ApiException if fails to make API call
    */
-  public InquiryResponse updateInquiry(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<InquiryResponse> localVarResponse = updateInquiryWithHttpInfo(inquiryId, updateInquiryRequest, headers);
+  public InquiryResponse updateInquiry(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull InquiryStatusInput inquiryStatusInput, Map<String, String> headers) throws ApiException {
+    ApiResponse<InquiryResponse> localVarResponse = updateInquiryWithHttpInfo(inquiryId, inquiryStatusInput, headers);
     return localVarResponse.getData();
   }
 
@@ -569,25 +575,25 @@ public class InquiriesApi {
    * Set the status
    * Move an enquiry through your workflow.  Setting replied records when it happened, and that record survives a later move to closed: the fact that somebody was answered is not undone by filing the conversation away.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
-   * @param updateInquiryRequest  (required)
+   * @param inquiryStatusInput  (required)
    * @return ApiResponse&lt;InquiryResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<InquiryResponse> updateInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest) throws ApiException {
-    return updateInquiryWithHttpInfo(inquiryId, updateInquiryRequest, null);
+  public ApiResponse<InquiryResponse> updateInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull InquiryStatusInput inquiryStatusInput) throws ApiException {
+    return updateInquiryWithHttpInfo(inquiryId, inquiryStatusInput, null);
   }
 
   /**
    * Set the status
    * Move an enquiry through your workflow.  Setting replied records when it happened, and that record survives a later move to closed: the fact that somebody was answered is not undone by filing the conversation away.  Requires the &#x60;inquiries:read&#x60; scope.
    * @param inquiryId Inquiry identifier. (required)
-   * @param updateInquiryRequest  (required)
+   * @param inquiryStatusInput  (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;InquiryResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<InquiryResponse> updateInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = updateInquiryRequestBuilder(inquiryId, updateInquiryRequest, headers);
+  public ApiResponse<InquiryResponse> updateInquiryWithHttpInfo(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull InquiryStatusInput inquiryStatusInput, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateInquiryRequestBuilder(inquiryId, inquiryStatusInput, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -634,14 +640,14 @@ public class InquiriesApi {
     }
   }
 
-  private HttpRequest.Builder updateInquiryRequestBuilder(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull UpdateInquiryRequest updateInquiryRequest, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder updateInquiryRequestBuilder(@javax.annotation.Nonnull String inquiryId, @javax.annotation.Nonnull InquiryStatusInput inquiryStatusInput, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'inquiryId' is set
     if (inquiryId == null) {
       throw new ApiException(400, "Missing the required parameter 'inquiryId' when calling updateInquiry");
     }
-    // verify the required parameter 'updateInquiryRequest' is set
-    if (updateInquiryRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'updateInquiryRequest' when calling updateInquiry");
+    // verify the required parameter 'inquiryStatusInput' is set
+    if (inquiryStatusInput == null) {
+      throw new ApiException(400, "Missing the required parameter 'inquiryStatusInput' when calling updateInquiry");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -655,7 +661,7 @@ public class InquiriesApi {
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(updateInquiryRequest);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(inquiryStatusInput);
       localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);

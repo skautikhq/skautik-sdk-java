@@ -30,64 +30,27 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * CreateGenerationRequest
+ * GenerationInput
  */
 @JsonPropertyOrder({
-  CreateGenerationRequest.JSON_PROPERTY_KIND,
-  CreateGenerationRequest.JSON_PROPERTY_PROMPT,
-  CreateGenerationRequest.JSON_PROPERTY_ROOM_TYPE,
-  CreateGenerationRequest.JSON_PROPERTY_SOURCE_IMAGE_ID,
-  CreateGenerationRequest.JSON_PROPERTY_STYLE
+  GenerationInput.JSON_PROPERTY_KIND,
+  GenerationInput.JSON_PROPERTY_PROMPT,
+  GenerationInput.JSON_PROPERTY_ROOM_TYPE,
+  GenerationInput.JSON_PROPERTY_SOURCE_IMAGE_ID,
+  GenerationInput.JSON_PROPERTY_STYLE
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class CreateGenerationRequest {
-  /**
-   * The transformation to apply. floorplan_render is named in the schema and is not implemented; asking for it is refused rather than answered with a fabricated plan.
-   */
-  public enum KindEnum {
-    VIRTUAL_STAGING(String.valueOf("virtual_staging")),
-    
-    DECLUTTERING(String.valueOf("decluttering")),
-    
-    ENHANCEMENT(String.valueOf("enhancement"));
-
-    private String value;
-
-    KindEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static KindEnum fromValue(String value) {
-      for (KindEnum b : KindEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
+public class GenerationInput {
   public static final String JSON_PROPERTY_KIND = "kind";
   @javax.annotation.Nonnull
-  private KindEnum kind;
+  private String kind;
 
   public static final String JSON_PROPERTY_PROMPT = "prompt";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String prompt;
 
   public static final String JSON_PROPERTY_ROOM_TYPE = "room_type";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String roomType;
 
   public static final String JSON_PROPERTY_SOURCE_IMAGE_ID = "source_image_id";
@@ -95,91 +58,91 @@ public class CreateGenerationRequest {
   private String sourceImageId;
 
   public static final String JSON_PROPERTY_STYLE = "style";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String style;
 
-  public CreateGenerationRequest() { 
+  public GenerationInput() { 
   }
 
-  public CreateGenerationRequest kind(@javax.annotation.Nonnull KindEnum kind) {
+  public GenerationInput kind(@javax.annotation.Nonnull String kind) {
     this.kind = kind;
     return this;
   }
 
   /**
-   * The transformation to apply. floorplan_render is named in the schema and is not implemented; asking for it is refused rather than answered with a fabricated plan.
+   * Get kind
    * @return kind
    */
   @javax.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_KIND, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public KindEnum getKind() {
+  public String getKind() {
     return kind;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_KIND, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setKind(@javax.annotation.Nonnull KindEnum kind) {
+  public void setKind(@javax.annotation.Nonnull String kind) {
     this.kind = kind;
   }
 
 
-  public CreateGenerationRequest prompt(@javax.annotation.Nullable String prompt) {
+  public GenerationInput prompt(@javax.annotation.Nonnull String prompt) {
     this.prompt = prompt;
     return this;
   }
 
   /**
-   * Up to 500 characters of additional direction. It is added to the instruction for the chosen kind and never replaces it, so it cannot be used to make the model do something unrelated.
+   * Get prompt
    * @return prompt
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_PROMPT, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PROMPT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getPrompt() {
     return prompt;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_PROMPT, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPrompt(@javax.annotation.Nullable String prompt) {
+  @JsonProperty(value = JSON_PROPERTY_PROMPT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setPrompt(@javax.annotation.Nonnull String prompt) {
     this.prompt = prompt;
   }
 
 
-  public CreateGenerationRequest roomType(@javax.annotation.Nullable String roomType) {
+  public GenerationInput roomType(@javax.annotation.Nonnull String roomType) {
     this.roomType = roomType;
     return this;
   }
 
   /**
-   * For virtual_staging: what the room is. Improves the result markedly. Defaults to a generic room.
+   * Get roomType
    * @return roomType
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_ROOM_TYPE, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_ROOM_TYPE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getRoomType() {
     return roomType;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_ROOM_TYPE, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setRoomType(@javax.annotation.Nullable String roomType) {
+  @JsonProperty(value = JSON_PROPERTY_ROOM_TYPE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setRoomType(@javax.annotation.Nonnull String roomType) {
     this.roomType = roomType;
   }
 
 
-  public CreateGenerationRequest sourceImageId(@javax.annotation.Nonnull String sourceImageId) {
+  public GenerationInput sourceImageId(@javax.annotation.Nonnull String sourceImageId) {
     this.sourceImageId = sourceImageId;
     return this;
   }
 
   /**
-   * The image to transform. Must belong to one of your own properties; anything else answers 404, the same as an image that does not exist.
+   * Get sourceImageId
    * @return sourceImageId
    */
   @javax.annotation.Nonnull
@@ -197,32 +160,32 @@ public class CreateGenerationRequest {
   }
 
 
-  public CreateGenerationRequest style(@javax.annotation.Nullable String style) {
+  public GenerationInput style(@javax.annotation.Nonnull String style) {
     this.style = style;
     return this;
   }
 
   /**
-   * For virtual_staging: the furnishing style. Defaults to contemporary.
+   * Get style
    * @return style
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_STYLE, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_STYLE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getStyle() {
     return style;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_STYLE, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStyle(@javax.annotation.Nullable String style) {
+  @JsonProperty(value = JSON_PROPERTY_STYLE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setStyle(@javax.annotation.Nonnull String style) {
     this.style = style;
   }
 
 
   /**
-   * Return true if this createGeneration_request object is equal to o.
+   * Return true if this GenerationInput object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -232,12 +195,12 @@ public class CreateGenerationRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateGenerationRequest createGenerationRequest = (CreateGenerationRequest) o;
-    return Objects.equals(this.kind, createGenerationRequest.kind) &&
-        Objects.equals(this.prompt, createGenerationRequest.prompt) &&
-        Objects.equals(this.roomType, createGenerationRequest.roomType) &&
-        Objects.equals(this.sourceImageId, createGenerationRequest.sourceImageId) &&
-        Objects.equals(this.style, createGenerationRequest.style);
+    GenerationInput generationInput = (GenerationInput) o;
+    return Objects.equals(this.kind, generationInput.kind) &&
+        Objects.equals(this.prompt, generationInput.prompt) &&
+        Objects.equals(this.roomType, generationInput.roomType) &&
+        Objects.equals(this.sourceImageId, generationInput.sourceImageId) &&
+        Objects.equals(this.style, generationInput.style);
   }
 
   @Override
@@ -248,7 +211,7 @@ public class CreateGenerationRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateGenerationRequest {\n");
+    sb.append("class GenerationInput {\n");
     sb.append("    kind: ").append(toIndentedString(kind)).append("\n");
     sb.append("    prompt: ").append(toIndentedString(prompt)).append("\n");
     sb.append("    roomType: ").append(toIndentedString(roomType)).append("\n");

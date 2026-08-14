@@ -32,15 +32,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * UpdateWebhookRequest
+ * WebhookUpdate
  */
 @JsonPropertyOrder({
-  UpdateWebhookRequest.JSON_PROPERTY_ACTIVE,
-  UpdateWebhookRequest.JSON_PROPERTY_EVENTS,
-  UpdateWebhookRequest.JSON_PROPERTY_URL
+  WebhookUpdate.JSON_PROPERTY_ACTIVE,
+  WebhookUpdate.JSON_PROPERTY_EVENTS,
+  WebhookUpdate.JSON_PROPERTY_URL
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class UpdateWebhookRequest {
+public class WebhookUpdate {
   public static final String JSON_PROPERTY_ACTIVE = "active";
   @javax.annotation.Nullable
   private Boolean active;
@@ -53,16 +53,16 @@ public class UpdateWebhookRequest {
   @javax.annotation.Nullable
   private String url;
 
-  public UpdateWebhookRequest() { 
+  public WebhookUpdate() { 
   }
 
-  public UpdateWebhookRequest active(@javax.annotation.Nullable Boolean active) {
+  public WebhookUpdate active(@javax.annotation.Nullable Boolean active) {
     this.active = active;
     return this;
   }
 
   /**
-   * False pauses deliveries; the registration and its secret survive.
+   * Get active
    * @return active
    */
   @javax.annotation.Nullable
@@ -80,12 +80,12 @@ public class UpdateWebhookRequest {
   }
 
 
-  public UpdateWebhookRequest events(@javax.annotation.Nullable List<String> events) {
+  public WebhookUpdate events(@javax.annotation.Nullable List<String> events) {
     this.events = events;
     return this;
   }
 
-  public UpdateWebhookRequest addEventsItem(String eventsItem) {
+  public WebhookUpdate addEventsItem(String eventsItem) {
     if (this.events == null) {
       this.events = new ArrayList<>();
     }
@@ -94,7 +94,7 @@ public class UpdateWebhookRequest {
   }
 
   /**
-   * Replaces the whole subscription list rather than adding to it.
+   * Get events
    * @return events
    */
   @javax.annotation.Nullable
@@ -112,13 +112,13 @@ public class UpdateWebhookRequest {
   }
 
 
-  public UpdateWebhookRequest url(@javax.annotation.Nullable String url) {
+  public WebhookUpdate url(@javax.annotation.Nullable String url) {
     this.url = url;
     return this;
   }
 
   /**
-   * New HTTPS endpoint.
+   * Get url
    * @return url
    */
   @javax.annotation.Nullable
@@ -137,7 +137,7 @@ public class UpdateWebhookRequest {
 
 
   /**
-   * Return true if this updateWebhook_request object is equal to o.
+   * Return true if this WebhookUpdate object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -147,10 +147,10 @@ public class UpdateWebhookRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UpdateWebhookRequest updateWebhookRequest = (UpdateWebhookRequest) o;
-    return Objects.equals(this.active, updateWebhookRequest.active) &&
-        Objects.equals(this.events, updateWebhookRequest.events) &&
-        Objects.equals(this.url, updateWebhookRequest.url);
+    WebhookUpdate webhookUpdate = (WebhookUpdate) o;
+    return Objects.equals(this.active, webhookUpdate.active) &&
+        Objects.equals(this.events, webhookUpdate.events) &&
+        Objects.equals(this.url, webhookUpdate.url);
   }
 
   @Override
@@ -161,7 +161,7 @@ public class UpdateWebhookRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UpdateWebhookRequest {\n");
+    sb.append("class WebhookUpdate {\n");
     sb.append("    active: ").append(toIndentedString(active)).append("\n");
     sb.append("    events: ").append(toIndentedString(events)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");

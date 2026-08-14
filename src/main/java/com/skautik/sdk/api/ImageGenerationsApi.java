@@ -18,8 +18,8 @@ import com.skautik.sdk.ApiResponse;
 import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
-import com.skautik.sdk.model.CreateGenerationRequest;
 import com.skautik.sdk.model.Envelope;
+import com.skautik.sdk.model.GenerationInput;
 import com.skautik.sdk.model.GenerationList;
 import com.skautik.sdk.model.GenerationResponse;
 import com.skautik.sdk.model.Problem;
@@ -169,48 +169,48 @@ public class ImageGenerationsApi {
   /**
    * Request a generation
    * Queue a transformation of one of your property images.  Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.  Requires the &#x60;images:write&#x60; scope.
-   * @param createGenerationRequest  (required)
+   * @param generationInput  (required)
    * @return GenerationResponse
    * @throws ApiException if fails to make API call
    */
-  public GenerationResponse createGeneration(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest) throws ApiException {
-    return createGeneration(createGenerationRequest, null);
+  public GenerationResponse createGeneration(@javax.annotation.Nonnull GenerationInput generationInput) throws ApiException {
+    return createGeneration(generationInput, null);
   }
 
   /**
    * Request a generation
    * Queue a transformation of one of your property images.  Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.  Requires the &#x60;images:write&#x60; scope.
-   * @param createGenerationRequest  (required)
+   * @param generationInput  (required)
    * @param headers Optional headers to include in the request
    * @return GenerationResponse
    * @throws ApiException if fails to make API call
    */
-  public GenerationResponse createGeneration(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<GenerationResponse> localVarResponse = createGenerationWithHttpInfo(createGenerationRequest, headers);
+  public GenerationResponse createGeneration(@javax.annotation.Nonnull GenerationInput generationInput, Map<String, String> headers) throws ApiException {
+    ApiResponse<GenerationResponse> localVarResponse = createGenerationWithHttpInfo(generationInput, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Request a generation
    * Queue a transformation of one of your property images.  Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.  Requires the &#x60;images:write&#x60; scope.
-   * @param createGenerationRequest  (required)
+   * @param generationInput  (required)
    * @return ApiResponse&lt;GenerationResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<GenerationResponse> createGenerationWithHttpInfo(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest) throws ApiException {
-    return createGenerationWithHttpInfo(createGenerationRequest, null);
+  public ApiResponse<GenerationResponse> createGenerationWithHttpInfo(@javax.annotation.Nonnull GenerationInput generationInput) throws ApiException {
+    return createGenerationWithHttpInfo(generationInput, null);
   }
 
   /**
    * Request a generation
    * Queue a transformation of one of your property images.  Returns immediately with a queued generation. Poll the retrieve endpoint, or subscribe to a webhook, rather than holding the request open. The source image must already belong to one of your properties: there is no way to submit an arbitrary URL, which is deliberate.  Requires the &#x60;images:write&#x60; scope.
-   * @param createGenerationRequest  (required)
+   * @param generationInput  (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;GenerationResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<GenerationResponse> createGenerationWithHttpInfo(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createGenerationRequestBuilder(createGenerationRequest, headers);
+  public ApiResponse<GenerationResponse> createGenerationWithHttpInfo(@javax.annotation.Nonnull GenerationInput generationInput, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = createGenerationRequestBuilder(generationInput, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -257,10 +257,10 @@ public class ImageGenerationsApi {
     }
   }
 
-  private HttpRequest.Builder createGenerationRequestBuilder(@javax.annotation.Nonnull CreateGenerationRequest createGenerationRequest, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'createGenerationRequest' is set
-    if (createGenerationRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'createGenerationRequest' when calling createGeneration");
+  private HttpRequest.Builder createGenerationRequestBuilder(@javax.annotation.Nonnull GenerationInput generationInput, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'generationInput' is set
+    if (generationInput == null) {
+      throw new ApiException(400, "Missing the required parameter 'generationInput' when calling createGeneration");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -273,7 +273,7 @@ public class ImageGenerationsApi {
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(createGenerationRequest);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(generationInput);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);

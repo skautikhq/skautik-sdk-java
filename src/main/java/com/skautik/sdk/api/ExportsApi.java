@@ -18,7 +18,7 @@ import com.skautik.sdk.ApiResponse;
 import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
-import com.skautik.sdk.model.CreateExportRequest;
+import com.skautik.sdk.model.ExportInput;
 import com.skautik.sdk.model.ExportList;
 import com.skautik.sdk.model.ExportResponse;
 import com.skautik.sdk.model.Problem;
@@ -168,48 +168,48 @@ public class ExportsApi {
   /**
    * Request an export
    * Queue a bulk extract of the catalogue.  Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.  Requires the &#x60;exports:create&#x60; scope.
-   * @param createExportRequest  (required)
+   * @param exportInput  (required)
    * @return ExportResponse
    * @throws ApiException if fails to make API call
    */
-  public ExportResponse createExport(@javax.annotation.Nonnull CreateExportRequest createExportRequest) throws ApiException {
-    return createExport(createExportRequest, null);
+  public ExportResponse createExport(@javax.annotation.Nonnull ExportInput exportInput) throws ApiException {
+    return createExport(exportInput, null);
   }
 
   /**
    * Request an export
    * Queue a bulk extract of the catalogue.  Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.  Requires the &#x60;exports:create&#x60; scope.
-   * @param createExportRequest  (required)
+   * @param exportInput  (required)
    * @param headers Optional headers to include in the request
    * @return ExportResponse
    * @throws ApiException if fails to make API call
    */
-  public ExportResponse createExport(@javax.annotation.Nonnull CreateExportRequest createExportRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<ExportResponse> localVarResponse = createExportWithHttpInfo(createExportRequest, headers);
+  public ExportResponse createExport(@javax.annotation.Nonnull ExportInput exportInput, Map<String, String> headers) throws ApiException {
+    ApiResponse<ExportResponse> localVarResponse = createExportWithHttpInfo(exportInput, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Request an export
    * Queue a bulk extract of the catalogue.  Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.  Requires the &#x60;exports:create&#x60; scope.
-   * @param createExportRequest  (required)
+   * @param exportInput  (required)
    * @return ApiResponse&lt;ExportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ExportResponse> createExportWithHttpInfo(@javax.annotation.Nonnull CreateExportRequest createExportRequest) throws ApiException {
-    return createExportWithHttpInfo(createExportRequest, null);
+  public ApiResponse<ExportResponse> createExportWithHttpInfo(@javax.annotation.Nonnull ExportInput exportInput) throws ApiException {
+    return createExportWithHttpInfo(exportInput, null);
   }
 
   /**
    * Request an export
    * Queue a bulk extract of the catalogue.  Accepts the same filters as the list endpoint. Returns immediately with a pending export; subscribe to export.completed rather than polling. Note that a narrowed field set may not round trip: feeding an export back into an import needs the columns an import requires, external_id and type among them, so omit fields for analysis rather than for a re-import.  Requires the &#x60;exports:create&#x60; scope.
-   * @param createExportRequest  (required)
+   * @param exportInput  (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;ExportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ExportResponse> createExportWithHttpInfo(@javax.annotation.Nonnull CreateExportRequest createExportRequest, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createExportRequestBuilder(createExportRequest, headers);
+  public ApiResponse<ExportResponse> createExportWithHttpInfo(@javax.annotation.Nonnull ExportInput exportInput, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = createExportRequestBuilder(exportInput, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -256,10 +256,10 @@ public class ExportsApi {
     }
   }
 
-  private HttpRequest.Builder createExportRequestBuilder(@javax.annotation.Nonnull CreateExportRequest createExportRequest, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'createExportRequest' is set
-    if (createExportRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'createExportRequest' when calling createExport");
+  private HttpRequest.Builder createExportRequestBuilder(@javax.annotation.Nonnull ExportInput exportInput, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'exportInput' is set
+    if (exportInput == null) {
+      throw new ApiException(400, "Missing the required parameter 'exportInput' when calling createExport");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -272,7 +272,7 @@ public class ExportsApi {
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(createExportRequest);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(exportInput);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);

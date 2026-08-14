@@ -137,7 +137,7 @@ paths:
                 status: active
               format: ndjson
             schema:
-              $ref: "#/components/schemas/createExport_request"
+              $ref: "#/components/schemas/ExportInput"
         required: true
       responses:
         "201":
@@ -337,7 +337,7 @@ paths:
               source_image_id: img_ce1c9e04db6140eda7c6934af60daebb
               style: scandinavian
             schema:
-              $ref: "#/components/schemas/createGeneration_request"
+              $ref: "#/components/schemas/GenerationInput"
         required: true
       responses:
         "201":
@@ -649,7 +649,7 @@ paths:
               name: Head office CRM
               schedule: 0 */4 * * *
             schema:
-              $ref: "#/components/schemas/createImportSource_request"
+              $ref: "#/components/schemas/ImportSourceInput"
         required: true
       responses:
         "201":
@@ -865,6 +865,12 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SourceUpdate"
+        required: true
       responses:
         "200":
           content:
@@ -924,6 +930,7 @@ paths:
       summary: Update an import source
       tags:
       - Imports
+      x-content-type: application/json
       x-accepts:
       - application/json
       - application/problem+json
@@ -934,31 +941,7 @@ paths:
 
         Requires the `imports:write` scope.
       operationId: listImports
-      parameters:
-      - description: Only imports produced by one source.
-        example: src_immoscout
-        explode: true
-        in: query
-        name: source_id
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: Filter by outcome.
-        example: validating
-        explode: true
-        in: query
-        name: status
-        required: false
-        schema:
-          enum:
-          - validating
-          - processing
-          - completed
-          - partial
-          - failed
-          type: string
-        style: form
+      parameters: []
       responses:
         "200":
           content:
@@ -1029,6 +1012,55 @@ paths:
         Requires the `imports:write` scope.
       operationId: createImport
       parameters:
+      - description: ""
+        explode: true
+        in: query
+        name: format
+        required: true
+        schema:
+          enum:
+          - csv
+          - json
+          type: string
+        style: form
+      - description: ""
+        explode: true
+        in: query
+        name: mode
+        required: false
+        schema:
+          default: incremental
+          enum:
+          - incremental
+          - full_sync
+          type: string
+        style: form
+      - description: ""
+        explode: true
+        in: query
+        name: source_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: ""
+        explode: true
+        in: query
+        name: dry_run
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: "Original filename, recorded on the run so a failure can be traced\
+          \ back to the file that caused it."
+        example: transfer-2026-08-12.zip
+        explode: true
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+        style: form
       - description: Prevents a retried upload from being processed twice.
         example: a7f3c9e2-4b1d-4e8a-9c2f-1d3b5a7c9e01
         explode: false
@@ -1043,7 +1075,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: "#/components/schemas/createImport_request"
-        required: true
+        required: false
       responses:
         "201":
           content:
@@ -1312,21 +1344,6 @@ paths:
         schema:
           type: string
         style: simple
-      - description: Narrow to one outcome.
-        example: created
-        explode: true
-        in: query
-        name: outcome
-        required: false
-        schema:
-          enum:
-          - created
-          - updated
-          - withdrawn
-          - unchanged
-          - failed
-          type: string
-        style: form
       responses:
         "200":
           content:
@@ -1391,15 +1408,6 @@ paths:
         Requires the `inquiries:read` scope.
       operationId: listInquiries
       parameters:
-      - description: Only enquiries about this property.
-        example: prop_9ad0ddd2e01949ddb471899aba67d577
-        explode: true
-        in: query
-        name: property_id
-        required: false
-        schema:
-          type: string
-        style: form
       - description: Only enquiries in this state.
         example: new
         explode: true
@@ -1413,6 +1421,15 @@ paths:
           - replied
           - closed
           - spam
+          type: string
+        style: form
+      - description: Only enquiries about this property.
+        example: prop_9ad0ddd2e01949ddb471899aba67d577
+        explode: true
+        in: query
+        name: property_id
+        required: false
+        schema:
           type: string
         style: form
       - description: Page size. Clamped to 200.
@@ -1430,6 +1447,15 @@ paths:
         explode: true
         in: query
         name: cursor
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Field to order by. Prefix with a minus for descending.
+        example: -created_at
+        explode: true
+        in: query
+        name: sort
         required: false
         schema:
           type: string
@@ -1589,7 +1615,7 @@ paths:
             example:
               status: replied
             schema:
-              $ref: "#/components/schemas/updateInquiry_request"
+              $ref: "#/components/schemas/InquiryStatusInput"
         required: true
       responses:
         "200":
@@ -1712,37 +1738,7 @@ paths:
 
         Requires the `markets:read` scope.
       operationId: listMarkets
-      parameters:
-      - description: ISO 3166-1 alpha-2 filter.
-        example: DE
-        explode: true
-        in: query
-        name: country
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: "Records per page, 1 to 200."
-        example: 100
-        explode: true
-        in: query
-        name: limit
-        required: false
-        schema:
-          default: 50
-          type: integer
-        style: form
-      - description: "Opaque pointer from the previous response. Omit for the first\
-          \ page. Cursors are stable across inserts, so paging never skips or repeats\
-          \ a record the way an offset does."
-        example: eyJpZCI6IjhmMmEifQ
-        explode: true
-        in: query
-        name: cursor
-        required: false
-        schema:
-          type: string
-        style: form
+      parameters: []
       responses:
         "200":
           content:
@@ -1801,6 +1797,33 @@ paths:
         Requires the `markets:read` scope.
       operationId: getMarket
       parameters:
+      - description: "Month to report, as YYYY-MM. Defaults to the most recent computed."
+        example: 2026-07
+        explode: true
+        in: query
+        name: period
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict the figures to one kind of property.
+        example: apartment
+        explode: true
+        in: query
+        name: property_type
+        required: false
+        schema:
+          enum:
+          - apartment
+          - house
+          - studio
+          - villa
+          - penthouse
+          - loft
+          - townhouse
+          - other
+          type: string
+        style: form
       - description: "Market identifier, such as berlin-de."
         example: berlin-de
         explode: false
@@ -1955,6 +1978,33 @@ paths:
         Availability: Growth and above.
       operationId: getDistrict
       parameters:
+      - description: "Month to report, as YYYY-MM. Defaults to the most recent computed."
+        example: 2026-07
+        explode: true
+        in: query
+        name: period
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Restrict the figures to one kind of property.
+        example: apartment
+        explode: true
+        in: query
+        name: property_type
+        required: false
+        schema:
+          enum:
+          - apartment
+          - house
+          - studio
+          - villa
+          - penthouse
+          - loft
+          - townhouse
+          - other
+          type: string
+        style: form
       - description: Market identifier.
         example: berlin-de
         explode: false
@@ -2021,33 +2071,23 @@ paths:
         Requires the `markets:read` scope.
       operationId: marketStatistics
       parameters:
-      - description: Market identifier.
-        example: berlin-de
-        explode: false
-        in: path
-        name: market_id
-        required: true
-        schema:
-          type: string
-        style: simple
       - description: Narrow to one property type.
-        example:
-        - apartment
+        example: apartment
         explode: true
         in: query
         name: property_type
         required: false
         schema:
-          items:
-            enum:
-            - apartment
-            - house
-            - studio
-            - land
-            - commercial
-            type: string
-          type: array
-          default: null
+          enum:
+          - apartment
+          - house
+          - studio
+          - villa
+          - penthouse
+          - loft
+          - townhouse
+          - other
+          type: string
         style: form
       - description: sale or rent.
         example: sale
@@ -2068,7 +2108,6 @@ paths:
         name: interval
         required: false
         schema:
-          default: month
           enum:
           - week
           - month
@@ -2084,6 +2123,15 @@ paths:
         schema:
           type: string
         style: form
+      - description: Market identifier.
+        example: berlin-de
+        explode: false
+        in: path
+        name: market_id
+        required: true
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
           content:
@@ -2549,7 +2597,7 @@ paths:
               title: Top-floor apartment with a south-facing balcony
               transaction_type: sale
             schema:
-              $ref: "#/components/schemas/createProperty_request"
+              $ref: "#/components/schemas/PropertyInput"
         required: true
       responses:
         "201":
@@ -2665,8 +2713,8 @@ paths:
               limit: 20
               query: "quiet two bedroom near a park, needs a home office"
             schema:
-              $ref: "#/components/schemas/searchProperties_request"
-        required: false
+              $ref: "#/components/schemas/SearchRequest"
+        required: true
       responses:
         "201":
           content:
@@ -2936,6 +2984,12 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PropertyInput"
+        required: true
       responses:
         "200":
           content:
@@ -3033,6 +3087,7 @@ paths:
       summary: Update a property
       tags:
       - Properties
+      x-content-type: application/json
       x-accepts:
       - application/json
       - application/problem+json
@@ -3117,6 +3172,26 @@ paths:
         Requires the `images:write` scope.
       operationId: uploadPropertyImage
       parameters:
+      - description: "What the photograph shows, used to group images and to pick\
+          \ a source for staging."
+        example: living_room
+        explode: true
+        in: query
+        name: room_type
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Pass true to make this the primary image, which demotes the\
+          \ current one."
+        example: true
+        explode: true
+        in: query
+        name: primary
+        required: false
+        schema:
+          type: boolean
+        style: form
       - description: Property to attach to.
         example: prop_8f2a41c9d0
         explode: false
@@ -3343,6 +3418,15 @@ paths:
         Availability: Growth and above.
       operationId: similarProperties
       parameters:
+      - description: "Comparables to return, 1 to 50."
+        example: 10
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
       - description: Property to compare against.
         example: prop_8f2a41c9d0
         explode: false
@@ -3352,16 +3436,6 @@ paths:
         schema:
           type: string
         style: simple
-      - description: "Comparables to return, 1 to 50."
-        example: 10
-        explode: true
-        in: query
-        name: limit
-        required: false
-        schema:
-          default: 10
-          type: integer
-        style: form
       responses:
         "200":
           content:
@@ -3519,7 +3593,7 @@ paths:
               - property.withdrawn
               url: https://example.com/hooks/skautik
             schema:
-              $ref: "#/components/schemas/createWebhook_request"
+              $ref: "#/components/schemas/WebhookInput"
         required: true
       responses:
         "201":
@@ -3782,8 +3856,8 @@ paths:
             example:
               active: false
             schema:
-              $ref: "#/components/schemas/updateWebhook_request"
-        required: false
+              $ref: "#/components/schemas/WebhookUpdate"
+        required: true
       responses:
         "200":
           content:
@@ -3849,15 +3923,6 @@ paths:
         Requires the `webhooks:manage` scope.
       operationId: listDeliveries
       parameters:
-      - description: Webhook identifier.
-        example: whk_1b7e6c19a139404cb173d23fcb3331c4
-        explode: false
-        in: path
-        name: webhook_id
-        required: true
-        schema:
-          type: string
-        style: simple
       - description: Filter by outcome.
         example: succeeded
         explode: true
@@ -3878,9 +3943,17 @@ paths:
         name: limit
         required: false
         schema:
-          default: 100
           type: integer
         style: form
+      - description: Webhook identifier.
+        example: whk_1b7e6c19a139404cb173d23fcb3331c4
+        explode: false
+        in: path
+        name: webhook_id
+        required: true
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
           content:
@@ -4083,6 +4156,26 @@ components:
           type: string
         street:
           type: string
+    Bounds:
+      example:
+        ne_lat: 0.8008281904610115
+        ne_lng: 6.027456183070403
+        sw_lat: 1.4658129805029452
+        sw_lng: 5.962133916683182
+      properties:
+        ne_lat:
+          type: number
+        ne_lng:
+          type: number
+        sw_lat:
+          type: number
+        sw_lng:
+          type: number
+      required:
+      - ne_lat
+      - ne_lng
+      - sw_lat
+      - sw_lng
     Building:
       example:
         condition: condition
@@ -4178,6 +4271,18 @@ components:
       - id
       - max_attempts
       - status
+    DeliveryInput:
+      example:
+        type: type
+        url: url
+      properties:
+        type:
+          type: string
+        url:
+          type: string
+      required:
+      - type
+      - url
     DeliveryList:
       description: Every Delivery record.
       example:
@@ -4302,6 +4407,29 @@ components:
       - format
       - id
       - status
+    ExportInput:
+      example:
+        fields:
+        - fields
+        - fields
+        filters:
+          key: filters
+        format: format
+      properties:
+        fields:
+          items:
+            type: string
+          type: array
+          default: null
+        filters:
+          additionalProperties:
+            type: string
+        format:
+          type: string
+      required:
+      - fields
+      - filters
+      - format
     ExportList:
       description: Every Export record.
       example:
@@ -4399,6 +4527,30 @@ components:
       - id
       - kind
       - status
+    GenerationInput:
+      example:
+        kind: kind
+        prompt: prompt
+        room_type: room_type
+        source_image_id: source_image_id
+        style: style
+      properties:
+        kind:
+          type: string
+        prompt:
+          type: string
+        room_type:
+          type: string
+        source_image_id:
+          type: string
+        style:
+          type: string
+      required:
+      - kind
+      - prompt
+      - room_type
+      - source_image_id
+      - style
     GenerationList:
       description: Every Generation record.
       example:
@@ -4789,6 +4941,38 @@ components:
       - id
       - name
       - updated_at
+    ImportSourceInput:
+      example:
+        deletion_policy: deletion_policy
+        delivery:
+          type: type
+          url: url
+        format: format
+        mapping:
+          key: mapping
+        name: name
+        schedule: schedule
+      properties:
+        deletion_policy:
+          type: string
+        delivery:
+          $ref: "#/components/schemas/DeliveryInput"
+        format:
+          type: string
+        mapping:
+          additionalProperties:
+            type: string
+        name:
+          type: string
+        schedule:
+          type: string
+      required:
+      - deletion_policy
+      - delivery
+      - format
+      - mapping
+      - name
+      - schedule
     ImportSourceList:
       description: Every ImportSource record.
       example:
@@ -4979,6 +5163,14 @@ components:
           $ref: "#/components/schemas/Inquiry"
       required:
       - data
+    InquiryStatusInput:
+      example:
+        status: status
+      properties:
+        status:
+          type: string
+      required:
+      - status
     Listing:
       example:
         available_from: 2000-01-23T04:56:07.000+00:00
@@ -5017,6 +5209,30 @@ components:
       required:
       - status
       - transaction_type
+    ListingInput:
+      example:
+        currency: currency
+        deposit: 9.301444243932576
+        price: 3.616076749251911
+        price_period: price_period
+        service_charges: 2.027123023002322
+        status: status
+        transaction_type: transaction_type
+      properties:
+        currency:
+          type: string
+        deposit:
+          type: number
+        price:
+          type: number
+        price_period:
+          type: string
+        service_charges:
+          type: number
+        status:
+          type: string
+        transaction_type:
+          type: string
     Location:
       example:
         latitude: 3.616076749251911
@@ -5409,6 +5625,109 @@ components:
       - title
       - type
       - updated_at
+    PropertyInput:
+      example:
+        address_city: address_city
+        address_country: address_country
+        address_district: address_district
+        address_number: address_number
+        address_postal_code: address_postal_code
+        address_province: address_province
+        address_street: address_street
+        bathrooms: 0
+        bedrooms: 6
+        condition: condition
+        construction_type: construction_type
+        description: description
+        energy_consumption_kwh: 1.4658129805029452
+        energy_label: energy_label
+        external_id: external_id
+        floor: 5
+        floors_in_building: 5
+        half_bathrooms: 2
+        heating_type: heating_type
+        latitude: 7.061401241503109
+        listing:
+          currency: currency
+          deposit: 9.301444243932576
+          price: 3.616076749251911
+          price_period: price_period
+          service_charges: 2.027123023002322
+          status: status
+          transaction_type: transaction_type
+        living_area_sqm: 4.145608029883936
+        location_precision: location_precision
+        longitude: 7.386281948385884
+        plot_area_sqm: 1.2315135367772556
+        title: title
+        total_rooms: 1
+        type: type
+        usable_area_sqm: 1.4894159098541704
+        year_built: 6
+        year_renovated: 7
+      properties:
+        address_city:
+          type: string
+        address_country:
+          type: string
+        address_district:
+          type: string
+        address_number:
+          type: string
+        address_postal_code:
+          type: string
+        address_province:
+          type: string
+        address_street:
+          type: string
+        bathrooms:
+          type: integer
+        bedrooms:
+          type: integer
+        condition:
+          type: string
+        construction_type:
+          type: string
+        description:
+          type: string
+        energy_consumption_kwh:
+          type: number
+        energy_label:
+          type: string
+        external_id:
+          type: string
+        floor:
+          type: integer
+        floors_in_building:
+          type: integer
+        half_bathrooms:
+          type: integer
+        heating_type:
+          type: string
+        latitude:
+          type: number
+        listing:
+          $ref: "#/components/schemas/ListingInput"
+        living_area_sqm:
+          type: number
+        location_precision:
+          type: string
+        longitude:
+          type: number
+        plot_area_sqm:
+          type: number
+        title:
+          type: string
+        total_rooms:
+          type: integer
+        type:
+          type: string
+        usable_area_sqm:
+          type: number
+        year_built:
+          type: integer
+        year_renovated:
+          type: integer
     PropertyList:
       description: Every Property record.
       example:
@@ -5924,6 +6243,93 @@ components:
           type: integer
         total_rooms:
           type: integer
+    SearchFilters:
+      example:
+        city: city
+        district: district
+        max_price: 5.637376656633329
+        min_bedrooms: 2
+        min_living_area: 7.061401241503109
+        min_price: 9.301444243932576
+        postal_code: postal_code
+        property_type: property_type
+        status: status
+        transaction_type: transaction_type
+      properties:
+        city:
+          type: string
+        district:
+          type: string
+        max_price:
+          type: number
+        min_bedrooms:
+          type: integer
+        min_living_area:
+          type: number
+        min_price:
+          type: number
+        postal_code:
+          type: string
+        property_type:
+          type: string
+        status:
+          type: string
+        transaction_type:
+          type: string
+      required:
+      - city
+      - district
+      - postal_code
+      - property_type
+      - status
+      - transaction_type
+    SearchRequest:
+      example:
+        bounds:
+          ne_lat: 0.8008281904610115
+          ne_lng: 6.027456183070403
+          sw_lat: 1.4658129805029452
+          sw_lng: 5.962133916683182
+        filters:
+          city: city
+          district: district
+          max_price: 5.637376656633329
+          min_bedrooms: 2
+          min_living_area: 7.061401241503109
+          min_price: 9.301444243932576
+          postal_code: postal_code
+          property_type: property_type
+          status: status
+          transaction_type: transaction_type
+        limit: 3
+        polygon:
+        - - 2.027123023002322
+          - 2.027123023002322
+        - - 2.027123023002322
+          - 2.027123023002322
+        query: query
+      properties:
+        bounds:
+          $ref: "#/components/schemas/Bounds"
+        filters:
+          $ref: "#/components/schemas/SearchFilters"
+        limit:
+          type: integer
+        polygon:
+          items:
+            items:
+              type: number
+            type: array
+            default: null
+          type: array
+          default: null
+        query:
+          type: string
+      required:
+      - filters
+      - limit
+      - polygon
+      - query
     Series:
       example:
         city: city
@@ -6030,6 +6436,29 @@ components:
           type: string
       required:
       - type
+    SourceUpdate:
+      example:
+        active: true
+        deletion_policy: deletion_policy
+        fetch_url: fetch_url
+        mapping:
+          key: mapping
+        name: name
+        schedule: schedule
+      properties:
+        active:
+          type: boolean
+        deletion_policy:
+          type: string
+        fetch_url:
+          type: string
+        mapping:
+          additionalProperties:
+            type: string
+        name:
+          type: string
+        schedule:
+          type: string
     Webhook:
       example:
         active: true
@@ -6064,6 +6493,23 @@ components:
       - events
       - id
       - updated_at
+      - url
+    WebhookInput:
+      example:
+        events:
+        - events
+        - events
+        url: url
+      properties:
+        events:
+          items:
+            type: string
+          type: array
+          default: null
+        url:
+          type: string
+      required:
+      - events
       - url
     WebhookList:
       description: Every Webhook record.
@@ -6110,271 +6556,29 @@ components:
           $ref: "#/components/schemas/Webhook"
       required:
       - data
-    createExport_request:
+    WebhookUpdate:
+      example:
+        active: true
+        events:
+        - events
+        - events
+        url: url
       properties:
-        fields:
-          description: Restrict columns. Omit for the full record.
-          example:
-          - id
-          - title
-          - price
-          - address
+        active:
+          type: boolean
+        events:
           items:
             type: string
           type: array
           default: null
-        filters:
-          additionalProperties:
-            nullable: true
-          description: Same keys the list endpoint accepts.
-          example:
-            price_max: 60000000
-            property_type: apartment
-        format:
-          description: Output format. Parquet is named in the schema and is not implemented;
-            asking for it is refused rather than answered with a corrupt file.
-          enum:
-          - ndjson
-          - csv
-          example: ndjson
+        url:
           type: string
-      required:
-      - format
-    createGeneration_request:
-      properties:
-        kind:
-          description: The transformation to apply. floorplan_render is named in the
-            schema and is not implemented; asking for it is refused rather than answered
-            with a fabricated plan.
-          enum:
-          - virtual_staging
-          - decluttering
-          - enhancement
-          example: virtual_staging
-          type: string
-        prompt:
-          description: "Up to 500 characters of additional direction. It is added\
-            \ to the instruction for the chosen kind and never replaces it, so it\
-            \ cannot be used to make the model do something unrelated."
-          example: A bright Scandinavian living room with oak floors and a linen sofa
-          type: string
-        room_type:
-          description: "For virtual_staging: what the room is. Improves the result\
-            \ markedly. Defaults to a generic room."
-          example: living room
-          type: string
-        source_image_id:
-          description: "The image to transform. Must belong to one of your own properties;\
-            \ anything else answers 404, the same as an image that does not exist."
-          example: img_ce1c9e04db6140eda7c6934af60daebb
-          type: string
-        style:
-          description: "For virtual_staging: the furnishing style. Defaults to contemporary."
-          example: scandinavian
-          type: string
-      required:
-      - kind
-      - source_image_id
-    createImportSource_request:
-      properties:
-        deletion_policy:
-          default: explicit_only
-          description: "explicit_only honours deletion markers alone. absence_withdraws\
-            \ also withdraws anything missing from a full delivery, and should only\
-            \ be used where the format is a complete statement of stock."
-          enum:
-          - explicit_only
-          - absence_withdraws
-          example: explicit_only
-          type: string
-        delivery:
-          additionalProperties:
-            nullable: true
-          description: "How data arrives. fetch_url pulls from a URL you give us on\
-            \ a schedule; api_push means you send us each delivery. SFTP drops are\
-            \ named in the schema and are not running yet, so asking for one is refused\
-            \ rather than answered with credentials for a host that would never accept\
-            \ them."
-          example:
-            compression: gzip
-            url: https://example.com/hooks/skautik
-        format:
-          description: Format this source delivers. Only csv and json parse today;
-            the others are named in the schema and are refused here rather than accepted
-            into a connector that would fail every run.
-          enum:
-          - csv
-          - json
-          example: csv
-          type: string
-        mapping:
-          additionalProperties:
-            nullable: true
-          description: "Field mapping, for formats that need one. Omit for OpenImmo\
-            \ and RESO, which are already standardised."
-          example:
-            Kaufpreis: price
-            Objektnummer: external_id
-            Wohnflaeche: living_area
-        name:
-          description: Your own label for the connector.
-          example: Nightly listing sync
-          type: string
-        schedule:
-          description: "How often to pull, for fetched sources. Cron expression in\
-            \ UTC. Ignored for drops and pushes, which run on arrival."
-          example: 15 3 * * *
-          type: string
-      required:
-      - delivery
-      - format
-      - name
     createImport_request:
       properties:
-        dry_run:
-          default: false
-          description: Validate and report what would change without writing anything.
-            Run this first on any migration.
-          example: false
-          type: boolean
         file:
           description: The payload. Mutually exclusive with url.
           example: listings.csv
           format: binary
-          type: string
-        format:
-          description: Which format the payload is in.
-          enum:
-          - openimmo
-          - blm
-          - kyero
-          - csv
-          - json
-          example: openimmo
-          type: string
-        mode:
-          default: incremental
-          description: "incremental updates what the payload contains. full_sync additionally\
-            \ withdraws anything absent, and is refused unless the source is configured\
-            \ for it."
-          enum:
-          - incremental
-          - full_sync
-          example: incremental
-          type: string
-        source_id:
-          description: Apply a stored import source's mapping and settings rather
-            than the defaults.
-          example: src_immoscout
-          type: string
-        url:
-          description: Where to fetch the payload from. Mutually exclusive with file.
-          example: https://example.com/hooks/skautik
-          type: string
-      required:
-      - format
-    updateInquiry_request:
-      properties:
-        status:
-          description: The state to move it to.
-          enum:
-          - new
-          - read
-          - replied
-          - closed
-          - spam
-          example: new
-          type: string
-      required:
-      - status
-    createProperty_request:
-      properties:
-        address:
-          additionalProperties:
-            nullable: true
-          description: At minimum a city and country; more improves geocoding precision.
-          example:
-            city: Berlin
-            country: DE
-            postal_code: "10999"
-            street: Oranienstrasse 12
-        currency:
-          description: ISO 4217 code.
-          example: EUR
-          type: string
-        external_id:
-          description: "Your identifier for this property. Optional, but set it if\
-            \ the record might later arrive through an import: without one the import\
-            \ has nothing to match on and creates a duplicate."
-          example: AG-4471-0812
-          type: string
-        price:
-          description: Amount in minor units.
-          example: 48900000
-          type: integer
-        property_type:
-          description: One of the supported property types.
-          example: apartment
-          type: string
-        title:
-          description: Headline for the listing.
-          example: Top-floor apartment with a south-facing balcony
-          type: string
-        transaction_type:
-          description: sale or rent.
-          example: sale
-          type: string
-      required:
-      - address
-      - currency
-      - price
-      - property_type
-      - title
-      - transaction_type
-    searchProperties_request:
-      properties:
-        bounds:
-          additionalProperties:
-            nullable: true
-          description: "Rectangle with sw_lat, sw_lng, ne_lat, ne_lng. Mutually exclusive\
-            \ with polygon."
-          example:
-            east: 13.4791
-            north: 52.5401
-            south: 52.4812
-            west: 13.3702
-        filters:
-          additionalProperties:
-            nullable: true
-          description: Same keys the list endpoint accepts as query parameters.
-          example:
-            price_max: 60000000
-            property_type: apartment
-        limit:
-          default: 50
-          description: "Results to return, 1 to 200."
-          example: 50
-          type: integer
-        polygon:
-          description: "Closed ring of [longitude, latitude] pairs, GeoJSON order."
-          example:
-          - - 13.3702
-            - 52.4812
-          - - 13.4791
-            - 52.4812
-          - - 13.4791
-            - 52.5401
-          - - 13.3702
-            - 52.5401
-          - - 13.3702
-            - 52.4812
-          items:
-            type: string
-          type: array
-          default: null
-        query:
-          description: Plain-language description of what is wanted.
-          example: "\"quiet two bedroom near a park, needs a home office\""
           type: string
     uploadPropertyImage_request:
       properties:
@@ -6389,46 +6593,6 @@ components:
           type: integer
       required:
       - file
-    createWebhook_request:
-      properties:
-        events:
-          description: Event names to subscribe to. Every name must be one of the
-            events listed above; an unrecognised one is refused rather than silently
-            never firing.
-          example:
-          - property.created
-          - inquiry.created
-          items:
-            type: string
-          type: array
-          default: null
-        url:
-          description: HTTPS endpoint. Plain HTTP is rejected.
-          example: https://example.com/hooks/skautik
-          type: string
-      required:
-      - events
-      - url
-    updateWebhook_request:
-      properties:
-        active:
-          description: False pauses deliveries; the registration and its secret survive.
-          example: true
-          type: boolean
-        events:
-          description: Replaces the whole subscription list rather than adding to
-            it.
-          example:
-          - property.created
-          - property.withdrawn
-          items:
-            type: string
-          type: array
-          default: null
-        url:
-          description: New HTTPS endpoint.
-          example: https://example.com/hooks/skautik
-          type: string
     Problem_errors_inner:
       properties:
         code:

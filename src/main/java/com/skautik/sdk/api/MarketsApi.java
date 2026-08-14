@@ -177,10 +177,12 @@ public class MarketsApi {
    * District-level supply, price distribution, and amenity context.  Requires the &#x60;markets:read&#x60; scope.  Availability: Growth and above.
    * @param marketId Market identifier. (required)
    * @param districtId District identifier. (required)
+   * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
+   * @param propertyType Restrict the figures to one kind of property. (optional)
    * @throws ApiException if fails to make API call
    */
-  public void getDistrict(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId) throws ApiException {
-    getDistrict(marketId, districtId, null);
+  public void getDistrict(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
+    getDistrict(marketId, districtId, period, propertyType, null);
   }
 
   /**
@@ -188,11 +190,13 @@ public class MarketsApi {
    * District-level supply, price distribution, and amenity context.  Requires the &#x60;markets:read&#x60; scope.  Availability: Growth and above.
    * @param marketId Market identifier. (required)
    * @param districtId District identifier. (required)
+   * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
+   * @param propertyType Restrict the figures to one kind of property. (optional)
    * @param headers Optional headers to include in the request
    * @throws ApiException if fails to make API call
    */
-  public void getDistrict(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, Map<String, String> headers) throws ApiException {
-    getDistrictWithHttpInfo(marketId, districtId, headers);
+  public void getDistrict(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    getDistrictWithHttpInfo(marketId, districtId, period, propertyType, headers);
   }
 
   /**
@@ -200,11 +204,13 @@ public class MarketsApi {
    * District-level supply, price distribution, and amenity context.  Requires the &#x60;markets:read&#x60; scope.  Availability: Growth and above.
    * @param marketId Market identifier. (required)
    * @param districtId District identifier. (required)
+   * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
+   * @param propertyType Restrict the figures to one kind of property. (optional)
    * @return ApiResponse&lt;Void&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> getDistrictWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId) throws ApiException {
-    return getDistrictWithHttpInfo(marketId, districtId, null);
+  public ApiResponse<Void> getDistrictWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
+    return getDistrictWithHttpInfo(marketId, districtId, period, propertyType, null);
   }
 
   /**
@@ -212,12 +218,14 @@ public class MarketsApi {
    * District-level supply, price distribution, and amenity context.  Requires the &#x60;markets:read&#x60; scope.  Availability: Growth and above.
    * @param marketId Market identifier. (required)
    * @param districtId District identifier. (required)
+   * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
+   * @param propertyType Restrict the figures to one kind of property. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;Void&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> getDistrictWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getDistrictRequestBuilder(marketId, districtId, headers);
+  public ApiResponse<Void> getDistrictWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getDistrictRequestBuilder(marketId, districtId, period, propertyType, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -253,7 +261,7 @@ public class MarketsApi {
     }
   }
 
-  private HttpRequest.Builder getDistrictRequestBuilder(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder getDistrictRequestBuilder(@javax.annotation.Nonnull String marketId, @javax.annotation.Nonnull String districtId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'marketId' is set
     if (marketId == null) {
       throw new ApiException(400, "Missing the required parameter 'marketId' when calling getDistrict");
@@ -269,7 +277,24 @@ public class MarketsApi {
         .replace("{market_id}", ApiClient.urlEncode(marketId.toString()))
         .replace("{district_id}", ApiClient.urlEncode(districtId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "period";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("period", period));
+    localVarQueryParameterBaseName = "property_type";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("property_type", propertyType));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
 
     localVarRequestBuilder.header("Accept", "application/problem+json");
 
@@ -289,23 +314,27 @@ public class MarketsApi {
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier, such as berlin-de. (required)
+   * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
+   * @param propertyType Restrict the figures to one kind of property. (optional)
    * @return MarketResponse
    * @throws ApiException if fails to make API call
    */
-  public MarketResponse getMarket(@javax.annotation.Nonnull String marketId) throws ApiException {
-    return getMarket(marketId, null);
+  public MarketResponse getMarket(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
+    return getMarket(marketId, period, propertyType, null);
   }
 
   /**
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier, such as berlin-de. (required)
+   * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
+   * @param propertyType Restrict the figures to one kind of property. (optional)
    * @param headers Optional headers to include in the request
    * @return MarketResponse
    * @throws ApiException if fails to make API call
    */
-  public MarketResponse getMarket(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
-    ApiResponse<MarketResponse> localVarResponse = getMarketWithHttpInfo(marketId, headers);
+  public MarketResponse getMarket(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    ApiResponse<MarketResponse> localVarResponse = getMarketWithHttpInfo(marketId, period, propertyType, headers);
     return localVarResponse.getData();
   }
 
@@ -313,23 +342,27 @@ public class MarketsApi {
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier, such as berlin-de. (required)
+   * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
+   * @param propertyType Restrict the figures to one kind of property. (optional)
    * @return ApiResponse&lt;MarketResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId) throws ApiException {
-    return getMarketWithHttpInfo(marketId, null);
+  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType) throws ApiException {
+    return getMarketWithHttpInfo(marketId, period, propertyType, null);
   }
 
   /**
    * Retrieve a market
    * One market with supply and price distribution.  Requires the &#x60;markets:read&#x60; scope.
    * @param marketId Market identifier, such as berlin-de. (required)
+   * @param period Month to report, as YYYY-MM. Defaults to the most recent computed. (optional)
+   * @param propertyType Restrict the figures to one kind of property. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;MarketResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getMarketRequestBuilder(marketId, headers);
+  public ApiResponse<MarketResponse> getMarketWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getMarketRequestBuilder(marketId, period, propertyType, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -376,7 +409,7 @@ public class MarketsApi {
     }
   }
 
-  private HttpRequest.Builder getMarketRequestBuilder(@javax.annotation.Nonnull String marketId, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder getMarketRequestBuilder(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String period, @javax.annotation.Nullable String propertyType, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'marketId' is set
     if (marketId == null) {
       throw new ApiException(400, "Missing the required parameter 'marketId' when calling getMarket");
@@ -387,7 +420,24 @@ public class MarketsApi {
     String localVarPath = "/markets/{city}"
         .replace("{market_id}", ApiClient.urlEncode(marketId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "period";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("period", period));
+    localVarQueryParameterBaseName = "property_type";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("property_type", propertyType));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
 
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
@@ -524,56 +574,44 @@ public class MarketsApi {
   /**
    * List markets
    * Every market with coverage, and how deep that coverage runs.  Call this before hardcoding a market identifier. Coverage expands, and a market absent here has no systematic inventory yet rather than no property.  Requires the &#x60;markets:read&#x60; scope.
-   * @param country ISO 3166-1 alpha-2 filter. (optional)
-   * @param limit Records per page, 1 to 200. (optional, default to 50)
-   * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @return CityList
    * @throws ApiException if fails to make API call
    */
-  public CityList listMarkets(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
-    return listMarkets(country, limit, cursor, null);
+  public CityList listMarkets() throws ApiException {
+    return listMarkets(null);
   }
 
   /**
    * List markets
    * Every market with coverage, and how deep that coverage runs.  Call this before hardcoding a market identifier. Coverage expands, and a market absent here has no systematic inventory yet rather than no property.  Requires the &#x60;markets:read&#x60; scope.
-   * @param country ISO 3166-1 alpha-2 filter. (optional)
-   * @param limit Records per page, 1 to 200. (optional, default to 50)
-   * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @param headers Optional headers to include in the request
    * @return CityList
    * @throws ApiException if fails to make API call
    */
-  public CityList listMarkets(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
-    ApiResponse<CityList> localVarResponse = listMarketsWithHttpInfo(country, limit, cursor, headers);
+  public CityList listMarkets(Map<String, String> headers) throws ApiException {
+    ApiResponse<CityList> localVarResponse = listMarketsWithHttpInfo(headers);
     return localVarResponse.getData();
   }
 
   /**
    * List markets
    * Every market with coverage, and how deep that coverage runs.  Call this before hardcoding a market identifier. Coverage expands, and a market absent here has no systematic inventory yet rather than no property.  Requires the &#x60;markets:read&#x60; scope.
-   * @param country ISO 3166-1 alpha-2 filter. (optional)
-   * @param limit Records per page, 1 to 200. (optional, default to 50)
-   * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @return ApiResponse&lt;CityList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<CityList> listMarketsWithHttpInfo(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor) throws ApiException {
-    return listMarketsWithHttpInfo(country, limit, cursor, null);
+  public ApiResponse<CityList> listMarketsWithHttpInfo() throws ApiException {
+    return listMarketsWithHttpInfo(null);
   }
 
   /**
    * List markets
    * Every market with coverage, and how deep that coverage runs.  Call this before hardcoding a market identifier. Coverage expands, and a market absent here has no systematic inventory yet rather than no property.  Requires the &#x60;markets:read&#x60; scope.
-   * @param country ISO 3166-1 alpha-2 filter. (optional)
-   * @param limit Records per page, 1 to 200. (optional, default to 50)
-   * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;CityList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<CityList> listMarketsWithHttpInfo(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listMarketsRequestBuilder(country, limit, cursor, headers);
+  public ApiResponse<CityList> listMarketsWithHttpInfo(Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listMarketsRequestBuilder(headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -620,32 +658,13 @@ public class MarketsApi {
     }
   }
 
-  private HttpRequest.Builder listMarketsRequestBuilder(@javax.annotation.Nullable String country, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder listMarketsRequestBuilder(Map<String, String> headers) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/markets";
 
-    List<Pair> localVarQueryParams = new ArrayList<>();
-    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "country";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("country", country));
-    localVarQueryParameterBaseName = "limit";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("limit", limit));
-    localVarQueryParameterBaseName = "cursor";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("cursor", cursor));
-
-    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
-      StringJoiner queryJoiner = new StringJoiner("&");
-      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
-      if (localVarQueryStringJoiner.length() != 0) {
-        queryJoiner.add(localVarQueryStringJoiner.toString());
-      }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
-    } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-    }
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
@@ -667,12 +686,12 @@ public class MarketsApi {
    * @param marketId Market identifier. (required)
    * @param propertyType Narrow to one property type. (optional)
    * @param transactionType sale or rent. (optional)
-   * @param interval Granularity of the returned series. (optional, default to month)
+   * @param interval Granularity of the returned series. (optional)
    * @param since RFC 3339 lower bound on the series. (optional)
    * @return SeriesResponse
    * @throws ApiException if fails to make API call
    */
-  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
+  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
     return marketStatistics(marketId, propertyType, transactionType, interval, since, null);
   }
 
@@ -682,13 +701,13 @@ public class MarketsApi {
    * @param marketId Market identifier. (required)
    * @param propertyType Narrow to one property type. (optional)
    * @param transactionType sale or rent. (optional)
-   * @param interval Granularity of the returned series. (optional, default to month)
+   * @param interval Granularity of the returned series. (optional)
    * @param since RFC 3339 lower bound on the series. (optional)
    * @param headers Optional headers to include in the request
    * @return SeriesResponse
    * @throws ApiException if fails to make API call
    */
-  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
+  public SeriesResponse marketStatistics(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
     ApiResponse<SeriesResponse> localVarResponse = marketStatisticsWithHttpInfo(marketId, propertyType, transactionType, interval, since, headers);
     return localVarResponse.getData();
   }
@@ -699,12 +718,12 @@ public class MarketsApi {
    * @param marketId Market identifier. (required)
    * @param propertyType Narrow to one property type. (optional)
    * @param transactionType sale or rent. (optional)
-   * @param interval Granularity of the returned series. (optional, default to month)
+   * @param interval Granularity of the returned series. (optional)
    * @param since RFC 3339 lower bound on the series. (optional)
    * @return ApiResponse&lt;SeriesResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
+  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since) throws ApiException {
     return marketStatisticsWithHttpInfo(marketId, propertyType, transactionType, interval, since, null);
   }
 
@@ -714,13 +733,13 @@ public class MarketsApi {
    * @param marketId Market identifier. (required)
    * @param propertyType Narrow to one property type. (optional)
    * @param transactionType sale or rent. (optional)
-   * @param interval Granularity of the returned series. (optional, default to month)
+   * @param interval Granularity of the returned series. (optional)
    * @param since RFC 3339 lower bound on the series. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;SeriesResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
+  public ApiResponse<SeriesResponse> marketStatisticsWithHttpInfo(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = marketStatisticsRequestBuilder(marketId, propertyType, transactionType, interval, since, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -768,7 +787,7 @@ public class MarketsApi {
     }
   }
 
-  private HttpRequest.Builder marketStatisticsRequestBuilder(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable List<String> propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder marketStatisticsRequestBuilder(@javax.annotation.Nonnull String marketId, @javax.annotation.Nullable String propertyType, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String interval, @javax.annotation.Nullable String since, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'marketId' is set
     if (marketId == null) {
       throw new ApiException(400, "Missing the required parameter 'marketId' when calling marketStatistics");
@@ -783,7 +802,7 @@ public class MarketsApi {
     StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     String localVarQueryParameterBaseName;
     localVarQueryParameterBaseName = "property_type";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("multi", "property_type", propertyType));
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("property_type", propertyType));
     localVarQueryParameterBaseName = "transaction_type";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("transaction_type", transactionType));
     localVarQueryParameterBaseName = "interval";

@@ -32,14 +32,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * CreateWebhookRequest
+ * WebhookInput
  */
 @JsonPropertyOrder({
-  CreateWebhookRequest.JSON_PROPERTY_EVENTS,
-  CreateWebhookRequest.JSON_PROPERTY_URL
+  WebhookInput.JSON_PROPERTY_EVENTS,
+  WebhookInput.JSON_PROPERTY_URL
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class CreateWebhookRequest {
+public class WebhookInput {
   public static final String JSON_PROPERTY_EVENTS = "events";
   @javax.annotation.Nonnull
   private List<String> events = new ArrayList<>();
@@ -48,15 +48,15 @@ public class CreateWebhookRequest {
   @javax.annotation.Nonnull
   private String url;
 
-  public CreateWebhookRequest() { 
+  public WebhookInput() { 
   }
 
-  public CreateWebhookRequest events(@javax.annotation.Nonnull List<String> events) {
+  public WebhookInput events(@javax.annotation.Nonnull List<String> events) {
     this.events = events;
     return this;
   }
 
-  public CreateWebhookRequest addEventsItem(String eventsItem) {
+  public WebhookInput addEventsItem(String eventsItem) {
     if (this.events == null) {
       this.events = new ArrayList<>();
     }
@@ -65,7 +65,7 @@ public class CreateWebhookRequest {
   }
 
   /**
-   * Event names to subscribe to. Every name must be one of the events listed above; an unrecognised one is refused rather than silently never firing.
+   * Get events
    * @return events
    */
   @javax.annotation.Nonnull
@@ -83,13 +83,13 @@ public class CreateWebhookRequest {
   }
 
 
-  public CreateWebhookRequest url(@javax.annotation.Nonnull String url) {
+  public WebhookInput url(@javax.annotation.Nonnull String url) {
     this.url = url;
     return this;
   }
 
   /**
-   * HTTPS endpoint. Plain HTTP is rejected.
+   * Get url
    * @return url
    */
   @javax.annotation.Nonnull
@@ -108,7 +108,7 @@ public class CreateWebhookRequest {
 
 
   /**
-   * Return true if this createWebhook_request object is equal to o.
+   * Return true if this WebhookInput object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -118,9 +118,9 @@ public class CreateWebhookRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateWebhookRequest createWebhookRequest = (CreateWebhookRequest) o;
-    return Objects.equals(this.events, createWebhookRequest.events) &&
-        Objects.equals(this.url, createWebhookRequest.url);
+    WebhookInput webhookInput = (WebhookInput) o;
+    return Objects.equals(this.events, webhookInput.events) &&
+        Objects.equals(this.url, webhookInput.url);
   }
 
   @Override
@@ -131,7 +131,7 @@ public class CreateWebhookRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateWebhookRequest {\n");
+    sb.append("class WebhookInput {\n");
     sb.append("    events: ").append(toIndentedString(events)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("}");

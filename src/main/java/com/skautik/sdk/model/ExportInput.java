@@ -34,71 +34,36 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * CreateExportRequest
+ * ExportInput
  */
 @JsonPropertyOrder({
-  CreateExportRequest.JSON_PROPERTY_FIELDS,
-  CreateExportRequest.JSON_PROPERTY_FILTERS,
-  CreateExportRequest.JSON_PROPERTY_FORMAT
+  ExportInput.JSON_PROPERTY_FIELDS,
+  ExportInput.JSON_PROPERTY_FILTERS,
+  ExportInput.JSON_PROPERTY_FORMAT
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class CreateExportRequest {
+public class ExportInput {
   public static final String JSON_PROPERTY_FIELDS = "fields";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private List<String> fields = new ArrayList<>();
 
   public static final String JSON_PROPERTY_FILTERS = "filters";
-  @javax.annotation.Nullable
-  private Map<String, Object> filters = new HashMap<>();
-
-  /**
-   * Output format. Parquet is named in the schema and is not implemented; asking for it is refused rather than answered with a corrupt file.
-   */
-  public enum FormatEnum {
-    NDJSON(String.valueOf("ndjson")),
-    
-    CSV(String.valueOf("csv"));
-
-    private String value;
-
-    FormatEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static FormatEnum fromValue(String value) {
-      for (FormatEnum b : FormatEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
+  @javax.annotation.Nonnull
+  private Map<String, String> filters = new HashMap<>();
 
   public static final String JSON_PROPERTY_FORMAT = "format";
   @javax.annotation.Nonnull
-  private FormatEnum format;
+  private String format;
 
-  public CreateExportRequest() { 
+  public ExportInput() { 
   }
 
-  public CreateExportRequest fields(@javax.annotation.Nullable List<String> fields) {
+  public ExportInput fields(@javax.annotation.Nonnull List<String> fields) {
     this.fields = fields;
     return this;
   }
 
-  public CreateExportRequest addFieldsItem(String fieldsItem) {
+  public ExportInput addFieldsItem(String fieldsItem) {
     if (this.fields == null) {
       this.fields = new ArrayList<>();
     }
@@ -107,30 +72,30 @@ public class CreateExportRequest {
   }
 
   /**
-   * Restrict columns. Omit for the full record.
+   * Get fields
    * @return fields
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<String> getFields() {
     return fields;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFields(@javax.annotation.Nullable List<String> fields) {
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFields(@javax.annotation.Nonnull List<String> fields) {
     this.fields = fields;
   }
 
 
-  public CreateExportRequest filters(@javax.annotation.Nullable Map<String, Object> filters) {
+  public ExportInput filters(@javax.annotation.Nonnull Map<String, String> filters) {
     this.filters = filters;
     return this;
   }
 
-  public CreateExportRequest putFiltersItem(String key, Object filtersItem) {
+  public ExportInput putFiltersItem(String key, String filtersItem) {
     if (this.filters == null) {
       this.filters = new HashMap<>();
     }
@@ -139,50 +104,50 @@ public class CreateExportRequest {
   }
 
   /**
-   * Same keys the list endpoint accepts.
+   * Get filters
    * @return filters
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = false)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public Map<String, Object> getFilters() {
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public Map<String, String> getFilters() {
     return filters;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = false)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFilters(@javax.annotation.Nullable Map<String, Object> filters) {
+  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFilters(@javax.annotation.Nonnull Map<String, String> filters) {
     this.filters = filters;
   }
 
 
-  public CreateExportRequest format(@javax.annotation.Nonnull FormatEnum format) {
+  public ExportInput format(@javax.annotation.Nonnull String format) {
     this.format = format;
     return this;
   }
 
   /**
-   * Output format. Parquet is named in the schema and is not implemented; asking for it is refused rather than answered with a corrupt file.
+   * Get format
    * @return format
    */
   @javax.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_FORMAT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public FormatEnum getFormat() {
+  public String getFormat() {
     return format;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_FORMAT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFormat(@javax.annotation.Nonnull FormatEnum format) {
+  public void setFormat(@javax.annotation.Nonnull String format) {
     this.format = format;
   }
 
 
   /**
-   * Return true if this createExport_request object is equal to o.
+   * Return true if this ExportInput object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -192,10 +157,10 @@ public class CreateExportRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateExportRequest createExportRequest = (CreateExportRequest) o;
-    return Objects.equals(this.fields, createExportRequest.fields) &&
-        Objects.equals(this.filters, createExportRequest.filters) &&
-        Objects.equals(this.format, createExportRequest.format);
+    ExportInput exportInput = (ExportInput) o;
+    return Objects.equals(this.fields, exportInput.fields) &&
+        Objects.equals(this.filters, exportInput.filters) &&
+        Objects.equals(this.format, exportInput.format);
   }
 
   @Override
@@ -206,7 +171,7 @@ public class CreateExportRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateExportRequest {\n");
+    sb.append("class ExportInput {\n");
     sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    format: ").append(toIndentedString(format)).append("\n");

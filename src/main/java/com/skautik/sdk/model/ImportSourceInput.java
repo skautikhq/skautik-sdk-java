@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.skautik.sdk.model.DeliveryInput;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,201 +33,123 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * CreateImportSourceRequest
+ * ImportSourceInput
  */
 @JsonPropertyOrder({
-  CreateImportSourceRequest.JSON_PROPERTY_DELETION_POLICY,
-  CreateImportSourceRequest.JSON_PROPERTY_DELIVERY,
-  CreateImportSourceRequest.JSON_PROPERTY_FORMAT,
-  CreateImportSourceRequest.JSON_PROPERTY_MAPPING,
-  CreateImportSourceRequest.JSON_PROPERTY_NAME,
-  CreateImportSourceRequest.JSON_PROPERTY_SCHEDULE
+  ImportSourceInput.JSON_PROPERTY_DELETION_POLICY,
+  ImportSourceInput.JSON_PROPERTY_DELIVERY,
+  ImportSourceInput.JSON_PROPERTY_FORMAT,
+  ImportSourceInput.JSON_PROPERTY_MAPPING,
+  ImportSourceInput.JSON_PROPERTY_NAME,
+  ImportSourceInput.JSON_PROPERTY_SCHEDULE
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class CreateImportSourceRequest {
-  /**
-   * explicit_only honours deletion markers alone. absence_withdraws also withdraws anything missing from a full delivery, and should only be used where the format is a complete statement of stock.
-   */
-  public enum DeletionPolicyEnum {
-    EXPLICIT_ONLY(String.valueOf("explicit_only")),
-    
-    ABSENCE_WITHDRAWS(String.valueOf("absence_withdraws"));
-
-    private String value;
-
-    DeletionPolicyEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static DeletionPolicyEnum fromValue(String value) {
-      for (DeletionPolicyEnum b : DeletionPolicyEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
+public class ImportSourceInput {
   public static final String JSON_PROPERTY_DELETION_POLICY = "deletion_policy";
-  @javax.annotation.Nullable
-  private DeletionPolicyEnum deletionPolicy = DeletionPolicyEnum.EXPLICIT_ONLY;
+  @javax.annotation.Nonnull
+  private String deletionPolicy;
 
   public static final String JSON_PROPERTY_DELIVERY = "delivery";
   @javax.annotation.Nonnull
-  private Map<String, Object> delivery = new HashMap<>();
-
-  /**
-   * Format this source delivers. Only csv and json parse today; the others are named in the schema and are refused here rather than accepted into a connector that would fail every run.
-   */
-  public enum FormatEnum {
-    CSV(String.valueOf("csv")),
-    
-    JSON(String.valueOf("json"));
-
-    private String value;
-
-    FormatEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static FormatEnum fromValue(String value) {
-      for (FormatEnum b : FormatEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
+  private DeliveryInput delivery;
 
   public static final String JSON_PROPERTY_FORMAT = "format";
   @javax.annotation.Nonnull
-  private FormatEnum format;
+  private String format;
 
   public static final String JSON_PROPERTY_MAPPING = "mapping";
-  @javax.annotation.Nullable
-  private Map<String, Object> mapping = new HashMap<>();
+  @javax.annotation.Nonnull
+  private Map<String, String> mapping = new HashMap<>();
 
   public static final String JSON_PROPERTY_NAME = "name";
   @javax.annotation.Nonnull
   private String name;
 
   public static final String JSON_PROPERTY_SCHEDULE = "schedule";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String schedule;
 
-  public CreateImportSourceRequest() { 
+  public ImportSourceInput() { 
   }
 
-  public CreateImportSourceRequest deletionPolicy(@javax.annotation.Nullable DeletionPolicyEnum deletionPolicy) {
+  public ImportSourceInput deletionPolicy(@javax.annotation.Nonnull String deletionPolicy) {
     this.deletionPolicy = deletionPolicy;
     return this;
   }
 
   /**
-   * explicit_only honours deletion markers alone. absence_withdraws also withdraws anything missing from a full delivery, and should only be used where the format is a complete statement of stock.
+   * Get deletionPolicy
    * @return deletionPolicy
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_DELETION_POLICY, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public DeletionPolicyEnum getDeletionPolicy() {
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_DELETION_POLICY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public String getDeletionPolicy() {
     return deletionPolicy;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_DELETION_POLICY, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDeletionPolicy(@javax.annotation.Nullable DeletionPolicyEnum deletionPolicy) {
+  @JsonProperty(value = JSON_PROPERTY_DELETION_POLICY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setDeletionPolicy(@javax.annotation.Nonnull String deletionPolicy) {
     this.deletionPolicy = deletionPolicy;
   }
 
 
-  public CreateImportSourceRequest delivery(@javax.annotation.Nonnull Map<String, Object> delivery) {
+  public ImportSourceInput delivery(@javax.annotation.Nonnull DeliveryInput delivery) {
     this.delivery = delivery;
     return this;
   }
 
-  public CreateImportSourceRequest putDeliveryItem(String key, Object deliveryItem) {
-    if (this.delivery == null) {
-      this.delivery = new HashMap<>();
-    }
-    this.delivery.put(key, deliveryItem);
-    return this;
-  }
-
   /**
-   * How data arrives. fetch_url pulls from a URL you give us on a schedule; api_push means you send us each delivery. SFTP drops are named in the schema and are not running yet, so asking for one is refused rather than answered with credentials for a host that would never accept them.
+   * Get delivery
    * @return delivery
    */
   @javax.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_DELIVERY, required = true)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.ALWAYS)
-  public Map<String, Object> getDelivery() {
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public DeliveryInput getDelivery() {
     return delivery;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_DELIVERY, required = true)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.ALWAYS)
-  public void setDelivery(@javax.annotation.Nonnull Map<String, Object> delivery) {
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setDelivery(@javax.annotation.Nonnull DeliveryInput delivery) {
     this.delivery = delivery;
   }
 
 
-  public CreateImportSourceRequest format(@javax.annotation.Nonnull FormatEnum format) {
+  public ImportSourceInput format(@javax.annotation.Nonnull String format) {
     this.format = format;
     return this;
   }
 
   /**
-   * Format this source delivers. Only csv and json parse today; the others are named in the schema and are refused here rather than accepted into a connector that would fail every run.
+   * Get format
    * @return format
    */
   @javax.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_FORMAT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public FormatEnum getFormat() {
+  public String getFormat() {
     return format;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_FORMAT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFormat(@javax.annotation.Nonnull FormatEnum format) {
+  public void setFormat(@javax.annotation.Nonnull String format) {
     this.format = format;
   }
 
 
-  public CreateImportSourceRequest mapping(@javax.annotation.Nullable Map<String, Object> mapping) {
+  public ImportSourceInput mapping(@javax.annotation.Nonnull Map<String, String> mapping) {
     this.mapping = mapping;
     return this;
   }
 
-  public CreateImportSourceRequest putMappingItem(String key, Object mappingItem) {
+  public ImportSourceInput putMappingItem(String key, String mappingItem) {
     if (this.mapping == null) {
       this.mapping = new HashMap<>();
     }
@@ -235,31 +158,31 @@ public class CreateImportSourceRequest {
   }
 
   /**
-   * Field mapping, for formats that need one. Omit for OpenImmo and RESO, which are already standardised.
+   * Get mapping
    * @return mapping
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_MAPPING, required = false)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public Map<String, Object> getMapping() {
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_MAPPING, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public Map<String, String> getMapping() {
     return mapping;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_MAPPING, required = false)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMapping(@javax.annotation.Nullable Map<String, Object> mapping) {
+  @JsonProperty(value = JSON_PROPERTY_MAPPING, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setMapping(@javax.annotation.Nonnull Map<String, String> mapping) {
     this.mapping = mapping;
   }
 
 
-  public CreateImportSourceRequest name(@javax.annotation.Nonnull String name) {
+  public ImportSourceInput name(@javax.annotation.Nonnull String name) {
     this.name = name;
     return this;
   }
 
   /**
-   * Your own label for the connector.
+   * Get name
    * @return name
    */
   @javax.annotation.Nonnull
@@ -277,32 +200,32 @@ public class CreateImportSourceRequest {
   }
 
 
-  public CreateImportSourceRequest schedule(@javax.annotation.Nullable String schedule) {
+  public ImportSourceInput schedule(@javax.annotation.Nonnull String schedule) {
     this.schedule = schedule;
     return this;
   }
 
   /**
-   * How often to pull, for fetched sources. Cron expression in UTC. Ignored for drops and pushes, which run on arrival.
+   * Get schedule
    * @return schedule
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_SCHEDULE, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_SCHEDULE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getSchedule() {
     return schedule;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_SCHEDULE, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSchedule(@javax.annotation.Nullable String schedule) {
+  @JsonProperty(value = JSON_PROPERTY_SCHEDULE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setSchedule(@javax.annotation.Nonnull String schedule) {
     this.schedule = schedule;
   }
 
 
   /**
-   * Return true if this createImportSource_request object is equal to o.
+   * Return true if this ImportSourceInput object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -312,13 +235,13 @@ public class CreateImportSourceRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateImportSourceRequest createImportSourceRequest = (CreateImportSourceRequest) o;
-    return Objects.equals(this.deletionPolicy, createImportSourceRequest.deletionPolicy) &&
-        Objects.equals(this.delivery, createImportSourceRequest.delivery) &&
-        Objects.equals(this.format, createImportSourceRequest.format) &&
-        Objects.equals(this.mapping, createImportSourceRequest.mapping) &&
-        Objects.equals(this.name, createImportSourceRequest.name) &&
-        Objects.equals(this.schedule, createImportSourceRequest.schedule);
+    ImportSourceInput importSourceInput = (ImportSourceInput) o;
+    return Objects.equals(this.deletionPolicy, importSourceInput.deletionPolicy) &&
+        Objects.equals(this.delivery, importSourceInput.delivery) &&
+        Objects.equals(this.format, importSourceInput.format) &&
+        Objects.equals(this.mapping, importSourceInput.mapping) &&
+        Objects.equals(this.name, importSourceInput.name) &&
+        Objects.equals(this.schedule, importSourceInput.schedule);
   }
 
   @Override
@@ -329,7 +252,7 @@ public class CreateImportSourceRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateImportSourceRequest {\n");
+    sb.append("class ImportSourceInput {\n");
     sb.append("    deletionPolicy: ").append(toIndentedString(deletionPolicy)).append("\n");
     sb.append("    delivery: ").append(toIndentedString(delivery)).append("\n");
     sb.append("    format: ").append(toIndentedString(format)).append("\n");
@@ -387,11 +310,7 @@ public class CreateImportSourceRequest {
 
     // add `delivery` to the URL query string
     if (getDelivery() != null) {
-      for (String _key : getDelivery().keySet()) {
-        joiner.add(String.format(java.util.Locale.ROOT, "%sdelivery%s%s=%s", prefix, suffix,
-            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, _key, containerSuffix),
-            getDelivery().get(_key), ApiClient.urlEncode(ApiClient.valueToString(getDelivery().get(_key)))));
-      }
+      joiner.add(getDelivery().toUrlQueryString(prefix + "delivery" + suffix));
     }
 
     // add `format` to the URL query string

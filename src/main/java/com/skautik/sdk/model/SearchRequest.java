@@ -24,144 +24,129 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.skautik.sdk.model.Bounds;
+import com.skautik.sdk.model.SearchFilters;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 import com.skautik.sdk.ApiClient;
 /**
- * SearchPropertiesRequest
+ * SearchRequest
  */
 @JsonPropertyOrder({
-  SearchPropertiesRequest.JSON_PROPERTY_BOUNDS,
-  SearchPropertiesRequest.JSON_PROPERTY_FILTERS,
-  SearchPropertiesRequest.JSON_PROPERTY_LIMIT,
-  SearchPropertiesRequest.JSON_PROPERTY_POLYGON,
-  SearchPropertiesRequest.JSON_PROPERTY_QUERY
+  SearchRequest.JSON_PROPERTY_BOUNDS,
+  SearchRequest.JSON_PROPERTY_FILTERS,
+  SearchRequest.JSON_PROPERTY_LIMIT,
+  SearchRequest.JSON_PROPERTY_POLYGON,
+  SearchRequest.JSON_PROPERTY_QUERY
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class SearchPropertiesRequest {
+public class SearchRequest {
   public static final String JSON_PROPERTY_BOUNDS = "bounds";
   @javax.annotation.Nullable
-  private Map<String, Object> bounds = new HashMap<>();
+  private Bounds bounds;
 
   public static final String JSON_PROPERTY_FILTERS = "filters";
-  @javax.annotation.Nullable
-  private Map<String, Object> filters = new HashMap<>();
+  @javax.annotation.Nonnull
+  private SearchFilters filters;
 
   public static final String JSON_PROPERTY_LIMIT = "limit";
-  @javax.annotation.Nullable
-  private Integer limit = 50;
+  @javax.annotation.Nonnull
+  private Integer limit;
 
   public static final String JSON_PROPERTY_POLYGON = "polygon";
-  @javax.annotation.Nullable
-  private List<String> polygon = new ArrayList<>();
+  @javax.annotation.Nonnull
+  private List<List<BigDecimal>> polygon = new ArrayList<>();
 
   public static final String JSON_PROPERTY_QUERY = "query";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String query;
 
-  public SearchPropertiesRequest() { 
+  public SearchRequest() { 
   }
 
-  public SearchPropertiesRequest bounds(@javax.annotation.Nullable Map<String, Object> bounds) {
+  public SearchRequest bounds(@javax.annotation.Nullable Bounds bounds) {
     this.bounds = bounds;
     return this;
   }
 
-  public SearchPropertiesRequest putBoundsItem(String key, Object boundsItem) {
-    if (this.bounds == null) {
-      this.bounds = new HashMap<>();
-    }
-    this.bounds.put(key, boundsItem);
-    return this;
-  }
-
   /**
-   * Rectangle with sw_lat, sw_lng, ne_lat, ne_lng. Mutually exclusive with polygon.
+   * Get bounds
    * @return bounds
    */
   @javax.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_BOUNDS, required = false)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public Map<String, Object> getBounds() {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Bounds getBounds() {
     return bounds;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_BOUNDS, required = false)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public void setBounds(@javax.annotation.Nullable Map<String, Object> bounds) {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBounds(@javax.annotation.Nullable Bounds bounds) {
     this.bounds = bounds;
   }
 
 
-  public SearchPropertiesRequest filters(@javax.annotation.Nullable Map<String, Object> filters) {
+  public SearchRequest filters(@javax.annotation.Nonnull SearchFilters filters) {
     this.filters = filters;
-    return this;
-  }
-
-  public SearchPropertiesRequest putFiltersItem(String key, Object filtersItem) {
-    if (this.filters == null) {
-      this.filters = new HashMap<>();
-    }
-    this.filters.put(key, filtersItem);
     return this;
   }
 
   /**
-   * Same keys the list endpoint accepts as query parameters.
+   * Get filters
    * @return filters
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = false)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public Map<String, Object> getFilters() {
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public SearchFilters getFilters() {
     return filters;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = false)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFilters(@javax.annotation.Nullable Map<String, Object> filters) {
+  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFilters(@javax.annotation.Nonnull SearchFilters filters) {
     this.filters = filters;
   }
 
 
-  public SearchPropertiesRequest limit(@javax.annotation.Nullable Integer limit) {
+  public SearchRequest limit(@javax.annotation.Nonnull Integer limit) {
     this.limit = limit;
     return this;
   }
 
   /**
-   * Results to return, 1 to 200.
+   * Get limit
    * @return limit
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getLimit() {
     return limit;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setLimit(@javax.annotation.Nullable Integer limit) {
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLimit(@javax.annotation.Nonnull Integer limit) {
     this.limit = limit;
   }
 
 
-  public SearchPropertiesRequest polygon(@javax.annotation.Nullable List<String> polygon) {
+  public SearchRequest polygon(@javax.annotation.Nonnull List<List<BigDecimal>> polygon) {
     this.polygon = polygon;
     return this;
   }
 
-  public SearchPropertiesRequest addPolygonItem(String polygonItem) {
+  public SearchRequest addPolygonItem(List<BigDecimal> polygonItem) {
     if (this.polygon == null) {
       this.polygon = new ArrayList<>();
     }
@@ -170,50 +155,50 @@ public class SearchPropertiesRequest {
   }
 
   /**
-   * Closed ring of [longitude, latitude] pairs, GeoJSON order.
+   * Get polygon
    * @return polygon
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_POLYGON, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public List<String> getPolygon() {
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_POLYGON, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public List<List<BigDecimal>> getPolygon() {
     return polygon;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_POLYGON, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPolygon(@javax.annotation.Nullable List<String> polygon) {
+  @JsonProperty(value = JSON_PROPERTY_POLYGON, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setPolygon(@javax.annotation.Nonnull List<List<BigDecimal>> polygon) {
     this.polygon = polygon;
   }
 
 
-  public SearchPropertiesRequest query(@javax.annotation.Nullable String query) {
+  public SearchRequest query(@javax.annotation.Nonnull String query) {
     this.query = query;
     return this;
   }
 
   /**
-   * Plain-language description of what is wanted.
+   * Get query
    * @return query
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_QUERY, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_QUERY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getQuery() {
     return query;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_QUERY, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setQuery(@javax.annotation.Nullable String query) {
+  @JsonProperty(value = JSON_PROPERTY_QUERY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setQuery(@javax.annotation.Nonnull String query) {
     this.query = query;
   }
 
 
   /**
-   * Return true if this searchProperties_request object is equal to o.
+   * Return true if this SearchRequest object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -223,12 +208,12 @@ public class SearchPropertiesRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SearchPropertiesRequest searchPropertiesRequest = (SearchPropertiesRequest) o;
-    return Objects.equals(this.bounds, searchPropertiesRequest.bounds) &&
-        Objects.equals(this.filters, searchPropertiesRequest.filters) &&
-        Objects.equals(this.limit, searchPropertiesRequest.limit) &&
-        Objects.equals(this.polygon, searchPropertiesRequest.polygon) &&
-        Objects.equals(this.query, searchPropertiesRequest.query);
+    SearchRequest searchRequest = (SearchRequest) o;
+    return Objects.equals(this.bounds, searchRequest.bounds) &&
+        Objects.equals(this.filters, searchRequest.filters) &&
+        Objects.equals(this.limit, searchRequest.limit) &&
+        Objects.equals(this.polygon, searchRequest.polygon) &&
+        Objects.equals(this.query, searchRequest.query);
   }
 
   @Override
@@ -239,7 +224,7 @@ public class SearchPropertiesRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SearchPropertiesRequest {\n");
+    sb.append("class SearchRequest {\n");
     sb.append("    bounds: ").append(toIndentedString(bounds)).append("\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    limit: ").append(toIndentedString(limit)).append("\n");
@@ -291,20 +276,12 @@ public class SearchPropertiesRequest {
 
     // add `bounds` to the URL query string
     if (getBounds() != null) {
-      for (String _key : getBounds().keySet()) {
-        joiner.add(String.format(java.util.Locale.ROOT, "%sbounds%s%s=%s", prefix, suffix,
-            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, _key, containerSuffix),
-            getBounds().get(_key), ApiClient.urlEncode(ApiClient.valueToString(getBounds().get(_key)))));
-      }
+      joiner.add(getBounds().toUrlQueryString(prefix + "bounds" + suffix));
     }
 
     // add `filters` to the URL query string
     if (getFilters() != null) {
-      for (String _key : getFilters().keySet()) {
-        joiner.add(String.format(java.util.Locale.ROOT, "%sfilters%s%s=%s", prefix, suffix,
-            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, _key, containerSuffix),
-            getFilters().get(_key), ApiClient.urlEncode(ApiClient.valueToString(getFilters().get(_key)))));
-      }
+      joiner.add(getFilters().toUrlQueryString(prefix + "filters" + suffix));
     }
 
     // add `limit` to the URL query string
@@ -315,9 +292,11 @@ public class SearchPropertiesRequest {
     // add `polygon` to the URL query string
     if (getPolygon() != null) {
       for (int i = 0; i < getPolygon().size(); i++) {
-        joiner.add(String.format(java.util.Locale.ROOT, "%spolygon%s%s=%s", prefix, suffix,
-            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
-            ApiClient.urlEncode(ApiClient.valueToString(getPolygon().get(i)))));
+        if (getPolygon().get(i) != null) {
+          joiner.add(String.format(java.util.Locale.ROOT, "%spolygon%s%s=%s", prefix, suffix,
+              "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+              ApiClient.urlEncode(ApiClient.valueToString(getPolygon().get(i)))));
+        }
       }
     }
 

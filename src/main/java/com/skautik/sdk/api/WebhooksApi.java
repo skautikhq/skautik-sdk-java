@@ -18,13 +18,13 @@ import com.skautik.sdk.ApiResponse;
 import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
-import com.skautik.sdk.model.CreateWebhookRequest;
 import com.skautik.sdk.model.DeliveryList;
 import com.skautik.sdk.model.Envelope;
 import com.skautik.sdk.model.Problem;
-import com.skautik.sdk.model.UpdateWebhookRequest;
+import com.skautik.sdk.model.WebhookInput;
 import com.skautik.sdk.model.WebhookList;
 import com.skautik.sdk.model.WebhookResponse;
+import com.skautik.sdk.model.WebhookUpdate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -177,48 +177,48 @@ public class WebhooksApi {
   /**
    * Create a webhook
    * Register an HTTPS endpoint for a set of events.  The response includes a signing secret, shown once. Store it immediately: every delivery is signed with it, and a handler that does not verify the signature will accept forged calls from anyone who learns the URL.  Requires the &#x60;webhooks:manage&#x60; scope.
-   * @param createWebhookRequest  (required)
+   * @param webhookInput  (required)
    * @return Envelope
    * @throws ApiException if fails to make API call
    */
-  public Envelope createWebhook(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
-    return createWebhook(createWebhookRequest, null);
+  public Envelope createWebhook(@javax.annotation.Nonnull WebhookInput webhookInput) throws ApiException {
+    return createWebhook(webhookInput, null);
   }
 
   /**
    * Create a webhook
    * Register an HTTPS endpoint for a set of events.  The response includes a signing secret, shown once. Store it immediately: every delivery is signed with it, and a handler that does not verify the signature will accept forged calls from anyone who learns the URL.  Requires the &#x60;webhooks:manage&#x60; scope.
-   * @param createWebhookRequest  (required)
+   * @param webhookInput  (required)
    * @param headers Optional headers to include in the request
    * @return Envelope
    * @throws ApiException if fails to make API call
    */
-  public Envelope createWebhook(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = createWebhookWithHttpInfo(createWebhookRequest, headers);
+  public Envelope createWebhook(@javax.annotation.Nonnull WebhookInput webhookInput, Map<String, String> headers) throws ApiException {
+    ApiResponse<Envelope> localVarResponse = createWebhookWithHttpInfo(webhookInput, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Create a webhook
    * Register an HTTPS endpoint for a set of events.  The response includes a signing secret, shown once. Store it immediately: every delivery is signed with it, and a handler that does not verify the signature will accept forged calls from anyone who learns the URL.  Requires the &#x60;webhooks:manage&#x60; scope.
-   * @param createWebhookRequest  (required)
+   * @param webhookInput  (required)
    * @return ApiResponse&lt;Envelope&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
-    return createWebhookWithHttpInfo(createWebhookRequest, null);
+  public ApiResponse<Envelope> createWebhookWithHttpInfo(@javax.annotation.Nonnull WebhookInput webhookInput) throws ApiException {
+    return createWebhookWithHttpInfo(webhookInput, null);
   }
 
   /**
    * Create a webhook
    * Register an HTTPS endpoint for a set of events.  The response includes a signing secret, shown once. Store it immediately: every delivery is signed with it, and a handler that does not verify the signature will accept forged calls from anyone who learns the URL.  Requires the &#x60;webhooks:manage&#x60; scope.
-   * @param createWebhookRequest  (required)
+   * @param webhookInput  (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;Envelope&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createWebhookRequestBuilder(createWebhookRequest, headers);
+  public ApiResponse<Envelope> createWebhookWithHttpInfo(@javax.annotation.Nonnull WebhookInput webhookInput, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = createWebhookRequestBuilder(webhookInput, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -265,10 +265,10 @@ public class WebhooksApi {
     }
   }
 
-  private HttpRequest.Builder createWebhookRequestBuilder(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'createWebhookRequest' is set
-    if (createWebhookRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'createWebhookRequest' when calling createWebhook");
+  private HttpRequest.Builder createWebhookRequestBuilder(@javax.annotation.Nonnull WebhookInput webhookInput, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'webhookInput' is set
+    if (webhookInput == null) {
+      throw new ApiException(400, "Missing the required parameter 'webhookInput' when calling createWebhook");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -281,7 +281,7 @@ public class WebhooksApi {
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(createWebhookRequest);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(webhookInput);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
@@ -524,7 +524,7 @@ public class WebhooksApi {
    * Recent attempts, their response codes, and retry state.  Retained for 30 days. The place to look when a handler silently stopped working.  Requires the &#x60;webhooks:manage&#x60; scope.
    * @param webhookId Webhook identifier. (required)
    * @param status Filter by outcome. (optional)
-   * @param limit How many attempts to return, newest first. Capped at 100. (optional, default to 100)
+   * @param limit How many attempts to return, newest first. Capped at 100. (optional)
    * @return DeliveryList
    * @throws ApiException if fails to make API call
    */
@@ -537,7 +537,7 @@ public class WebhooksApi {
    * Recent attempts, their response codes, and retry state.  Retained for 30 days. The place to look when a handler silently stopped working.  Requires the &#x60;webhooks:manage&#x60; scope.
    * @param webhookId Webhook identifier. (required)
    * @param status Filter by outcome. (optional)
-   * @param limit How many attempts to return, newest first. Capped at 100. (optional, default to 100)
+   * @param limit How many attempts to return, newest first. Capped at 100. (optional)
    * @param headers Optional headers to include in the request
    * @return DeliveryList
    * @throws ApiException if fails to make API call
@@ -552,7 +552,7 @@ public class WebhooksApi {
    * Recent attempts, their response codes, and retry state.  Retained for 30 days. The place to look when a handler silently stopped working.  Requires the &#x60;webhooks:manage&#x60; scope.
    * @param webhookId Webhook identifier. (required)
    * @param status Filter by outcome. (optional)
-   * @param limit How many attempts to return, newest first. Capped at 100. (optional, default to 100)
+   * @param limit How many attempts to return, newest first. Capped at 100. (optional)
    * @return ApiResponse&lt;DeliveryList&gt;
    * @throws ApiException if fails to make API call
    */
@@ -565,7 +565,7 @@ public class WebhooksApi {
    * Recent attempts, their response codes, and retry state.  Retained for 30 days. The place to look when a handler silently stopped working.  Requires the &#x60;webhooks:manage&#x60; scope.
    * @param webhookId Webhook identifier. (required)
    * @param status Filter by outcome. (optional)
-   * @param limit How many attempts to return, newest first. Capped at 100. (optional, default to 100)
+   * @param limit How many attempts to return, newest first. Capped at 100. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;DeliveryList&gt;
    * @throws ApiException if fails to make API call
@@ -1106,25 +1106,25 @@ public class WebhooksApi {
    * Update a webhook
    * Change the URL, the events, or whether it is active.  A partial update: anything you omit is left alone. Setting active to false stops deliveries without losing the registration, which is what to reach for while you are fixing a handler.  Requires the &#x60;webhooks:manage&#x60; scope.
    * @param webhookId Webhook identifier. (required)
-   * @param updateWebhookRequest  (optional)
+   * @param webhookUpdate  (required)
    * @return WebhookResponse
    * @throws ApiException if fails to make API call
    */
-  public WebhookResponse updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nullable UpdateWebhookRequest updateWebhookRequest) throws ApiException {
-    return updateWebhook(webhookId, updateWebhookRequest, null);
+  public WebhookResponse updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull WebhookUpdate webhookUpdate) throws ApiException {
+    return updateWebhook(webhookId, webhookUpdate, null);
   }
 
   /**
    * Update a webhook
    * Change the URL, the events, or whether it is active.  A partial update: anything you omit is left alone. Setting active to false stops deliveries without losing the registration, which is what to reach for while you are fixing a handler.  Requires the &#x60;webhooks:manage&#x60; scope.
    * @param webhookId Webhook identifier. (required)
-   * @param updateWebhookRequest  (optional)
+   * @param webhookUpdate  (required)
    * @param headers Optional headers to include in the request
    * @return WebhookResponse
    * @throws ApiException if fails to make API call
    */
-  public WebhookResponse updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nullable UpdateWebhookRequest updateWebhookRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<WebhookResponse> localVarResponse = updateWebhookWithHttpInfo(webhookId, updateWebhookRequest, headers);
+  public WebhookResponse updateWebhook(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull WebhookUpdate webhookUpdate, Map<String, String> headers) throws ApiException {
+    ApiResponse<WebhookResponse> localVarResponse = updateWebhookWithHttpInfo(webhookId, webhookUpdate, headers);
     return localVarResponse.getData();
   }
 
@@ -1132,25 +1132,25 @@ public class WebhooksApi {
    * Update a webhook
    * Change the URL, the events, or whether it is active.  A partial update: anything you omit is left alone. Setting active to false stops deliveries without losing the registration, which is what to reach for while you are fixing a handler.  Requires the &#x60;webhooks:manage&#x60; scope.
    * @param webhookId Webhook identifier. (required)
-   * @param updateWebhookRequest  (optional)
+   * @param webhookUpdate  (required)
    * @return ApiResponse&lt;WebhookResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<WebhookResponse> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nullable UpdateWebhookRequest updateWebhookRequest) throws ApiException {
-    return updateWebhookWithHttpInfo(webhookId, updateWebhookRequest, null);
+  public ApiResponse<WebhookResponse> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull WebhookUpdate webhookUpdate) throws ApiException {
+    return updateWebhookWithHttpInfo(webhookId, webhookUpdate, null);
   }
 
   /**
    * Update a webhook
    * Change the URL, the events, or whether it is active.  A partial update: anything you omit is left alone. Setting active to false stops deliveries without losing the registration, which is what to reach for while you are fixing a handler.  Requires the &#x60;webhooks:manage&#x60; scope.
    * @param webhookId Webhook identifier. (required)
-   * @param updateWebhookRequest  (optional)
+   * @param webhookUpdate  (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;WebhookResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<WebhookResponse> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nullable UpdateWebhookRequest updateWebhookRequest, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = updateWebhookRequestBuilder(webhookId, updateWebhookRequest, headers);
+  public ApiResponse<WebhookResponse> updateWebhookWithHttpInfo(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull WebhookUpdate webhookUpdate, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateWebhookRequestBuilder(webhookId, webhookUpdate, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -1197,10 +1197,14 @@ public class WebhooksApi {
     }
   }
 
-  private HttpRequest.Builder updateWebhookRequestBuilder(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nullable UpdateWebhookRequest updateWebhookRequest, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder updateWebhookRequestBuilder(@javax.annotation.Nonnull String webhookId, @javax.annotation.Nonnull WebhookUpdate webhookUpdate, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'webhookId' is set
     if (webhookId == null) {
       throw new ApiException(400, "Missing the required parameter 'webhookId' when calling updateWebhook");
+    }
+    // verify the required parameter 'webhookUpdate' is set
+    if (webhookUpdate == null) {
+      throw new ApiException(400, "Missing the required parameter 'webhookUpdate' when calling updateWebhook");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -1214,7 +1218,7 @@ public class WebhooksApi {
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(updateWebhookRequest);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(webhookUpdate);
       localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);

@@ -19,17 +19,17 @@ import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
 import java.math.BigDecimal;
-import com.skautik.sdk.model.CreatePropertyRequest;
 import com.skautik.sdk.model.Envelope;
 import java.io.File;
 import com.skautik.sdk.model.ImageList;
 import com.skautik.sdk.model.ImageResponse;
 import com.skautik.sdk.model.PriceObservationList;
 import com.skautik.sdk.model.Problem;
+import com.skautik.sdk.model.PropertyInput;
 import com.skautik.sdk.model.PropertyList;
 import com.skautik.sdk.model.PropertyPage;
 import com.skautik.sdk.model.PropertyResponse;
-import com.skautik.sdk.model.SearchPropertiesRequest;
+import com.skautik.sdk.model.SearchRequest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -182,52 +182,52 @@ public class PropertiesApi {
   /**
    * Create a property
    * Publish a record from your own inventory.  Send an Idempotency-Key so a retried request cannot create a duplicate listing. Records created this way belong to your organisation and are the only ones your key may modify.  Requires the &#x60;properties:write&#x60; scope.
-   * @param createPropertyRequest  (required)
+   * @param propertyInput  (required)
    * @param idempotencyKey Unique per logical creation. Replaying the same key returns the original result rather than creating a second record. (optional)
    * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public PropertyResponse createProperty(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
-    return createProperty(createPropertyRequest, idempotencyKey, null);
+  public PropertyResponse createProperty(@javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createProperty(propertyInput, idempotencyKey, null);
   }
 
   /**
    * Create a property
    * Publish a record from your own inventory.  Send an Idempotency-Key so a retried request cannot create a duplicate listing. Records created this way belong to your organisation and are the only ones your key may modify.  Requires the &#x60;properties:write&#x60; scope.
-   * @param createPropertyRequest  (required)
+   * @param propertyInput  (required)
    * @param idempotencyKey Unique per logical creation. Replaying the same key returns the original result rather than creating a second record. (optional)
    * @param headers Optional headers to include in the request
    * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public PropertyResponse createProperty(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
-    ApiResponse<PropertyResponse> localVarResponse = createPropertyWithHttpInfo(createPropertyRequest, idempotencyKey, headers);
+  public PropertyResponse createProperty(@javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyResponse> localVarResponse = createPropertyWithHttpInfo(propertyInput, idempotencyKey, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Create a property
    * Publish a record from your own inventory.  Send an Idempotency-Key so a retried request cannot create a duplicate listing. Records created this way belong to your organisation and are the only ones your key may modify.  Requires the &#x60;properties:write&#x60; scope.
-   * @param createPropertyRequest  (required)
+   * @param propertyInput  (required)
    * @param idempotencyKey Unique per logical creation. Replaying the same key returns the original result rather than creating a second record. (optional)
    * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyResponse> createPropertyWithHttpInfo(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
-    return createPropertyWithHttpInfo(createPropertyRequest, idempotencyKey, null);
+  public ApiResponse<PropertyResponse> createPropertyWithHttpInfo(@javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+    return createPropertyWithHttpInfo(propertyInput, idempotencyKey, null);
   }
 
   /**
    * Create a property
    * Publish a record from your own inventory.  Send an Idempotency-Key so a retried request cannot create a duplicate listing. Records created this way belong to your organisation and are the only ones your key may modify.  Requires the &#x60;properties:write&#x60; scope.
-   * @param createPropertyRequest  (required)
+   * @param propertyInput  (required)
    * @param idempotencyKey Unique per logical creation. Replaying the same key returns the original result rather than creating a second record. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyResponse> createPropertyWithHttpInfo(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createPropertyRequestBuilder(createPropertyRequest, idempotencyKey, headers);
+  public ApiResponse<PropertyResponse> createPropertyWithHttpInfo(@javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = createPropertyRequestBuilder(propertyInput, idempotencyKey, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -274,10 +274,10 @@ public class PropertiesApi {
     }
   }
 
-  private HttpRequest.Builder createPropertyRequestBuilder(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'createPropertyRequest' is set
-    if (createPropertyRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'createPropertyRequest' when calling createProperty");
+  private HttpRequest.Builder createPropertyRequestBuilder(@javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'propertyInput' is set
+    if (propertyInput == null) {
+      throw new ApiException(400, "Missing the required parameter 'propertyInput' when calling createProperty");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -293,7 +293,7 @@ public class PropertiesApi {
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(createPropertyRequest);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(propertyInput);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
@@ -1114,48 +1114,48 @@ public class PropertiesApi {
   /**
    * Search properties
    * Semantic and geographic search that is too complex for a query string.  Takes a natural-language query, a drawn polygon, or both. Results come back ranked by relevance rather than by a sortable column, so this endpoint ignores the sort parameter. It is a POST because a polygon does not belong in a URL, not because it changes anything.  Requires the &#x60;properties:read&#x60; scope.
-   * @param searchPropertiesRequest  (optional)
+   * @param searchRequest  (required)
    * @return Envelope
    * @throws ApiException if fails to make API call
    */
-  public Envelope searchProperties(@javax.annotation.Nullable SearchPropertiesRequest searchPropertiesRequest) throws ApiException {
-    return searchProperties(searchPropertiesRequest, null);
+  public Envelope searchProperties(@javax.annotation.Nonnull SearchRequest searchRequest) throws ApiException {
+    return searchProperties(searchRequest, null);
   }
 
   /**
    * Search properties
    * Semantic and geographic search that is too complex for a query string.  Takes a natural-language query, a drawn polygon, or both. Results come back ranked by relevance rather than by a sortable column, so this endpoint ignores the sort parameter. It is a POST because a polygon does not belong in a URL, not because it changes anything.  Requires the &#x60;properties:read&#x60; scope.
-   * @param searchPropertiesRequest  (optional)
+   * @param searchRequest  (required)
    * @param headers Optional headers to include in the request
    * @return Envelope
    * @throws ApiException if fails to make API call
    */
-  public Envelope searchProperties(@javax.annotation.Nullable SearchPropertiesRequest searchPropertiesRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<Envelope> localVarResponse = searchPropertiesWithHttpInfo(searchPropertiesRequest, headers);
+  public Envelope searchProperties(@javax.annotation.Nonnull SearchRequest searchRequest, Map<String, String> headers) throws ApiException {
+    ApiResponse<Envelope> localVarResponse = searchPropertiesWithHttpInfo(searchRequest, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Search properties
    * Semantic and geographic search that is too complex for a query string.  Takes a natural-language query, a drawn polygon, or both. Results come back ranked by relevance rather than by a sortable column, so this endpoint ignores the sort parameter. It is a POST because a polygon does not belong in a URL, not because it changes anything.  Requires the &#x60;properties:read&#x60; scope.
-   * @param searchPropertiesRequest  (optional)
+   * @param searchRequest  (required)
    * @return ApiResponse&lt;Envelope&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> searchPropertiesWithHttpInfo(@javax.annotation.Nullable SearchPropertiesRequest searchPropertiesRequest) throws ApiException {
-    return searchPropertiesWithHttpInfo(searchPropertiesRequest, null);
+  public ApiResponse<Envelope> searchPropertiesWithHttpInfo(@javax.annotation.Nonnull SearchRequest searchRequest) throws ApiException {
+    return searchPropertiesWithHttpInfo(searchRequest, null);
   }
 
   /**
    * Search properties
    * Semantic and geographic search that is too complex for a query string.  Takes a natural-language query, a drawn polygon, or both. Results come back ranked by relevance rather than by a sortable column, so this endpoint ignores the sort parameter. It is a POST because a polygon does not belong in a URL, not because it changes anything.  Requires the &#x60;properties:read&#x60; scope.
-   * @param searchPropertiesRequest  (optional)
+   * @param searchRequest  (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;Envelope&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Envelope> searchPropertiesWithHttpInfo(@javax.annotation.Nullable SearchPropertiesRequest searchPropertiesRequest, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = searchPropertiesRequestBuilder(searchPropertiesRequest, headers);
+  public ApiResponse<Envelope> searchPropertiesWithHttpInfo(@javax.annotation.Nonnull SearchRequest searchRequest, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = searchPropertiesRequestBuilder(searchRequest, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -1202,7 +1202,11 @@ public class PropertiesApi {
     }
   }
 
-  private HttpRequest.Builder searchPropertiesRequestBuilder(@javax.annotation.Nullable SearchPropertiesRequest searchPropertiesRequest, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder searchPropertiesRequestBuilder(@javax.annotation.Nonnull SearchRequest searchRequest, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'searchRequest' is set
+    if (searchRequest == null) {
+      throw new ApiException(400, "Missing the required parameter 'searchRequest' when calling searchProperties");
+    }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -1214,7 +1218,7 @@ public class PropertiesApi {
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(searchPropertiesRequest);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(searchRequest);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
@@ -1234,7 +1238,7 @@ public class PropertiesApi {
    * Similar properties
    * Comparable records, for context or valuation support.  Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.  Requires the &#x60;properties:read&#x60; scope.  Availability: Growth and above.
    * @param propertyId Property to compare against. (required)
-   * @param limit Comparables to return, 1 to 50. (optional, default to 10)
+   * @param limit Comparables to return, 1 to 50. (optional)
    * @return PropertyList
    * @throws ApiException if fails to make API call
    */
@@ -1246,7 +1250,7 @@ public class PropertiesApi {
    * Similar properties
    * Comparable records, for context or valuation support.  Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.  Requires the &#x60;properties:read&#x60; scope.  Availability: Growth and above.
    * @param propertyId Property to compare against. (required)
-   * @param limit Comparables to return, 1 to 50. (optional, default to 10)
+   * @param limit Comparables to return, 1 to 50. (optional)
    * @param headers Optional headers to include in the request
    * @return PropertyList
    * @throws ApiException if fails to make API call
@@ -1260,7 +1264,7 @@ public class PropertiesApi {
    * Similar properties
    * Comparable records, for context or valuation support.  Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.  Requires the &#x60;properties:read&#x60; scope.  Availability: Growth and above.
    * @param propertyId Property to compare against. (required)
-   * @param limit Comparables to return, 1 to 50. (optional, default to 10)
+   * @param limit Comparables to return, 1 to 50. (optional)
    * @return ApiResponse&lt;PropertyList&gt;
    * @throws ApiException if fails to make API call
    */
@@ -1272,7 +1276,7 @@ public class PropertiesApi {
    * Similar properties
    * Comparable records, for context or valuation support.  Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.  Requires the &#x60;properties:read&#x60; scope.  Availability: Growth and above.
    * @param propertyId Property to compare against. (required)
-   * @param limit Comparables to return, 1 to 50. (optional, default to 10)
+   * @param limit Comparables to return, 1 to 50. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;PropertyList&gt;
    * @throws ApiException if fails to make API call
@@ -1371,25 +1375,27 @@ public class PropertiesApi {
    * Update a property
    * Change fields on a record you published.  A partial update: send only what changes. Send If-Match with the ETag from your last read to avoid overwriting a concurrent edit. A record owned by an import source is refused here, because the next run would revert whatever you wrote: change it in the system that feeds the import instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to update. (required)
+   * @param propertyInput  (required)
    * @param ifMatch ETag from your last read. Rejected with 412 if the record moved on. (optional)
    * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public PropertyResponse updateProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch) throws ApiException {
-    return updateProperty(propertyId, ifMatch, null);
+  public PropertyResponse updateProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String ifMatch) throws ApiException {
+    return updateProperty(propertyId, propertyInput, ifMatch, null);
   }
 
   /**
    * Update a property
    * Change fields on a record you published.  A partial update: send only what changes. Send If-Match with the ETag from your last read to avoid overwriting a concurrent edit. A record owned by an import source is refused here, because the next run would revert whatever you wrote: change it in the system that feeds the import instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to update. (required)
+   * @param propertyInput  (required)
    * @param ifMatch ETag from your last read. Rejected with 412 if the record moved on. (optional)
    * @param headers Optional headers to include in the request
    * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public PropertyResponse updateProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
-    ApiResponse<PropertyResponse> localVarResponse = updatePropertyWithHttpInfo(propertyId, ifMatch, headers);
+  public PropertyResponse updateProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyResponse> localVarResponse = updatePropertyWithHttpInfo(propertyId, propertyInput, ifMatch, headers);
     return localVarResponse.getData();
   }
 
@@ -1397,25 +1403,27 @@ public class PropertiesApi {
    * Update a property
    * Change fields on a record you published.  A partial update: send only what changes. Send If-Match with the ETag from your last read to avoid overwriting a concurrent edit. A record owned by an import source is refused here, because the next run would revert whatever you wrote: change it in the system that feeds the import instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to update. (required)
+   * @param propertyInput  (required)
    * @param ifMatch ETag from your last read. Rejected with 412 if the record moved on. (optional)
    * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyResponse> updatePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch) throws ApiException {
-    return updatePropertyWithHttpInfo(propertyId, ifMatch, null);
+  public ApiResponse<PropertyResponse> updatePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String ifMatch) throws ApiException {
+    return updatePropertyWithHttpInfo(propertyId, propertyInput, ifMatch, null);
   }
 
   /**
    * Update a property
    * Change fields on a record you published.  A partial update: send only what changes. Send If-Match with the ETag from your last read to avoid overwriting a concurrent edit. A record owned by an import source is refused here, because the next run would revert whatever you wrote: change it in the system that feeds the import instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to update. (required)
+   * @param propertyInput  (required)
    * @param ifMatch ETag from your last read. Rejected with 412 if the record moved on. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyResponse> updatePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = updatePropertyRequestBuilder(propertyId, ifMatch, headers);
+  public ApiResponse<PropertyResponse> updatePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updatePropertyRequestBuilder(propertyId, propertyInput, ifMatch, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -1462,10 +1470,14 @@ public class PropertiesApi {
     }
   }
 
-  private HttpRequest.Builder updatePropertyRequestBuilder(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder updatePropertyRequestBuilder(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull PropertyInput propertyInput, @javax.annotation.Nullable String ifMatch, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'propertyId' is set
     if (propertyId == null) {
       throw new ApiException(400, "Missing the required parameter 'propertyId' when calling updateProperty");
+    }
+    // verify the required parameter 'propertyInput' is set
+    if (propertyInput == null) {
+      throw new ApiException(400, "Missing the required parameter 'propertyInput' when calling updateProperty");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -1478,9 +1490,15 @@ public class PropertiesApi {
     if (ifMatch != null) {
       localVarRequestBuilder.header("If-Match", ifMatch.toString());
     }
+    localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
-    localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.noBody());
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(propertyInput);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
     if (memberVarReadTimeout != null) {
       localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
@@ -1497,12 +1515,14 @@ public class PropertiesApi {
    * Attach an image to a record you published.  Multipart upload. JPEG, PNG, or WebP up to 12 MB. Upload only images you hold the rights to: property photography is usually licensed to an agent rather than owned outright.  Requires the &#x60;images:write&#x60; scope.
    * @param propertyId Property to attach to. (required)
    * @param _file Image payload. (required)
+   * @param roomType What the photograph shows, used to group images and to pick a source for staging. (optional)
+   * @param primary Pass true to make this the primary image, which demotes the current one. (optional)
    * @param position Display order. The image at position 0 is the primary one. (optional)
    * @return ImageResponse
    * @throws ApiException if fails to make API call
    */
-  public ImageResponse uploadPropertyImage(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position) throws ApiException {
-    return uploadPropertyImage(propertyId, _file, position, null);
+  public ImageResponse uploadPropertyImage(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable String roomType, @javax.annotation.Nullable Boolean primary, @javax.annotation.Nullable Integer position) throws ApiException {
+    return uploadPropertyImage(propertyId, _file, roomType, primary, position, null);
   }
 
   /**
@@ -1510,13 +1530,15 @@ public class PropertiesApi {
    * Attach an image to a record you published.  Multipart upload. JPEG, PNG, or WebP up to 12 MB. Upload only images you hold the rights to: property photography is usually licensed to an agent rather than owned outright.  Requires the &#x60;images:write&#x60; scope.
    * @param propertyId Property to attach to. (required)
    * @param _file Image payload. (required)
+   * @param roomType What the photograph shows, used to group images and to pick a source for staging. (optional)
+   * @param primary Pass true to make this the primary image, which demotes the current one. (optional)
    * @param position Display order. The image at position 0 is the primary one. (optional)
    * @param headers Optional headers to include in the request
    * @return ImageResponse
    * @throws ApiException if fails to make API call
    */
-  public ImageResponse uploadPropertyImage(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImageResponse> localVarResponse = uploadPropertyImageWithHttpInfo(propertyId, _file, position, headers);
+  public ImageResponse uploadPropertyImage(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable String roomType, @javax.annotation.Nullable Boolean primary, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImageResponse> localVarResponse = uploadPropertyImageWithHttpInfo(propertyId, _file, roomType, primary, position, headers);
     return localVarResponse.getData();
   }
 
@@ -1525,12 +1547,14 @@ public class PropertiesApi {
    * Attach an image to a record you published.  Multipart upload. JPEG, PNG, or WebP up to 12 MB. Upload only images you hold the rights to: property photography is usually licensed to an agent rather than owned outright.  Requires the &#x60;images:write&#x60; scope.
    * @param propertyId Property to attach to. (required)
    * @param _file Image payload. (required)
+   * @param roomType What the photograph shows, used to group images and to pick a source for staging. (optional)
+   * @param primary Pass true to make this the primary image, which demotes the current one. (optional)
    * @param position Display order. The image at position 0 is the primary one. (optional)
    * @return ApiResponse&lt;ImageResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImageResponse> uploadPropertyImageWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position) throws ApiException {
-    return uploadPropertyImageWithHttpInfo(propertyId, _file, position, null);
+  public ApiResponse<ImageResponse> uploadPropertyImageWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable String roomType, @javax.annotation.Nullable Boolean primary, @javax.annotation.Nullable Integer position) throws ApiException {
+    return uploadPropertyImageWithHttpInfo(propertyId, _file, roomType, primary, position, null);
   }
 
   /**
@@ -1538,13 +1562,15 @@ public class PropertiesApi {
    * Attach an image to a record you published.  Multipart upload. JPEG, PNG, or WebP up to 12 MB. Upload only images you hold the rights to: property photography is usually licensed to an agent rather than owned outright.  Requires the &#x60;images:write&#x60; scope.
    * @param propertyId Property to attach to. (required)
    * @param _file Image payload. (required)
+   * @param roomType What the photograph shows, used to group images and to pick a source for staging. (optional)
+   * @param primary Pass true to make this the primary image, which demotes the current one. (optional)
    * @param position Display order. The image at position 0 is the primary one. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;ImageResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImageResponse> uploadPropertyImageWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = uploadPropertyImageRequestBuilder(propertyId, _file, position, headers);
+  public ApiResponse<ImageResponse> uploadPropertyImageWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable String roomType, @javax.annotation.Nullable Boolean primary, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = uploadPropertyImageRequestBuilder(propertyId, _file, roomType, primary, position, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -1591,7 +1617,7 @@ public class PropertiesApi {
     }
   }
 
-  private HttpRequest.Builder uploadPropertyImageRequestBuilder(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder uploadPropertyImageRequestBuilder(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nonnull File _file, @javax.annotation.Nullable String roomType, @javax.annotation.Nullable Boolean primary, @javax.annotation.Nullable Integer position, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'propertyId' is set
     if (propertyId == null) {
       throw new ApiException(400, "Missing the required parameter 'propertyId' when calling uploadPropertyImage");
@@ -1606,7 +1632,24 @@ public class PropertiesApi {
     String localVarPath = "/properties/{property_id}/images"
         .replace("{property_id}", ApiClient.urlEncode(propertyId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "room_type";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("room_type", roomType));
+    localVarQueryParameterBaseName = "primary";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("primary", primary));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
 
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 

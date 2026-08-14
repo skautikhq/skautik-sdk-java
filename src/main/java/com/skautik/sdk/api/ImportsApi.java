@@ -18,15 +18,16 @@ import com.skautik.sdk.ApiResponse;
 import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
-import com.skautik.sdk.model.CreateImportSourceRequest;
 import com.skautik.sdk.model.Envelope;
 import java.io.File;
 import com.skautik.sdk.model.ImportList;
 import com.skautik.sdk.model.ImportRecordList;
 import com.skautik.sdk.model.ImportResponse;
+import com.skautik.sdk.model.ImportSourceInput;
 import com.skautik.sdk.model.ImportSourceList;
 import com.skautik.sdk.model.ImportSourceResponse;
 import com.skautik.sdk.model.Problem;
+import com.skautik.sdk.model.SourceUpdate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -179,72 +180,72 @@ public class ImportsApi {
   /**
    * Start an import
    * Upload a file, or point us at one, and process it.  Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.  Requires the &#x60;imports:write&#x60; scope.
-   * @param format Which format the payload is in. (required)
+   * @param format  (required)
+   * @param mode  (optional, default to incremental)
+   * @param sourceId  (optional)
+   * @param dryRun  (optional)
+   * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
-   * @param dryRun Validate and report what would change without writing anything. Run this first on any migration. (optional, default to false)
    * @param _file The payload. Mutually exclusive with url. (optional)
-   * @param mode incremental updates what the payload contains. full_sync additionally withdraws anything absent, and is refused unless the source is configured for it. (optional, default to incremental)
-   * @param sourceId Apply a stored import source&#39;s mapping and settings rather than the defaults. (optional)
-   * @param url Where to fetch the payload from. Mutually exclusive with file. (optional)
    * @return ImportResponse
    * @throws ApiException if fails to make API call
    */
-  public ImportResponse createImport(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable File _file, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String url) throws ApiException {
-    return createImport(format, idempotencyKey, dryRun, _file, mode, sourceId, url, null);
+  public ImportResponse createImport(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file) throws ApiException {
+    return createImport(format, mode, sourceId, dryRun, filename, idempotencyKey, _file, null);
   }
 
   /**
    * Start an import
    * Upload a file, or point us at one, and process it.  Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.  Requires the &#x60;imports:write&#x60; scope.
-   * @param format Which format the payload is in. (required)
+   * @param format  (required)
+   * @param mode  (optional, default to incremental)
+   * @param sourceId  (optional)
+   * @param dryRun  (optional)
+   * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
-   * @param dryRun Validate and report what would change without writing anything. Run this first on any migration. (optional, default to false)
    * @param _file The payload. Mutually exclusive with url. (optional)
-   * @param mode incremental updates what the payload contains. full_sync additionally withdraws anything absent, and is refused unless the source is configured for it. (optional, default to incremental)
-   * @param sourceId Apply a stored import source&#39;s mapping and settings rather than the defaults. (optional)
-   * @param url Where to fetch the payload from. Mutually exclusive with file. (optional)
    * @param headers Optional headers to include in the request
    * @return ImportResponse
    * @throws ApiException if fails to make API call
    */
-  public ImportResponse createImport(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable File _file, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String url, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportResponse> localVarResponse = createImportWithHttpInfo(format, idempotencyKey, dryRun, _file, mode, sourceId, url, headers);
+  public ImportResponse createImport(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportResponse> localVarResponse = createImportWithHttpInfo(format, mode, sourceId, dryRun, filename, idempotencyKey, _file, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Start an import
    * Upload a file, or point us at one, and process it.  Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.  Requires the &#x60;imports:write&#x60; scope.
-   * @param format Which format the payload is in. (required)
+   * @param format  (required)
+   * @param mode  (optional, default to incremental)
+   * @param sourceId  (optional)
+   * @param dryRun  (optional)
+   * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
-   * @param dryRun Validate and report what would change without writing anything. Run this first on any migration. (optional, default to false)
    * @param _file The payload. Mutually exclusive with url. (optional)
-   * @param mode incremental updates what the payload contains. full_sync additionally withdraws anything absent, and is refused unless the source is configured for it. (optional, default to incremental)
-   * @param sourceId Apply a stored import source&#39;s mapping and settings rather than the defaults. (optional)
-   * @param url Where to fetch the payload from. Mutually exclusive with file. (optional)
    * @return ApiResponse&lt;ImportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportResponse> createImportWithHttpInfo(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable File _file, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String url) throws ApiException {
-    return createImportWithHttpInfo(format, idempotencyKey, dryRun, _file, mode, sourceId, url, null);
+  public ApiResponse<ImportResponse> createImportWithHttpInfo(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file) throws ApiException {
+    return createImportWithHttpInfo(format, mode, sourceId, dryRun, filename, idempotencyKey, _file, null);
   }
 
   /**
    * Start an import
    * Upload a file, or point us at one, and process it.  Accepts a multipart upload or a URL we fetch. Validation runs first and the whole file is rejected if it cannot be parsed; individual records that fail are reported without stopping the rest, unless you ask for all-or-nothing.  Requires the &#x60;imports:write&#x60; scope.
-   * @param format Which format the payload is in. (required)
+   * @param format  (required)
+   * @param mode  (optional, default to incremental)
+   * @param sourceId  (optional)
+   * @param dryRun  (optional)
+   * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
-   * @param dryRun Validate and report what would change without writing anything. Run this first on any migration. (optional, default to false)
    * @param _file The payload. Mutually exclusive with url. (optional)
-   * @param mode incremental updates what the payload contains. full_sync additionally withdraws anything absent, and is refused unless the source is configured for it. (optional, default to incremental)
-   * @param sourceId Apply a stored import source&#39;s mapping and settings rather than the defaults. (optional)
-   * @param url Where to fetch the payload from. Mutually exclusive with file. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;ImportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportResponse> createImportWithHttpInfo(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable File _file, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String url, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createImportRequestBuilder(format, idempotencyKey, dryRun, _file, mode, sourceId, url, headers);
+  public ApiResponse<ImportResponse> createImportWithHttpInfo(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = createImportRequestBuilder(format, mode, sourceId, dryRun, filename, idempotencyKey, _file, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -291,7 +292,7 @@ public class ImportsApi {
     }
   }
 
-  private HttpRequest.Builder createImportRequestBuilder(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable File _file, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String url, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder createImportRequestBuilder(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'format' is set
     if (format == null) {
       throw new ApiException(400, "Missing the required parameter 'format' when calling createImport");
@@ -301,7 +302,30 @@ public class ImportsApi {
 
     String localVarPath = "/imports";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "format";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("format", format));
+    localVarQueryParameterBaseName = "mode";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("mode", mode));
+    localVarQueryParameterBaseName = "source_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("source_id", sourceId));
+    localVarQueryParameterBaseName = "dry_run";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("dry_run", dryRun));
+    localVarQueryParameterBaseName = "filename";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("filename", filename));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
 
     if (idempotencyKey != null) {
       localVarRequestBuilder.header("Idempotency-Key", idempotencyKey.toString());
@@ -310,23 +334,8 @@ public class ImportsApi {
 
     MultipartEntityBuilder multiPartBuilder = MultipartEntityBuilder.create();
     boolean hasFiles = false;
-    if (dryRun != null) {
-        multiPartBuilder.addTextBody("dry_run", dryRun.toString());
-    }
     multiPartBuilder.addBinaryBody("file", _file);
     hasFiles = true;
-    if (format != null) {
-        multiPartBuilder.addTextBody("format", format.toString());
-    }
-    if (mode != null) {
-        multiPartBuilder.addTextBody("mode", mode.toString());
-    }
-    if (sourceId != null) {
-        multiPartBuilder.addTextBody("source_id", sourceId.toString());
-    }
-    if (url != null) {
-        multiPartBuilder.addTextBody("url", url.toString());
-    }
     HttpEntity entity = multiPartBuilder.build();
     HttpRequest.BodyPublisher formDataPublisher;
     if (hasFiles) {
@@ -372,48 +381,48 @@ public class ImportsApi {
   /**
    * Create an import source
    * A standing connector that imports on a schedule.  Configure once and stop thinking about it. A source holds the format, the delivery method, the field mapping, and the deletion policy, and every run against it produces an import you can inspect.  Requires the &#x60;imports:write&#x60; scope.
-   * @param createImportSourceRequest  (required)
+   * @param importSourceInput  (required)
    * @return ImportSourceResponse
    * @throws ApiException if fails to make API call
    */
-  public ImportSourceResponse createImportSource(@javax.annotation.Nonnull CreateImportSourceRequest createImportSourceRequest) throws ApiException {
-    return createImportSource(createImportSourceRequest, null);
+  public ImportSourceResponse createImportSource(@javax.annotation.Nonnull ImportSourceInput importSourceInput) throws ApiException {
+    return createImportSource(importSourceInput, null);
   }
 
   /**
    * Create an import source
    * A standing connector that imports on a schedule.  Configure once and stop thinking about it. A source holds the format, the delivery method, the field mapping, and the deletion policy, and every run against it produces an import you can inspect.  Requires the &#x60;imports:write&#x60; scope.
-   * @param createImportSourceRequest  (required)
+   * @param importSourceInput  (required)
    * @param headers Optional headers to include in the request
    * @return ImportSourceResponse
    * @throws ApiException if fails to make API call
    */
-  public ImportSourceResponse createImportSource(@javax.annotation.Nonnull CreateImportSourceRequest createImportSourceRequest, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportSourceResponse> localVarResponse = createImportSourceWithHttpInfo(createImportSourceRequest, headers);
+  public ImportSourceResponse createImportSource(@javax.annotation.Nonnull ImportSourceInput importSourceInput, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportSourceResponse> localVarResponse = createImportSourceWithHttpInfo(importSourceInput, headers);
     return localVarResponse.getData();
   }
 
   /**
    * Create an import source
    * A standing connector that imports on a schedule.  Configure once and stop thinking about it. A source holds the format, the delivery method, the field mapping, and the deletion policy, and every run against it produces an import you can inspect.  Requires the &#x60;imports:write&#x60; scope.
-   * @param createImportSourceRequest  (required)
+   * @param importSourceInput  (required)
    * @return ApiResponse&lt;ImportSourceResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportSourceResponse> createImportSourceWithHttpInfo(@javax.annotation.Nonnull CreateImportSourceRequest createImportSourceRequest) throws ApiException {
-    return createImportSourceWithHttpInfo(createImportSourceRequest, null);
+  public ApiResponse<ImportSourceResponse> createImportSourceWithHttpInfo(@javax.annotation.Nonnull ImportSourceInput importSourceInput) throws ApiException {
+    return createImportSourceWithHttpInfo(importSourceInput, null);
   }
 
   /**
    * Create an import source
    * A standing connector that imports on a schedule.  Configure once and stop thinking about it. A source holds the format, the delivery method, the field mapping, and the deletion policy, and every run against it produces an import you can inspect.  Requires the &#x60;imports:write&#x60; scope.
-   * @param createImportSourceRequest  (required)
+   * @param importSourceInput  (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;ImportSourceResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportSourceResponse> createImportSourceWithHttpInfo(@javax.annotation.Nonnull CreateImportSourceRequest createImportSourceRequest, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createImportSourceRequestBuilder(createImportSourceRequest, headers);
+  public ApiResponse<ImportSourceResponse> createImportSourceWithHttpInfo(@javax.annotation.Nonnull ImportSourceInput importSourceInput, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = createImportSourceRequestBuilder(importSourceInput, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -460,10 +469,10 @@ public class ImportsApi {
     }
   }
 
-  private HttpRequest.Builder createImportSourceRequestBuilder(@javax.annotation.Nonnull CreateImportSourceRequest createImportSourceRequest, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'createImportSourceRequest' is set
-    if (createImportSourceRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'createImportSourceRequest' when calling createImportSource");
+  private HttpRequest.Builder createImportSourceRequestBuilder(@javax.annotation.Nonnull ImportSourceInput importSourceInput, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'importSourceInput' is set
+    if (importSourceInput == null) {
+      throw new ApiException(400, "Missing the required parameter 'importSourceInput' when calling createImportSource");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -476,7 +485,7 @@ public class ImportsApi {
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(createImportSourceRequest);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(importSourceInput);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
@@ -945,25 +954,23 @@ public class ImportsApi {
    * List import records
    * Per-record outcome, including why any failed.  Filter to failed to get the working list for a fix. Each entry names the source identifier and the line or element it came from, so a problem can be found in your export rather than guessed at.  Requires the &#x60;imports:write&#x60; scope.
    * @param importId Import identifier. (required)
-   * @param outcome Narrow to one outcome. (optional)
    * @return ImportRecordList
    * @throws ApiException if fails to make API call
    */
-  public ImportRecordList listImportRecords(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome) throws ApiException {
-    return listImportRecords(importId, outcome, null);
+  public ImportRecordList listImportRecords(@javax.annotation.Nonnull String importId) throws ApiException {
+    return listImportRecords(importId, null);
   }
 
   /**
    * List import records
    * Per-record outcome, including why any failed.  Filter to failed to get the working list for a fix. Each entry names the source identifier and the line or element it came from, so a problem can be found in your export rather than guessed at.  Requires the &#x60;imports:write&#x60; scope.
    * @param importId Import identifier. (required)
-   * @param outcome Narrow to one outcome. (optional)
    * @param headers Optional headers to include in the request
    * @return ImportRecordList
    * @throws ApiException if fails to make API call
    */
-  public ImportRecordList listImportRecords(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportRecordList> localVarResponse = listImportRecordsWithHttpInfo(importId, outcome, headers);
+  public ImportRecordList listImportRecords(@javax.annotation.Nonnull String importId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportRecordList> localVarResponse = listImportRecordsWithHttpInfo(importId, headers);
     return localVarResponse.getData();
   }
 
@@ -971,25 +978,23 @@ public class ImportsApi {
    * List import records
    * Per-record outcome, including why any failed.  Filter to failed to get the working list for a fix. Each entry names the source identifier and the line or element it came from, so a problem can be found in your export rather than guessed at.  Requires the &#x60;imports:write&#x60; scope.
    * @param importId Import identifier. (required)
-   * @param outcome Narrow to one outcome. (optional)
    * @return ApiResponse&lt;ImportRecordList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportRecordList> listImportRecordsWithHttpInfo(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome) throws ApiException {
-    return listImportRecordsWithHttpInfo(importId, outcome, null);
+  public ApiResponse<ImportRecordList> listImportRecordsWithHttpInfo(@javax.annotation.Nonnull String importId) throws ApiException {
+    return listImportRecordsWithHttpInfo(importId, null);
   }
 
   /**
    * List import records
    * Per-record outcome, including why any failed.  Filter to failed to get the working list for a fix. Each entry names the source identifier and the line or element it came from, so a problem can be found in your export rather than guessed at.  Requires the &#x60;imports:write&#x60; scope.
    * @param importId Import identifier. (required)
-   * @param outcome Narrow to one outcome. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;ImportRecordList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportRecordList> listImportRecordsWithHttpInfo(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listImportRecordsRequestBuilder(importId, outcome, headers);
+  public ApiResponse<ImportRecordList> listImportRecordsWithHttpInfo(@javax.annotation.Nonnull String importId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listImportRecordsRequestBuilder(importId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -1036,7 +1041,7 @@ public class ImportsApi {
     }
   }
 
-  private HttpRequest.Builder listImportRecordsRequestBuilder(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder listImportRecordsRequestBuilder(@javax.annotation.Nonnull String importId, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'importId' is set
     if (importId == null) {
       throw new ApiException(400, "Missing the required parameter 'importId' when calling listImportRecords");
@@ -1047,22 +1052,7 @@ public class ImportsApi {
     String localVarPath = "/imports/{import_id}/records"
         .replace("{import_id}", ApiClient.urlEncode(importId.toString()));
 
-    List<Pair> localVarQueryParams = new ArrayList<>();
-    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "outcome";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("outcome", outcome));
-
-    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
-      StringJoiner queryJoiner = new StringJoiner("&");
-      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
-      if (localVarQueryStringJoiner.length() != 0) {
-        queryJoiner.add(localVarQueryStringJoiner.toString());
-      }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
-    } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-    }
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
@@ -1190,52 +1180,44 @@ public class ImportsApi {
   /**
    * List imports
    * Import history for your organisation.  Requires the &#x60;imports:write&#x60; scope.
-   * @param sourceId Only imports produced by one source. (optional)
-   * @param status Filter by outcome. (optional)
    * @return ImportList
    * @throws ApiException if fails to make API call
    */
-  public ImportList listImports(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status) throws ApiException {
-    return listImports(sourceId, status, null);
+  public ImportList listImports() throws ApiException {
+    return listImports(null);
   }
 
   /**
    * List imports
    * Import history for your organisation.  Requires the &#x60;imports:write&#x60; scope.
-   * @param sourceId Only imports produced by one source. (optional)
-   * @param status Filter by outcome. (optional)
    * @param headers Optional headers to include in the request
    * @return ImportList
    * @throws ApiException if fails to make API call
    */
-  public ImportList listImports(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportList> localVarResponse = listImportsWithHttpInfo(sourceId, status, headers);
+  public ImportList listImports(Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportList> localVarResponse = listImportsWithHttpInfo(headers);
     return localVarResponse.getData();
   }
 
   /**
    * List imports
    * Import history for your organisation.  Requires the &#x60;imports:write&#x60; scope.
-   * @param sourceId Only imports produced by one source. (optional)
-   * @param status Filter by outcome. (optional)
    * @return ApiResponse&lt;ImportList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportList> listImportsWithHttpInfo(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status) throws ApiException {
-    return listImportsWithHttpInfo(sourceId, status, null);
+  public ApiResponse<ImportList> listImportsWithHttpInfo() throws ApiException {
+    return listImportsWithHttpInfo(null);
   }
 
   /**
    * List imports
    * Import history for your organisation.  Requires the &#x60;imports:write&#x60; scope.
-   * @param sourceId Only imports produced by one source. (optional)
-   * @param status Filter by outcome. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;ImportList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportList> listImportsWithHttpInfo(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listImportsRequestBuilder(sourceId, status, headers);
+  public ApiResponse<ImportList> listImportsWithHttpInfo(Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listImportsRequestBuilder(headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -1282,30 +1264,13 @@ public class ImportsApi {
     }
   }
 
-  private HttpRequest.Builder listImportsRequestBuilder(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder listImportsRequestBuilder(Map<String, String> headers) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/imports";
 
-    List<Pair> localVarQueryParams = new ArrayList<>();
-    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "source_id";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("source_id", sourceId));
-    localVarQueryParameterBaseName = "status";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("status", status));
-
-    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
-      StringJoiner queryJoiner = new StringJoiner("&");
-      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
-      if (localVarQueryStringJoiner.length() != 0) {
-        queryJoiner.add(localVarQueryStringJoiner.toString());
-      }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
-    } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-    }
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
@@ -1325,23 +1290,25 @@ public class ImportsApi {
    * Update an import source
    * Change the mapping, schedule, or deletion policy.  Requires the &#x60;imports:write&#x60; scope.
    * @param sourceId Source identifier. (required)
+   * @param sourceUpdate  (required)
    * @return ImportSourceResponse
    * @throws ApiException if fails to make API call
    */
-  public ImportSourceResponse updateImportSource(@javax.annotation.Nonnull String sourceId) throws ApiException {
-    return updateImportSource(sourceId, null);
+  public ImportSourceResponse updateImportSource(@javax.annotation.Nonnull String sourceId, @javax.annotation.Nonnull SourceUpdate sourceUpdate) throws ApiException {
+    return updateImportSource(sourceId, sourceUpdate, null);
   }
 
   /**
    * Update an import source
    * Change the mapping, schedule, or deletion policy.  Requires the &#x60;imports:write&#x60; scope.
    * @param sourceId Source identifier. (required)
+   * @param sourceUpdate  (required)
    * @param headers Optional headers to include in the request
    * @return ImportSourceResponse
    * @throws ApiException if fails to make API call
    */
-  public ImportSourceResponse updateImportSource(@javax.annotation.Nonnull String sourceId, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportSourceResponse> localVarResponse = updateImportSourceWithHttpInfo(sourceId, headers);
+  public ImportSourceResponse updateImportSource(@javax.annotation.Nonnull String sourceId, @javax.annotation.Nonnull SourceUpdate sourceUpdate, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportSourceResponse> localVarResponse = updateImportSourceWithHttpInfo(sourceId, sourceUpdate, headers);
     return localVarResponse.getData();
   }
 
@@ -1349,23 +1316,25 @@ public class ImportsApi {
    * Update an import source
    * Change the mapping, schedule, or deletion policy.  Requires the &#x60;imports:write&#x60; scope.
    * @param sourceId Source identifier. (required)
+   * @param sourceUpdate  (required)
    * @return ApiResponse&lt;ImportSourceResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportSourceResponse> updateImportSourceWithHttpInfo(@javax.annotation.Nonnull String sourceId) throws ApiException {
-    return updateImportSourceWithHttpInfo(sourceId, null);
+  public ApiResponse<ImportSourceResponse> updateImportSourceWithHttpInfo(@javax.annotation.Nonnull String sourceId, @javax.annotation.Nonnull SourceUpdate sourceUpdate) throws ApiException {
+    return updateImportSourceWithHttpInfo(sourceId, sourceUpdate, null);
   }
 
   /**
    * Update an import source
    * Change the mapping, schedule, or deletion policy.  Requires the &#x60;imports:write&#x60; scope.
    * @param sourceId Source identifier. (required)
+   * @param sourceUpdate  (required)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;ImportSourceResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportSourceResponse> updateImportSourceWithHttpInfo(@javax.annotation.Nonnull String sourceId, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = updateImportSourceRequestBuilder(sourceId, headers);
+  public ApiResponse<ImportSourceResponse> updateImportSourceWithHttpInfo(@javax.annotation.Nonnull String sourceId, @javax.annotation.Nonnull SourceUpdate sourceUpdate, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateImportSourceRequestBuilder(sourceId, sourceUpdate, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -1412,10 +1381,14 @@ public class ImportsApi {
     }
   }
 
-  private HttpRequest.Builder updateImportSourceRequestBuilder(@javax.annotation.Nonnull String sourceId, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder updateImportSourceRequestBuilder(@javax.annotation.Nonnull String sourceId, @javax.annotation.Nonnull SourceUpdate sourceUpdate, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'sourceId' is set
     if (sourceId == null) {
       throw new ApiException(400, "Missing the required parameter 'sourceId' when calling updateImportSource");
+    }
+    // verify the required parameter 'sourceUpdate' is set
+    if (sourceUpdate == null) {
+      throw new ApiException(400, "Missing the required parameter 'sourceUpdate' when calling updateImportSource");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
@@ -1425,9 +1398,15 @@ public class ImportsApi {
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
+    localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
-    localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.noBody());
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(sourceUpdate);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
     if (memberVarReadTimeout != null) {
       localVarRequestBuilder.timeout(memberVarReadTimeout);
     }

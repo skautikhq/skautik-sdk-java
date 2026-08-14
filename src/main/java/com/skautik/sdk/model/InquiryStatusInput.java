@@ -30,87 +30,46 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * UpdateInquiryRequest
+ * InquiryStatusInput
  */
 @JsonPropertyOrder({
-  UpdateInquiryRequest.JSON_PROPERTY_STATUS
+  InquiryStatusInput.JSON_PROPERTY_STATUS
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class UpdateInquiryRequest {
-  /**
-   * The state to move it to.
-   */
-  public enum StatusEnum {
-    NEW(String.valueOf("new")),
-    
-    READ(String.valueOf("read")),
-    
-    REPLIED(String.valueOf("replied")),
-    
-    CLOSED(String.valueOf("closed")),
-    
-    SPAM(String.valueOf("spam"));
-
-    private String value;
-
-    StatusEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static StatusEnum fromValue(String value) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
+public class InquiryStatusInput {
   public static final String JSON_PROPERTY_STATUS = "status";
   @javax.annotation.Nonnull
-  private StatusEnum status;
+  private String status;
 
-  public UpdateInquiryRequest() { 
+  public InquiryStatusInput() { 
   }
 
-  public UpdateInquiryRequest status(@javax.annotation.Nonnull StatusEnum status) {
+  public InquiryStatusInput status(@javax.annotation.Nonnull String status) {
     this.status = status;
     return this;
   }
 
   /**
-   * The state to move it to.
+   * Get status
    * @return status
    */
   @javax.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_STATUS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public StatusEnum getStatus() {
+  public String getStatus() {
     return status;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_STATUS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setStatus(@javax.annotation.Nonnull StatusEnum status) {
+  public void setStatus(@javax.annotation.Nonnull String status) {
     this.status = status;
   }
 
 
   /**
-   * Return true if this updateInquiry_request object is equal to o.
+   * Return true if this InquiryStatusInput object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -120,8 +79,8 @@ public class UpdateInquiryRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UpdateInquiryRequest updateInquiryRequest = (UpdateInquiryRequest) o;
-    return Objects.equals(this.status, updateInquiryRequest.status);
+    InquiryStatusInput inquiryStatusInput = (InquiryStatusInput) o;
+    return Objects.equals(this.status, inquiryStatusInput.status);
   }
 
   @Override
@@ -132,7 +91,7 @@ public class UpdateInquiryRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UpdateInquiryRequest {\n");
+    sb.append("class InquiryStatusInput {\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
