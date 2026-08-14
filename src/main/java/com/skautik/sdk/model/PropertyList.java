@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.skautik.sdk.model.ImportSource;
-import com.skautik.sdk.model.PageMeta;
+import com.skautik.sdk.model.Property;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,31 +33,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * A page of ImportSource records, with the cursor for the next one.
+ * Every Property record.
  */
 @JsonPropertyOrder({
-  ImportSourcePage.JSON_PROPERTY_DATA,
-  ImportSourcePage.JSON_PROPERTY_META
+  PropertyList.JSON_PROPERTY_DATA
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class ImportSourcePage {
+public class PropertyList {
   public static final String JSON_PROPERTY_DATA = "data";
   @javax.annotation.Nonnull
-  private List<ImportSource> data = new ArrayList<>();
+  private List<Property> data = new ArrayList<>();
 
-  public static final String JSON_PROPERTY_META = "meta";
-  @javax.annotation.Nullable
-  private PageMeta meta;
-
-  public ImportSourcePage() { 
+  public PropertyList() { 
   }
 
-  public ImportSourcePage data(@javax.annotation.Nonnull List<ImportSource> data) {
+  public PropertyList data(@javax.annotation.Nonnull List<Property> data) {
     this.data = data;
     return this;
   }
 
-  public ImportSourcePage addDataItem(ImportSource dataItem) {
+  public PropertyList addDataItem(Property dataItem) {
     if (this.data == null) {
       this.data = new ArrayList<>();
     }
@@ -73,44 +67,20 @@ public class ImportSourcePage {
   @javax.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public List<ImportSource> getData() {
+  public List<Property> getData() {
     return data;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setData(@javax.annotation.Nonnull List<ImportSource> data) {
+  public void setData(@javax.annotation.Nonnull List<Property> data) {
     this.data = data;
   }
 
 
-  public ImportSourcePage meta(@javax.annotation.Nullable PageMeta meta) {
-    this.meta = meta;
-    return this;
-  }
-
   /**
-   * Get meta
-   * @return meta
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_META, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public PageMeta getMeta() {
-    return meta;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_META, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMeta(@javax.annotation.Nullable PageMeta meta) {
-    this.meta = meta;
-  }
-
-
-  /**
-   * Return true if this ImportSourcePage object is equal to o.
+   * Return true if this PropertyList object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -120,22 +90,20 @@ public class ImportSourcePage {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ImportSourcePage importSourcePage = (ImportSourcePage) o;
-    return Objects.equals(this.data, importSourcePage.data) &&
-        Objects.equals(this.meta, importSourcePage.meta);
+    PropertyList propertyList = (PropertyList) o;
+    return Objects.equals(this.data, propertyList.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data, meta);
+    return Objects.hash(data);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ImportSourcePage {\n");
+    sb.append("class PropertyList {\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
-    sb.append("    meta: ").append(toIndentedString(meta)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -188,11 +156,6 @@ public class ImportSourcePage {
           "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
         }
       }
-    }
-
-    // add `meta` to the URL query string
-    if (getMeta() != null) {
-      joiner.add(getMeta().toUrlQueryString(prefix + "meta" + suffix));
     }
 
     return joiner.toString();

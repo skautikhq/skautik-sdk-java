@@ -21,10 +21,10 @@ import com.skautik.sdk.Pair;
 import com.skautik.sdk.model.CreateImportSourceRequest;
 import com.skautik.sdk.model.Envelope;
 import java.io.File;
-import com.skautik.sdk.model.ImportPage;
-import com.skautik.sdk.model.ImportRecordPage;
+import com.skautik.sdk.model.ImportList;
+import com.skautik.sdk.model.ImportRecordList;
 import com.skautik.sdk.model.ImportResponse;
-import com.skautik.sdk.model.ImportSourcePage;
+import com.skautik.sdk.model.ImportSourceList;
 import com.skautik.sdk.model.ImportSourceResponse;
 import com.skautik.sdk.model.Problem;
 
@@ -946,10 +946,10 @@ public class ImportsApi {
    * Per-record outcome, including why any failed.  Filter to failed to get the working list for a fix. Each entry names the source identifier and the line or element it came from, so a problem can be found in your export rather than guessed at.  Requires the &#x60;imports:write&#x60; scope.
    * @param importId Import identifier. (required)
    * @param outcome Narrow to one outcome. (optional)
-   * @return ImportRecordPage
+   * @return ImportRecordList
    * @throws ApiException if fails to make API call
    */
-  public ImportRecordPage listImportRecords(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome) throws ApiException {
+  public ImportRecordList listImportRecords(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome) throws ApiException {
     return listImportRecords(importId, outcome, null);
   }
 
@@ -959,11 +959,11 @@ public class ImportsApi {
    * @param importId Import identifier. (required)
    * @param outcome Narrow to one outcome. (optional)
    * @param headers Optional headers to include in the request
-   * @return ImportRecordPage
+   * @return ImportRecordList
    * @throws ApiException if fails to make API call
    */
-  public ImportRecordPage listImportRecords(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportRecordPage> localVarResponse = listImportRecordsWithHttpInfo(importId, outcome, headers);
+  public ImportRecordList listImportRecords(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportRecordList> localVarResponse = listImportRecordsWithHttpInfo(importId, outcome, headers);
     return localVarResponse.getData();
   }
 
@@ -972,10 +972,10 @@ public class ImportsApi {
    * Per-record outcome, including why any failed.  Filter to failed to get the working list for a fix. Each entry names the source identifier and the line or element it came from, so a problem can be found in your export rather than guessed at.  Requires the &#x60;imports:write&#x60; scope.
    * @param importId Import identifier. (required)
    * @param outcome Narrow to one outcome. (optional)
-   * @return ApiResponse&lt;ImportRecordPage&gt;
+   * @return ApiResponse&lt;ImportRecordList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportRecordPage> listImportRecordsWithHttpInfo(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome) throws ApiException {
+  public ApiResponse<ImportRecordList> listImportRecordsWithHttpInfo(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome) throws ApiException {
     return listImportRecordsWithHttpInfo(importId, outcome, null);
   }
 
@@ -985,10 +985,10 @@ public class ImportsApi {
    * @param importId Import identifier. (required)
    * @param outcome Narrow to one outcome. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;ImportRecordPage&gt;
+   * @return ApiResponse&lt;ImportRecordList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportRecordPage> listImportRecordsWithHttpInfo(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome, Map<String, String> headers) throws ApiException {
+  public ApiResponse<ImportRecordList> listImportRecordsWithHttpInfo(@javax.annotation.Nonnull String importId, @javax.annotation.Nullable String outcome, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listImportRecordsRequestBuilder(importId, outcome, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1004,7 +1004,7 @@ public class ImportsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<ImportRecordPage>(
+          return new ApiResponse<ImportRecordList>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -1014,10 +1014,10 @@ public class ImportsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        ImportRecordPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImportRecordPage>() {});
+        ImportRecordList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImportRecordList>() {});
         
 
-        return new ApiResponse<ImportRecordPage>(
+        return new ApiResponse<ImportRecordList>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -1081,10 +1081,10 @@ public class ImportsApi {
   /**
    * List import sources
    * Every standing connector your organisation has configured.  Credentials are never returned. A fetched source often holds the login for your own server in its URL, so the URL comes back with the password removed.  Requires the &#x60;imports:write&#x60; scope.
-   * @return ImportSourcePage
+   * @return ImportSourceList
    * @throws ApiException if fails to make API call
    */
-  public ImportSourcePage listImportSources() throws ApiException {
+  public ImportSourceList listImportSources() throws ApiException {
     return listImportSources(null);
   }
 
@@ -1092,21 +1092,21 @@ public class ImportsApi {
    * List import sources
    * Every standing connector your organisation has configured.  Credentials are never returned. A fetched source often holds the login for your own server in its URL, so the URL comes back with the password removed.  Requires the &#x60;imports:write&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return ImportSourcePage
+   * @return ImportSourceList
    * @throws ApiException if fails to make API call
    */
-  public ImportSourcePage listImportSources(Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportSourcePage> localVarResponse = listImportSourcesWithHttpInfo(headers);
+  public ImportSourceList listImportSources(Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportSourceList> localVarResponse = listImportSourcesWithHttpInfo(headers);
     return localVarResponse.getData();
   }
 
   /**
    * List import sources
    * Every standing connector your organisation has configured.  Credentials are never returned. A fetched source often holds the login for your own server in its URL, so the URL comes back with the password removed.  Requires the &#x60;imports:write&#x60; scope.
-   * @return ApiResponse&lt;ImportSourcePage&gt;
+   * @return ApiResponse&lt;ImportSourceList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportSourcePage> listImportSourcesWithHttpInfo() throws ApiException {
+  public ApiResponse<ImportSourceList> listImportSourcesWithHttpInfo() throws ApiException {
     return listImportSourcesWithHttpInfo(null);
   }
 
@@ -1114,10 +1114,10 @@ public class ImportsApi {
    * List import sources
    * Every standing connector your organisation has configured.  Credentials are never returned. A fetched source often holds the login for your own server in its URL, so the URL comes back with the password removed.  Requires the &#x60;imports:write&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;ImportSourcePage&gt;
+   * @return ApiResponse&lt;ImportSourceList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportSourcePage> listImportSourcesWithHttpInfo(Map<String, String> headers) throws ApiException {
+  public ApiResponse<ImportSourceList> listImportSourcesWithHttpInfo(Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listImportSourcesRequestBuilder(headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1133,7 +1133,7 @@ public class ImportsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<ImportSourcePage>(
+          return new ApiResponse<ImportSourceList>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -1143,10 +1143,10 @@ public class ImportsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        ImportSourcePage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImportSourcePage>() {});
+        ImportSourceList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImportSourceList>() {});
         
 
-        return new ApiResponse<ImportSourcePage>(
+        return new ApiResponse<ImportSourceList>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -1192,10 +1192,10 @@ public class ImportsApi {
    * Import history for your organisation.  Requires the &#x60;imports:write&#x60; scope.
    * @param sourceId Only imports produced by one source. (optional)
    * @param status Filter by outcome. (optional)
-   * @return ImportPage
+   * @return ImportList
    * @throws ApiException if fails to make API call
    */
-  public ImportPage listImports(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status) throws ApiException {
+  public ImportList listImports(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status) throws ApiException {
     return listImports(sourceId, status, null);
   }
 
@@ -1205,11 +1205,11 @@ public class ImportsApi {
    * @param sourceId Only imports produced by one source. (optional)
    * @param status Filter by outcome. (optional)
    * @param headers Optional headers to include in the request
-   * @return ImportPage
+   * @return ImportList
    * @throws ApiException if fails to make API call
    */
-  public ImportPage listImports(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportPage> localVarResponse = listImportsWithHttpInfo(sourceId, status, headers);
+  public ImportList listImports(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportList> localVarResponse = listImportsWithHttpInfo(sourceId, status, headers);
     return localVarResponse.getData();
   }
 
@@ -1218,10 +1218,10 @@ public class ImportsApi {
    * Import history for your organisation.  Requires the &#x60;imports:write&#x60; scope.
    * @param sourceId Only imports produced by one source. (optional)
    * @param status Filter by outcome. (optional)
-   * @return ApiResponse&lt;ImportPage&gt;
+   * @return ApiResponse&lt;ImportList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportPage> listImportsWithHttpInfo(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status) throws ApiException {
+  public ApiResponse<ImportList> listImportsWithHttpInfo(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status) throws ApiException {
     return listImportsWithHttpInfo(sourceId, status, null);
   }
 
@@ -1231,10 +1231,10 @@ public class ImportsApi {
    * @param sourceId Only imports produced by one source. (optional)
    * @param status Filter by outcome. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;ImportPage&gt;
+   * @return ApiResponse&lt;ImportList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportPage> listImportsWithHttpInfo(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status, Map<String, String> headers) throws ApiException {
+  public ApiResponse<ImportList> listImportsWithHttpInfo(@javax.annotation.Nullable String sourceId, @javax.annotation.Nullable String status, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listImportsRequestBuilder(sourceId, status, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1250,7 +1250,7 @@ public class ImportsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<ImportPage>(
+          return new ApiResponse<ImportList>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -1260,10 +1260,10 @@ public class ImportsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        ImportPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImportPage>() {});
+        ImportList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImportList>() {});
         
 
-        return new ApiResponse<ImportPage>(
+        return new ApiResponse<ImportList>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue

@@ -19,7 +19,7 @@ import com.skautik.sdk.Configuration;
 import com.skautik.sdk.Pair;
 
 import com.skautik.sdk.model.CreateExportRequest;
-import com.skautik.sdk.model.ExportPage;
+import com.skautik.sdk.model.ExportList;
 import com.skautik.sdk.model.ExportResponse;
 import com.skautik.sdk.model.Problem;
 
@@ -409,10 +409,10 @@ public class ExportsApi {
   /**
    * List exports
    * Recent exports for your organisation, newest first.  Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.  Requires the &#x60;exports:create&#x60; scope.
-   * @return ExportPage
+   * @return ExportList
    * @throws ApiException if fails to make API call
    */
-  public ExportPage listExports() throws ApiException {
+  public ExportList listExports() throws ApiException {
     return listExports(null);
   }
 
@@ -420,21 +420,21 @@ public class ExportsApi {
    * List exports
    * Recent exports for your organisation, newest first.  Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.  Requires the &#x60;exports:create&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return ExportPage
+   * @return ExportList
    * @throws ApiException if fails to make API call
    */
-  public ExportPage listExports(Map<String, String> headers) throws ApiException {
-    ApiResponse<ExportPage> localVarResponse = listExportsWithHttpInfo(headers);
+  public ExportList listExports(Map<String, String> headers) throws ApiException {
+    ApiResponse<ExportList> localVarResponse = listExportsWithHttpInfo(headers);
     return localVarResponse.getData();
   }
 
   /**
    * List exports
    * Recent exports for your organisation, newest first.  Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.  Requires the &#x60;exports:create&#x60; scope.
-   * @return ApiResponse&lt;ExportPage&gt;
+   * @return ApiResponse&lt;ExportList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ExportPage> listExportsWithHttpInfo() throws ApiException {
+  public ApiResponse<ExportList> listExportsWithHttpInfo() throws ApiException {
     return listExportsWithHttpInfo(null);
   }
 
@@ -442,10 +442,10 @@ public class ExportsApi {
    * List exports
    * Recent exports for your organisation, newest first.  Statuses only. Download links are not included here: minting one per row would sign a URL for every export you have ever made on a call you probably wanted statuses from. Fetch the export itself for a link.  Requires the &#x60;exports:create&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;ExportPage&gt;
+   * @return ApiResponse&lt;ExportList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ExportPage> listExportsWithHttpInfo(Map<String, String> headers) throws ApiException {
+  public ApiResponse<ExportList> listExportsWithHttpInfo(Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listExportsRequestBuilder(headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -461,7 +461,7 @@ public class ExportsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<ExportPage>(
+          return new ApiResponse<ExportList>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -471,10 +471,10 @@ public class ExportsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        ExportPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ExportPage>() {});
+        ExportList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ExportList>() {});
         
 
-        return new ApiResponse<ExportPage>(
+        return new ApiResponse<ExportList>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue

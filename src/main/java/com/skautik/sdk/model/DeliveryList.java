@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.skautik.sdk.model.Image;
-import com.skautik.sdk.model.PageMeta;
+import com.skautik.sdk.model.Delivery;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,31 +33,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * A page of Image records, with the cursor for the next one.
+ * Every Delivery record.
  */
 @JsonPropertyOrder({
-  ImagePage.JSON_PROPERTY_DATA,
-  ImagePage.JSON_PROPERTY_META
+  DeliveryList.JSON_PROPERTY_DATA
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class ImagePage {
+public class DeliveryList {
   public static final String JSON_PROPERTY_DATA = "data";
   @javax.annotation.Nonnull
-  private List<Image> data = new ArrayList<>();
+  private List<Delivery> data = new ArrayList<>();
 
-  public static final String JSON_PROPERTY_META = "meta";
-  @javax.annotation.Nullable
-  private PageMeta meta;
-
-  public ImagePage() { 
+  public DeliveryList() { 
   }
 
-  public ImagePage data(@javax.annotation.Nonnull List<Image> data) {
+  public DeliveryList data(@javax.annotation.Nonnull List<Delivery> data) {
     this.data = data;
     return this;
   }
 
-  public ImagePage addDataItem(Image dataItem) {
+  public DeliveryList addDataItem(Delivery dataItem) {
     if (this.data == null) {
       this.data = new ArrayList<>();
     }
@@ -73,44 +67,20 @@ public class ImagePage {
   @javax.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public List<Image> getData() {
+  public List<Delivery> getData() {
     return data;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setData(@javax.annotation.Nonnull List<Image> data) {
+  public void setData(@javax.annotation.Nonnull List<Delivery> data) {
     this.data = data;
   }
 
 
-  public ImagePage meta(@javax.annotation.Nullable PageMeta meta) {
-    this.meta = meta;
-    return this;
-  }
-
   /**
-   * Get meta
-   * @return meta
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_META, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public PageMeta getMeta() {
-    return meta;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_META, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMeta(@javax.annotation.Nullable PageMeta meta) {
-    this.meta = meta;
-  }
-
-
-  /**
-   * Return true if this ImagePage object is equal to o.
+   * Return true if this DeliveryList object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -120,22 +90,20 @@ public class ImagePage {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ImagePage imagePage = (ImagePage) o;
-    return Objects.equals(this.data, imagePage.data) &&
-        Objects.equals(this.meta, imagePage.meta);
+    DeliveryList deliveryList = (DeliveryList) o;
+    return Objects.equals(this.data, deliveryList.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data, meta);
+    return Objects.hash(data);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ImagePage {\n");
+    sb.append("class DeliveryList {\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
-    sb.append("    meta: ").append(toIndentedString(meta)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -188,11 +156,6 @@ public class ImagePage {
           "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
         }
       }
-    }
-
-    // add `meta` to the URL query string
-    if (getMeta() != null) {
-      joiner.add(getMeta().toUrlQueryString(prefix + "meta" + suffix));
     }
 
     return joiner.toString();

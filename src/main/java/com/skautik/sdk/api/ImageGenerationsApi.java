@@ -20,7 +20,7 @@ import com.skautik.sdk.Pair;
 
 import com.skautik.sdk.model.CreateGenerationRequest;
 import com.skautik.sdk.model.Envelope;
-import com.skautik.sdk.model.GenerationPage;
+import com.skautik.sdk.model.GenerationList;
 import com.skautik.sdk.model.GenerationResponse;
 import com.skautik.sdk.model.Problem;
 
@@ -519,10 +519,10 @@ public class ImageGenerationsApi {
   /**
    * List generations
    * Recent requests for your organisation, newest first.  Requires the &#x60;images:write&#x60; scope.
-   * @return GenerationPage
+   * @return GenerationList
    * @throws ApiException if fails to make API call
    */
-  public GenerationPage listGenerations() throws ApiException {
+  public GenerationList listGenerations() throws ApiException {
     return listGenerations(null);
   }
 
@@ -530,21 +530,21 @@ public class ImageGenerationsApi {
    * List generations
    * Recent requests for your organisation, newest first.  Requires the &#x60;images:write&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return GenerationPage
+   * @return GenerationList
    * @throws ApiException if fails to make API call
    */
-  public GenerationPage listGenerations(Map<String, String> headers) throws ApiException {
-    ApiResponse<GenerationPage> localVarResponse = listGenerationsWithHttpInfo(headers);
+  public GenerationList listGenerations(Map<String, String> headers) throws ApiException {
+    ApiResponse<GenerationList> localVarResponse = listGenerationsWithHttpInfo(headers);
     return localVarResponse.getData();
   }
 
   /**
    * List generations
    * Recent requests for your organisation, newest first.  Requires the &#x60;images:write&#x60; scope.
-   * @return ApiResponse&lt;GenerationPage&gt;
+   * @return ApiResponse&lt;GenerationList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<GenerationPage> listGenerationsWithHttpInfo() throws ApiException {
+  public ApiResponse<GenerationList> listGenerationsWithHttpInfo() throws ApiException {
     return listGenerationsWithHttpInfo(null);
   }
 
@@ -552,10 +552,10 @@ public class ImageGenerationsApi {
    * List generations
    * Recent requests for your organisation, newest first.  Requires the &#x60;images:write&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;GenerationPage&gt;
+   * @return ApiResponse&lt;GenerationList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<GenerationPage> listGenerationsWithHttpInfo(Map<String, String> headers) throws ApiException {
+  public ApiResponse<GenerationList> listGenerationsWithHttpInfo(Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listGenerationsRequestBuilder(headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -571,7 +571,7 @@ public class ImageGenerationsApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<GenerationPage>(
+          return new ApiResponse<GenerationList>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -581,10 +581,10 @@ public class ImageGenerationsApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        GenerationPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<GenerationPage>() {});
+        GenerationList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<GenerationList>() {});
         
 
-        return new ApiResponse<GenerationPage>(
+        return new ApiResponse<GenerationList>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue

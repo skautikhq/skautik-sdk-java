@@ -22,10 +22,11 @@ import java.math.BigDecimal;
 import com.skautik.sdk.model.CreatePropertyRequest;
 import com.skautik.sdk.model.Envelope;
 import java.io.File;
-import com.skautik.sdk.model.ImagePage;
+import com.skautik.sdk.model.ImageList;
 import com.skautik.sdk.model.ImageResponse;
-import com.skautik.sdk.model.PriceObservationPage;
+import com.skautik.sdk.model.PriceObservationList;
 import com.skautik.sdk.model.Problem;
+import com.skautik.sdk.model.PropertyList;
 import com.skautik.sdk.model.PropertyPage;
 import com.skautik.sdk.model.PropertyResponse;
 import com.skautik.sdk.model.SearchPropertiesRequest;
@@ -183,10 +184,10 @@ public class PropertiesApi {
    * Publish a record from your own inventory.  Send an Idempotency-Key so a retried request cannot create a duplicate listing. Records created this way belong to your organisation and are the only ones your key may modify.  Requires the &#x60;properties:write&#x60; scope.
    * @param createPropertyRequest  (required)
    * @param idempotencyKey Unique per logical creation. Replaying the same key returns the original result rather than creating a second record. (optional)
-   * @return Problem
+   * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public Problem createProperty(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+  public PropertyResponse createProperty(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     return createProperty(createPropertyRequest, idempotencyKey, null);
   }
 
@@ -196,11 +197,11 @@ public class PropertiesApi {
    * @param createPropertyRequest  (required)
    * @param idempotencyKey Unique per logical creation. Replaying the same key returns the original result rather than creating a second record. (optional)
    * @param headers Optional headers to include in the request
-   * @return Problem
+   * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public Problem createProperty(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
-    ApiResponse<Problem> localVarResponse = createPropertyWithHttpInfo(createPropertyRequest, idempotencyKey, headers);
+  public PropertyResponse createProperty(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyResponse> localVarResponse = createPropertyWithHttpInfo(createPropertyRequest, idempotencyKey, headers);
     return localVarResponse.getData();
   }
 
@@ -209,10 +210,10 @@ public class PropertiesApi {
    * Publish a record from your own inventory.  Send an Idempotency-Key so a retried request cannot create a duplicate listing. Records created this way belong to your organisation and are the only ones your key may modify.  Requires the &#x60;properties:write&#x60; scope.
    * @param createPropertyRequest  (required)
    * @param idempotencyKey Unique per logical creation. Replaying the same key returns the original result rather than creating a second record. (optional)
-   * @return ApiResponse&lt;Problem&gt;
+   * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Problem> createPropertyWithHttpInfo(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+  public ApiResponse<PropertyResponse> createPropertyWithHttpInfo(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
     return createPropertyWithHttpInfo(createPropertyRequest, idempotencyKey, null);
   }
 
@@ -222,10 +223,10 @@ public class PropertiesApi {
    * @param createPropertyRequest  (required)
    * @param idempotencyKey Unique per logical creation. Replaying the same key returns the original result rather than creating a second record. (optional)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Problem&gt;
+   * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Problem> createPropertyWithHttpInfo(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
+  public ApiResponse<PropertyResponse> createPropertyWithHttpInfo(@javax.annotation.Nonnull CreatePropertyRequest createPropertyRequest, @javax.annotation.Nullable String idempotencyKey, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = createPropertyRequestBuilder(createPropertyRequest, idempotencyKey, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -241,7 +242,7 @@ public class PropertiesApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Problem>(
+          return new ApiResponse<PropertyResponse>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -251,10 +252,10 @@ public class PropertiesApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Problem responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Problem>() {});
+        PropertyResponse responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PropertyResponse>() {});
         
 
-        return new ApiResponse<Problem>(
+        return new ApiResponse<PropertyResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -289,7 +290,7 @@ public class PropertiesApi {
       localVarRequestBuilder.header("Idempotency-Key", idempotencyKey.toString());
     }
     localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     try {
       byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(createPropertyRequest);
@@ -312,11 +313,10 @@ public class PropertiesApi {
    * Withdraw a property
    * Take one of your records off the market.  Withdrawal is not deletion. The record moves to withdrawn, disappears from search, and keeps its price history so past analysis stays intelligible. A record owned by an import source is refused, because the next run would bring it straight back: withdraw it at the source instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to withdraw. (required)
-   * @return Problem
    * @throws ApiException if fails to make API call
    */
-  public Problem deleteProperty(@javax.annotation.Nonnull String propertyId) throws ApiException {
-    return deleteProperty(propertyId, null);
+  public void deleteProperty(@javax.annotation.Nonnull String propertyId) throws ApiException {
+    deleteProperty(propertyId, null);
   }
 
   /**
@@ -324,22 +324,20 @@ public class PropertiesApi {
    * Take one of your records off the market.  Withdrawal is not deletion. The record moves to withdrawn, disappears from search, and keeps its price history so past analysis stays intelligible. A record owned by an import source is refused, because the next run would bring it straight back: withdraw it at the source instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to withdraw. (required)
    * @param headers Optional headers to include in the request
-   * @return Problem
    * @throws ApiException if fails to make API call
    */
-  public Problem deleteProperty(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
-    ApiResponse<Problem> localVarResponse = deletePropertyWithHttpInfo(propertyId, headers);
-    return localVarResponse.getData();
+  public void deleteProperty(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+    deletePropertyWithHttpInfo(propertyId, headers);
   }
 
   /**
    * Withdraw a property
    * Take one of your records off the market.  Withdrawal is not deletion. The record moves to withdrawn, disappears from search, and keeps its price history so past analysis stays intelligible. A record owned by an import source is refused, because the next run would bring it straight back: withdraw it at the source instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to withdraw. (required)
-   * @return ApiResponse&lt;Problem&gt;
+   * @return ApiResponse&lt;Void&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Problem> deletePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
+  public ApiResponse<Void> deletePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
     return deletePropertyWithHttpInfo(propertyId, null);
   }
 
@@ -348,10 +346,10 @@ public class PropertiesApi {
    * Take one of your records off the market.  Withdrawal is not deletion. The record moves to withdrawn, disappears from search, and keeps its price history so past analysis stays intelligible. A record owned by an import source is refused, because the next run would bring it straight back: withdraw it at the source instead.  Requires the &#x60;properties:write&#x60; scope.
    * @param propertyId Property to withdraw. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Problem&gt;
+   * @return ApiResponse&lt;Void&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Problem> deletePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<Void> deletePropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = deletePropertyRequestBuilder(propertyId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -366,24 +364,13 @@ public class PropertiesApi {
           throw getApiException("deleteProperty", localVarResponse);
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
-        if (localVarResponseBody == null) {
-          return new ApiResponse<Problem>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
         }
-
-        
-        
-        String responseBody = new String(localVarResponseBody.readAllBytes());
-        Problem responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Problem>() {});
-        
-
-        return new ApiResponse<Problem>(
+        return new ApiResponse<>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseValue
+            null
         );
       } finally {
         if (localVarResponseBody != null) {
@@ -892,10 +879,10 @@ public class PropertiesApi {
    * List images
    * Image records for a property, in display order.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
-   * @return ImagePage
+   * @return ImageList
    * @throws ApiException if fails to make API call
    */
-  public ImagePage listPropertyImages(@javax.annotation.Nonnull String propertyId) throws ApiException {
+  public ImageList listPropertyImages(@javax.annotation.Nonnull String propertyId) throws ApiException {
     return listPropertyImages(propertyId, null);
   }
 
@@ -904,11 +891,11 @@ public class PropertiesApi {
    * Image records for a property, in display order.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ImagePage
+   * @return ImageList
    * @throws ApiException if fails to make API call
    */
-  public ImagePage listPropertyImages(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImagePage> localVarResponse = listPropertyImagesWithHttpInfo(propertyId, headers);
+  public ImageList listPropertyImages(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImageList> localVarResponse = listPropertyImagesWithHttpInfo(propertyId, headers);
     return localVarResponse.getData();
   }
 
@@ -916,10 +903,10 @@ public class PropertiesApi {
    * List images
    * Image records for a property, in display order.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
-   * @return ApiResponse&lt;ImagePage&gt;
+   * @return ApiResponse&lt;ImageList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImagePage> listPropertyImagesWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
+  public ApiResponse<ImageList> listPropertyImagesWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
     return listPropertyImagesWithHttpInfo(propertyId, null);
   }
 
@@ -928,10 +915,10 @@ public class PropertiesApi {
    * Image records for a property, in display order.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;ImagePage&gt;
+   * @return ApiResponse&lt;ImageList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImagePage> listPropertyImagesWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<ImageList> listPropertyImagesWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = listPropertyImagesRequestBuilder(propertyId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -947,7 +934,7 @@ public class PropertiesApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<ImagePage>(
+          return new ApiResponse<ImageList>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -957,10 +944,10 @@ public class PropertiesApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        ImagePage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImagePage>() {});
+        ImageList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImageList>() {});
         
 
-        return new ApiResponse<ImagePage>(
+        return new ApiResponse<ImageList>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -1010,10 +997,10 @@ public class PropertiesApi {
    * Price history
    * Every asking price we observed while tracking the listing.  These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
-   * @return PriceObservationPage
+   * @return PriceObservationList
    * @throws ApiException if fails to make API call
    */
-  public PriceObservationPage propertyPriceHistory(@javax.annotation.Nonnull String propertyId) throws ApiException {
+  public PriceObservationList propertyPriceHistory(@javax.annotation.Nonnull String propertyId) throws ApiException {
     return propertyPriceHistory(propertyId, null);
   }
 
@@ -1022,11 +1009,11 @@ public class PropertiesApi {
    * Every asking price we observed while tracking the listing.  These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return PriceObservationPage
+   * @return PriceObservationList
    * @throws ApiException if fails to make API call
    */
-  public PriceObservationPage propertyPriceHistory(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
-    ApiResponse<PriceObservationPage> localVarResponse = propertyPriceHistoryWithHttpInfo(propertyId, headers);
+  public PriceObservationList propertyPriceHistory(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+    ApiResponse<PriceObservationList> localVarResponse = propertyPriceHistoryWithHttpInfo(propertyId, headers);
     return localVarResponse.getData();
   }
 
@@ -1034,10 +1021,10 @@ public class PropertiesApi {
    * Price history
    * Every asking price we observed while tracking the listing.  These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
-   * @return ApiResponse&lt;PriceObservationPage&gt;
+   * @return ApiResponse&lt;PriceObservationList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PriceObservationPage> propertyPriceHistoryWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
+  public ApiResponse<PriceObservationList> propertyPriceHistoryWithHttpInfo(@javax.annotation.Nonnull String propertyId) throws ApiException {
     return propertyPriceHistoryWithHttpInfo(propertyId, null);
   }
 
@@ -1046,10 +1033,10 @@ public class PropertiesApi {
    * Every asking price we observed while tracking the listing.  These are advertised prices, not transacted ones. A property may well have sold for something quite different from its final asking price.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Property identifier. (required)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;PriceObservationPage&gt;
+   * @return ApiResponse&lt;PriceObservationList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PriceObservationPage> propertyPriceHistoryWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
+  public ApiResponse<PriceObservationList> propertyPriceHistoryWithHttpInfo(@javax.annotation.Nonnull String propertyId, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = propertyPriceHistoryRequestBuilder(propertyId, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1065,7 +1052,7 @@ public class PropertiesApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<PriceObservationPage>(
+          return new ApiResponse<PriceObservationList>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -1075,10 +1062,10 @@ public class PropertiesApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        PriceObservationPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PriceObservationPage>() {});
+        PriceObservationList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PriceObservationList>() {});
         
 
-        return new ApiResponse<PriceObservationPage>(
+        return new ApiResponse<PriceObservationList>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -1248,10 +1235,10 @@ public class PropertiesApi {
    * Comparable records, for context or valuation support.  Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.  Requires the &#x60;properties:read&#x60; scope.  Availability: Growth and above.
    * @param propertyId Property to compare against. (required)
    * @param limit Comparables to return, 1 to 50. (optional, default to 10)
-   * @return PropertyPage
+   * @return PropertyList
    * @throws ApiException if fails to make API call
    */
-  public PropertyPage similarProperties(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit) throws ApiException {
+  public PropertyList similarProperties(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit) throws ApiException {
     return similarProperties(propertyId, limit, null);
   }
 
@@ -1261,11 +1248,11 @@ public class PropertiesApi {
    * @param propertyId Property to compare against. (required)
    * @param limit Comparables to return, 1 to 50. (optional, default to 10)
    * @param headers Optional headers to include in the request
-   * @return PropertyPage
+   * @return PropertyList
    * @throws ApiException if fails to make API call
    */
-  public PropertyPage similarProperties(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit, Map<String, String> headers) throws ApiException {
-    ApiResponse<PropertyPage> localVarResponse = similarPropertiesWithHttpInfo(propertyId, limit, headers);
+  public PropertyList similarProperties(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyList> localVarResponse = similarPropertiesWithHttpInfo(propertyId, limit, headers);
     return localVarResponse.getData();
   }
 
@@ -1274,10 +1261,10 @@ public class PropertiesApi {
    * Comparable records, for context or valuation support.  Similarity blends location, size, type, and condition. It is a convenience, not an appraisal, and comparables thin out quickly in low-supply areas.  Requires the &#x60;properties:read&#x60; scope.  Availability: Growth and above.
    * @param propertyId Property to compare against. (required)
    * @param limit Comparables to return, 1 to 50. (optional, default to 10)
-   * @return ApiResponse&lt;PropertyPage&gt;
+   * @return ApiResponse&lt;PropertyList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyPage> similarPropertiesWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit) throws ApiException {
+  public ApiResponse<PropertyList> similarPropertiesWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit) throws ApiException {
     return similarPropertiesWithHttpInfo(propertyId, limit, null);
   }
 
@@ -1287,10 +1274,10 @@ public class PropertiesApi {
    * @param propertyId Property to compare against. (required)
    * @param limit Comparables to return, 1 to 50. (optional, default to 10)
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;PropertyPage&gt;
+   * @return ApiResponse&lt;PropertyList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyPage> similarPropertiesWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit, Map<String, String> headers) throws ApiException {
+  public ApiResponse<PropertyList> similarPropertiesWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable Integer limit, Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = similarPropertiesRequestBuilder(propertyId, limit, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -1306,7 +1293,7 @@ public class PropertiesApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<PropertyPage>(
+          return new ApiResponse<PropertyList>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -1316,10 +1303,10 @@ public class PropertiesApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        PropertyPage responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PropertyPage>() {});
+        PropertyList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PropertyList>() {});
         
 
-        return new ApiResponse<PropertyPage>(
+        return new ApiResponse<PropertyList>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue

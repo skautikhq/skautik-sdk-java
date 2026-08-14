@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.skautik.sdk.model.ImportRecord;
-import com.skautik.sdk.model.PageMeta;
+import com.skautik.sdk.model.District;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,31 +33,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * A page of ImportRecord records, with the cursor for the next one.
+ * Every District record.
  */
 @JsonPropertyOrder({
-  ImportRecordPage.JSON_PROPERTY_DATA,
-  ImportRecordPage.JSON_PROPERTY_META
+  DistrictList.JSON_PROPERTY_DATA
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class ImportRecordPage {
+public class DistrictList {
   public static final String JSON_PROPERTY_DATA = "data";
   @javax.annotation.Nonnull
-  private List<ImportRecord> data = new ArrayList<>();
+  private List<District> data = new ArrayList<>();
 
-  public static final String JSON_PROPERTY_META = "meta";
-  @javax.annotation.Nullable
-  private PageMeta meta;
-
-  public ImportRecordPage() { 
+  public DistrictList() { 
   }
 
-  public ImportRecordPage data(@javax.annotation.Nonnull List<ImportRecord> data) {
+  public DistrictList data(@javax.annotation.Nonnull List<District> data) {
     this.data = data;
     return this;
   }
 
-  public ImportRecordPage addDataItem(ImportRecord dataItem) {
+  public DistrictList addDataItem(District dataItem) {
     if (this.data == null) {
       this.data = new ArrayList<>();
     }
@@ -73,44 +67,20 @@ public class ImportRecordPage {
   @javax.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public List<ImportRecord> getData() {
+  public List<District> getData() {
     return data;
   }
 
 
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setData(@javax.annotation.Nonnull List<ImportRecord> data) {
+  public void setData(@javax.annotation.Nonnull List<District> data) {
     this.data = data;
   }
 
 
-  public ImportRecordPage meta(@javax.annotation.Nullable PageMeta meta) {
-    this.meta = meta;
-    return this;
-  }
-
   /**
-   * Get meta
-   * @return meta
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_META, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public PageMeta getMeta() {
-    return meta;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_META, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMeta(@javax.annotation.Nullable PageMeta meta) {
-    this.meta = meta;
-  }
-
-
-  /**
-   * Return true if this ImportRecordPage object is equal to o.
+   * Return true if this DistrictList object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -120,22 +90,20 @@ public class ImportRecordPage {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ImportRecordPage importRecordPage = (ImportRecordPage) o;
-    return Objects.equals(this.data, importRecordPage.data) &&
-        Objects.equals(this.meta, importRecordPage.meta);
+    DistrictList districtList = (DistrictList) o;
+    return Objects.equals(this.data, districtList.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data, meta);
+    return Objects.hash(data);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ImportRecordPage {\n");
+    sb.append("class DistrictList {\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
-    sb.append("    meta: ").append(toIndentedString(meta)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -188,11 +156,6 @@ public class ImportRecordPage {
           "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
         }
       }
-    }
-
-    // add `meta` to the URL query string
-    if (getMeta() != null) {
-      joiner.add(getMeta().toUrlQueryString(prefix + "meta" + suffix));
     }
 
     return joiner.toString();

@@ -275,10 +275,10 @@ public class AccountAndStatusApi {
   /**
    * Key introspection
    * Which organisation a key belongs to, its plan, and its remaining quota.  Useful in a health check: it proves a key is valid without spending a meaningful request, and it reports both limits without waiting to be refused by either. Read burst_per_second and pace yourself, rather than discovering the burst limit through a 429.  Requires the &#x60;properties:read&#x60; scope.
-   * @return Problem
+   * @return Envelope
    * @throws ApiException if fails to make API call
    */
-  public Problem getMe() throws ApiException {
+  public Envelope getMe() throws ApiException {
     return getMe(null);
   }
 
@@ -286,21 +286,21 @@ public class AccountAndStatusApi {
    * Key introspection
    * Which organisation a key belongs to, its plan, and its remaining quota.  Useful in a health check: it proves a key is valid without spending a meaningful request, and it reports both limits without waiting to be refused by either. Read burst_per_second and pace yourself, rather than discovering the burst limit through a 429.  Requires the &#x60;properties:read&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return Problem
+   * @return Envelope
    * @throws ApiException if fails to make API call
    */
-  public Problem getMe(Map<String, String> headers) throws ApiException {
-    ApiResponse<Problem> localVarResponse = getMeWithHttpInfo(headers);
+  public Envelope getMe(Map<String, String> headers) throws ApiException {
+    ApiResponse<Envelope> localVarResponse = getMeWithHttpInfo(headers);
     return localVarResponse.getData();
   }
 
   /**
    * Key introspection
    * Which organisation a key belongs to, its plan, and its remaining quota.  Useful in a health check: it proves a key is valid without spending a meaningful request, and it reports both limits without waiting to be refused by either. Read burst_per_second and pace yourself, rather than discovering the burst limit through a 429.  Requires the &#x60;properties:read&#x60; scope.
-   * @return ApiResponse&lt;Problem&gt;
+   * @return ApiResponse&lt;Envelope&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Problem> getMeWithHttpInfo() throws ApiException {
+  public ApiResponse<Envelope> getMeWithHttpInfo() throws ApiException {
     return getMeWithHttpInfo(null);
   }
 
@@ -308,10 +308,10 @@ public class AccountAndStatusApi {
    * Key introspection
    * Which organisation a key belongs to, its plan, and its remaining quota.  Useful in a health check: it proves a key is valid without spending a meaningful request, and it reports both limits without waiting to be refused by either. Read burst_per_second and pace yourself, rather than discovering the burst limit through a 429.  Requires the &#x60;properties:read&#x60; scope.
    * @param headers Optional headers to include in the request
-   * @return ApiResponse&lt;Problem&gt;
+   * @return ApiResponse&lt;Envelope&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Problem> getMeWithHttpInfo(Map<String, String> headers) throws ApiException {
+  public ApiResponse<Envelope> getMeWithHttpInfo(Map<String, String> headers) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = getMeRequestBuilder(headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -327,7 +327,7 @@ public class AccountAndStatusApi {
         }
         localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
         if (localVarResponseBody == null) {
-          return new ApiResponse<Problem>(
+          return new ApiResponse<Envelope>(
               localVarResponse.statusCode(),
               localVarResponse.headers().map(),
               null
@@ -337,10 +337,10 @@ public class AccountAndStatusApi {
         
         
         String responseBody = new String(localVarResponseBody.readAllBytes());
-        Problem responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Problem>() {});
+        Envelope responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Envelope>() {});
         
 
-        return new ApiResponse<Problem>(
+        return new ApiResponse<Envelope>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
             responseValue
@@ -367,7 +367,7 @@ public class AccountAndStatusApi {
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    localVarRequestBuilder.header("Accept", "application/problem+json");
+    localVarRequestBuilder.header("Accept", "application/json, application/problem+json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {
