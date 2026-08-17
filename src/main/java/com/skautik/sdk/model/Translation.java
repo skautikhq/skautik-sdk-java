@@ -30,75 +30,104 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * DeliveryInput
+ * Translation
  */
 @JsonPropertyOrder({
-  DeliveryInput.JSON_PROPERTY_TYPE,
-  DeliveryInput.JSON_PROPERTY_URL
+  Translation.JSON_PROPERTY_FIELD,
+  Translation.JSON_PROPERTY_LANGUAGE,
+  Translation.JSON_PROPERTY_VALUE
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class DeliveryInput {
-  public static final String JSON_PROPERTY_TYPE = "type";
+public class Translation {
+  public static final String JSON_PROPERTY_FIELD = "field";
   @javax.annotation.Nonnull
-  private String type;
+  private String field;
 
-  public static final String JSON_PROPERTY_URL = "url";
-  @javax.annotation.Nullable
-  private String url;
+  public static final String JSON_PROPERTY_LANGUAGE = "language";
+  @javax.annotation.Nonnull
+  private String language;
 
-  public DeliveryInput() { 
+  public static final String JSON_PROPERTY_VALUE = "value";
+  @javax.annotation.Nonnull
+  private String value;
+
+  public Translation() { 
   }
 
-  public DeliveryInput type(@javax.annotation.Nonnull String type) {
-    this.type = type;
+  public Translation field(@javax.annotation.Nonnull String field) {
+    this.field = field;
     return this;
   }
 
   /**
-   * Get type
-   * @return type
+   * Get field
+   * @return field
    */
   @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
+  @JsonProperty(value = JSON_PROPERTY_FIELD, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public String getType() {
-    return type;
+  public String getField() {
+    return field;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
+  @JsonProperty(value = JSON_PROPERTY_FIELD, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(@javax.annotation.Nonnull String type) {
-    this.type = type;
+  public void setField(@javax.annotation.Nonnull String field) {
+    this.field = field;
   }
 
 
-  public DeliveryInput url(@javax.annotation.Nullable String url) {
-    this.url = url;
+  public Translation language(@javax.annotation.Nonnull String language) {
+    this.language = language;
     return this;
   }
 
   /**
-   * Get url
-   * @return url
+   * Get language
+   * @return language
    */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_URL, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public String getUrl() {
-    return url;
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LANGUAGE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public String getLanguage() {
+    return language;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_URL, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUrl(@javax.annotation.Nullable String url) {
-    this.url = url;
+  @JsonProperty(value = JSON_PROPERTY_LANGUAGE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLanguage(@javax.annotation.Nonnull String language) {
+    this.language = language;
+  }
+
+
+  public Translation value(@javax.annotation.Nonnull String value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Get value
+   * @return value
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public String getValue() {
+    return value;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setValue(@javax.annotation.Nonnull String value) {
+    this.value = value;
   }
 
 
   /**
-   * Return true if this DeliveryInput object is equal to o.
+   * Return true if this Translation object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -108,22 +137,24 @@ public class DeliveryInput {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    DeliveryInput deliveryInput = (DeliveryInput) o;
-    return Objects.equals(this.type, deliveryInput.type) &&
-        Objects.equals(this.url, deliveryInput.url);
+    Translation translation = (Translation) o;
+    return Objects.equals(this.field, translation.field) &&
+        Objects.equals(this.language, translation.language) &&
+        Objects.equals(this.value, translation.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, url);
+    return Objects.hash(field, language, value);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class DeliveryInput {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    url: ").append(toIndentedString(url)).append("\n");
+    sb.append("class Translation {\n");
+    sb.append("    field: ").append(toIndentedString(field)).append("\n");
+    sb.append("    language: ").append(toIndentedString(language)).append("\n");
+    sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -168,14 +199,19 @@ public class DeliveryInput {
 
     StringJoiner joiner = new StringJoiner("&");
 
-    // add `type` to the URL query string
-    if (getType() != null) {
-      joiner.add(String.format(java.util.Locale.ROOT, "%stype%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getType()))));
+    // add `field` to the URL query string
+    if (getField() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sfield%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getField()))));
     }
 
-    // add `url` to the URL query string
-    if (getUrl() != null) {
-      joiner.add(String.format(java.util.Locale.ROOT, "%surl%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUrl()))));
+    // add `language` to the URL query string
+    if (getLanguage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slanguage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLanguage()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
     }
 
     return joiner.toString();

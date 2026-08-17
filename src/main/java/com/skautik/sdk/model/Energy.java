@@ -34,21 +34,104 @@ import com.skautik.sdk.ApiClient;
  * Energy
  */
 @JsonPropertyOrder({
+  Energy.JSON_PROPERTY_CERTIFICATE_TYPE,
+  Energy.JSON_PROPERTY_CO2_EMISSIONS,
   Energy.JSON_PROPERTY_CONSUMPTION_KWH,
-  Energy.JSON_PROPERTY_LABEL
+  Energy.JSON_PROPERTY_DEMAND_KWH,
+  Energy.JSON_PROPERTY_INCLUDES_HOT_WATER,
+  Energy.JSON_PROPERTY_ISSUED_AT,
+  Energy.JSON_PROPERTY_LABEL,
+  Energy.JSON_PROPERTY_PRIMARY_CARRIER,
+  Energy.JSON_PROPERTY_VALID_UNTIL
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
 public class Energy {
+  public static final String JSON_PROPERTY_CERTIFICATE_TYPE = "certificate_type";
+  @javax.annotation.Nullable
+  private String certificateType;
+
+  public static final String JSON_PROPERTY_CO2_EMISSIONS = "co2_emissions";
+  @javax.annotation.Nullable
+  private BigDecimal co2Emissions;
+
   public static final String JSON_PROPERTY_CONSUMPTION_KWH = "consumption_kwh";
   @javax.annotation.Nullable
   private BigDecimal consumptionKwh;
+
+  public static final String JSON_PROPERTY_DEMAND_KWH = "demand_kwh";
+  @javax.annotation.Nullable
+  private BigDecimal demandKwh;
+
+  public static final String JSON_PROPERTY_INCLUDES_HOT_WATER = "includes_hot_water";
+  @javax.annotation.Nullable
+  private Boolean includesHotWater;
+
+  public static final String JSON_PROPERTY_ISSUED_AT = "issued_at";
+  @javax.annotation.Nullable
+  private String issuedAt;
 
   public static final String JSON_PROPERTY_LABEL = "label";
   @javax.annotation.Nullable
   private String label;
 
+  public static final String JSON_PROPERTY_PRIMARY_CARRIER = "primary_carrier";
+  @javax.annotation.Nullable
+  private String primaryCarrier;
+
+  public static final String JSON_PROPERTY_VALID_UNTIL = "valid_until";
+  @javax.annotation.Nullable
+  private String validUntil;
+
   public Energy() { 
   }
+
+  public Energy certificateType(@javax.annotation.Nullable String certificateType) {
+    this.certificateType = certificateType;
+    return this;
+  }
+
+  /**
+   * Get certificateType
+   * @return certificateType
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CERTIFICATE_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getCertificateType() {
+    return certificateType;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CERTIFICATE_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCertificateType(@javax.annotation.Nullable String certificateType) {
+    this.certificateType = certificateType;
+  }
+
+
+  public Energy co2Emissions(@javax.annotation.Nullable BigDecimal co2Emissions) {
+    this.co2Emissions = co2Emissions;
+    return this;
+  }
+
+  /**
+   * Get co2Emissions
+   * @return co2Emissions
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CO2_EMISSIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getCo2Emissions() {
+    return co2Emissions;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CO2_EMISSIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCo2Emissions(@javax.annotation.Nullable BigDecimal co2Emissions) {
+    this.co2Emissions = co2Emissions;
+  }
+
 
   public Energy consumptionKwh(@javax.annotation.Nullable BigDecimal consumptionKwh) {
     this.consumptionKwh = consumptionKwh;
@@ -71,6 +154,78 @@ public class Energy {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setConsumptionKwh(@javax.annotation.Nullable BigDecimal consumptionKwh) {
     this.consumptionKwh = consumptionKwh;
+  }
+
+
+  public Energy demandKwh(@javax.annotation.Nullable BigDecimal demandKwh) {
+    this.demandKwh = demandKwh;
+    return this;
+  }
+
+  /**
+   * Get demandKwh
+   * @return demandKwh
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DEMAND_KWH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getDemandKwh() {
+    return demandKwh;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DEMAND_KWH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDemandKwh(@javax.annotation.Nullable BigDecimal demandKwh) {
+    this.demandKwh = demandKwh;
+  }
+
+
+  public Energy includesHotWater(@javax.annotation.Nullable Boolean includesHotWater) {
+    this.includesHotWater = includesHotWater;
+    return this;
+  }
+
+  /**
+   * Get includesHotWater
+   * @return includesHotWater
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_INCLUDES_HOT_WATER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getIncludesHotWater() {
+    return includesHotWater;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_INCLUDES_HOT_WATER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIncludesHotWater(@javax.annotation.Nullable Boolean includesHotWater) {
+    this.includesHotWater = includesHotWater;
+  }
+
+
+  public Energy issuedAt(@javax.annotation.Nullable String issuedAt) {
+    this.issuedAt = issuedAt;
+    return this;
+  }
+
+  /**
+   * Get issuedAt
+   * @return issuedAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ISSUED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getIssuedAt() {
+    return issuedAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ISSUED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIssuedAt(@javax.annotation.Nullable String issuedAt) {
+    this.issuedAt = issuedAt;
   }
 
 
@@ -98,6 +253,54 @@ public class Energy {
   }
 
 
+  public Energy primaryCarrier(@javax.annotation.Nullable String primaryCarrier) {
+    this.primaryCarrier = primaryCarrier;
+    return this;
+  }
+
+  /**
+   * Get primaryCarrier
+   * @return primaryCarrier
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PRIMARY_CARRIER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getPrimaryCarrier() {
+    return primaryCarrier;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PRIMARY_CARRIER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPrimaryCarrier(@javax.annotation.Nullable String primaryCarrier) {
+    this.primaryCarrier = primaryCarrier;
+  }
+
+
+  public Energy validUntil(@javax.annotation.Nullable String validUntil) {
+    this.validUntil = validUntil;
+    return this;
+  }
+
+  /**
+   * Get validUntil
+   * @return validUntil
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VALID_UNTIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getValidUntil() {
+    return validUntil;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_VALID_UNTIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setValidUntil(@javax.annotation.Nullable String validUntil) {
+    this.validUntil = validUntil;
+  }
+
+
   /**
    * Return true if this Energy object is equal to o.
    */
@@ -110,21 +313,35 @@ public class Energy {
       return false;
     }
     Energy energy = (Energy) o;
-    return Objects.equals(this.consumptionKwh, energy.consumptionKwh) &&
-        Objects.equals(this.label, energy.label);
+    return Objects.equals(this.certificateType, energy.certificateType) &&
+        Objects.equals(this.co2Emissions, energy.co2Emissions) &&
+        Objects.equals(this.consumptionKwh, energy.consumptionKwh) &&
+        Objects.equals(this.demandKwh, energy.demandKwh) &&
+        Objects.equals(this.includesHotWater, energy.includesHotWater) &&
+        Objects.equals(this.issuedAt, energy.issuedAt) &&
+        Objects.equals(this.label, energy.label) &&
+        Objects.equals(this.primaryCarrier, energy.primaryCarrier) &&
+        Objects.equals(this.validUntil, energy.validUntil);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(consumptionKwh, label);
+    return Objects.hash(certificateType, co2Emissions, consumptionKwh, demandKwh, includesHotWater, issuedAt, label, primaryCarrier, validUntil);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Energy {\n");
+    sb.append("    certificateType: ").append(toIndentedString(certificateType)).append("\n");
+    sb.append("    co2Emissions: ").append(toIndentedString(co2Emissions)).append("\n");
     sb.append("    consumptionKwh: ").append(toIndentedString(consumptionKwh)).append("\n");
+    sb.append("    demandKwh: ").append(toIndentedString(demandKwh)).append("\n");
+    sb.append("    includesHotWater: ").append(toIndentedString(includesHotWater)).append("\n");
+    sb.append("    issuedAt: ").append(toIndentedString(issuedAt)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
+    sb.append("    primaryCarrier: ").append(toIndentedString(primaryCarrier)).append("\n");
+    sb.append("    validUntil: ").append(toIndentedString(validUntil)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -169,14 +386,49 @@ public class Energy {
 
     StringJoiner joiner = new StringJoiner("&");
 
+    // add `certificate_type` to the URL query string
+    if (getCertificateType() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scertificate_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCertificateType()))));
+    }
+
+    // add `co2_emissions` to the URL query string
+    if (getCo2Emissions() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sco2_emissions%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCo2Emissions()))));
+    }
+
     // add `consumption_kwh` to the URL query string
     if (getConsumptionKwh() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_kwh%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionKwh()))));
     }
 
+    // add `demand_kwh` to the URL query string
+    if (getDemandKwh() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdemand_kwh%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDemandKwh()))));
+    }
+
+    // add `includes_hot_water` to the URL query string
+    if (getIncludesHotWater() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sincludes_hot_water%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIncludesHotWater()))));
+    }
+
+    // add `issued_at` to the URL query string
+    if (getIssuedAt() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sissued_at%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIssuedAt()))));
+    }
+
     // add `label` to the URL query string
     if (getLabel() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%slabel%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLabel()))));
+    }
+
+    // add `primary_carrier` to the URL query string
+    if (getPrimaryCarrier() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sprimary_carrier%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPrimaryCarrier()))));
+    }
+
+    // add `valid_until` to the URL query string
+    if (getValidUntil() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalid_until%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValidUntil()))));
     }
 
     return joiner.toString();

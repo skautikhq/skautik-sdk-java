@@ -1025,8 +1025,11 @@ paths:
         required: true
         schema:
           enum:
+          - blm
           - csv
           - json
+          - kyero
+          - openimmo
           type: string
         style: form
       - description: "Incremental updates what the file contains and leaves the rest\
@@ -1073,6 +1076,19 @@ paths:
         required: false
         schema:
           type: string
+        style: form
+      - description: "Allow a full sync that would withdraw a large share of the source's\
+          \ portfolio. Without it, a delivery carrying far fewer records than the\
+          \ source currently holds has its withdrawals held back and the run is reported\
+          \ as partial, on the assumption that the export was truncated. Set this\
+          \ when the reduction is real."
+        example: true
+        explode: true
+        in: query
+        name: confirm_shrink
+        required: false
+        schema:
+          type: boolean
         style: form
       - description: Prevents a retried upload from being processed twice.
         example: a7f3c9e2-4b1d-4e8a-9c2f-1d3b5a7c9e01
@@ -1181,40 +1197,99 @@ paths:
                   - address_postal_code
                   - address_province
                   - address_street
+                  - attic_sqm
+                  - balcony_count
+                  - balcony_terrace_sqm
                   - bathrooms
                   - bedrooms
+                  - cellar_sqm
+                  - commission_amount
+                  - commission_note
+                  - commission_payer
+                  - commission_percent
                   - condition
+                  - construction_phase
                   - construction_type
                   - currency
                   - deposit
                   - description
+                  - description_fittings
+                  - description_location
+                  - description_other
+                  - energy_certificate_issued_at
+                  - energy_certificate_type
+                  - energy_certificate_valid_until
+                  - energy_co2_emissions
                   - energy_consumption_kwh
+                  - energy_demand_kwh
+                  - energy_includes_hot_water
                   - energy_label
+                  - energy_primary_carrier
                   - external_id
                   - floor
+                  - flooring
                   - floors_in_building
+                  - garden_sqm
                   - half_bathrooms
+                  - has_air_conditioning
+                  - has_alarm_system
+                  - has_balcony
+                  - has_cellar
+                  - has_fireplace
+                  - has_fitted_kitchen
+                  - has_garden
+                  - has_guest_toilet
+                  - has_lift
+                  - has_pool
+                  - has_sauna
+                  - has_solar_panels
+                  - has_terrace
+                  - heating_costs
                   - heating_type
+                  - is_barrier_free
+                  - is_furnished
+                  - is_leasehold
+                  - is_monument_protected
+                  - kitchen_type
                   - latitude
                   - living_area_sqm
                   - location_precision
                   - longitude
+                  - office_area_sqm
+                  - other_area_sqm
+                  - parking_included
+                  - parking_space_count
+                  - parking_type
                   - plot_area_sqm
                   - price
+                  - price_on_request
                   - price_period
+                  - property_subtype
+                  - publish_address
+                  - retail_area_sqm
                   - service_charges
                   - status
+                  - storage_area_sqm
+                  - terrace_count
                   - title
+                  - total_area_sqm
+                  - total_rent
                   - total_rooms
                   - transaction_type
                   - type
                   - usable_area_sqm
+                  - window_glazing
                   - year_built
                   - year_renovated
                   formats:
+                  - blm
                   - csv
                   - json
+                  - kyero
+                  - openimmo
                   limits:
+                    max_archive_bytes: 536870912
+                    max_archive_records: 25000
                     max_bytes: 33554432
                     max_records: 10000
                     required_field: external_id
@@ -2433,7 +2508,8 @@ paths:
         schema:
           type: string
         style: form
-      - description: Related records to inline rather than fetch separately.
+      - description: "Related records to inline rather than fetch separately. Available:\
+          \ images, price_history, market, translations."
         example:
         - images
         explode: false
@@ -2446,9 +2522,22 @@ paths:
             - images
             - price_history
             - market
+            - translations
             type: string
           type: array
           default: null
+        style: form
+      - description: "Answer in this language where the property has it, as an ISO\
+          \ 639-1 code. A property that does not hold the language keeps its own text\
+          \ rather than being answered in another, and the response says which language\
+          \ it came back in. Feeds carrying several languages are what fills this."
+        example: es
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          type: string
         style: form
       responses:
         "200":
@@ -2863,7 +2952,8 @@ paths:
         schema:
           type: string
         style: simple
-      - description: Related records to inline rather than fetch separately.
+      - description: "Related records to inline rather than fetch separately. Available:\
+          \ images, price_history, market, translations."
         example:
         - images
         explode: false
@@ -2876,9 +2966,22 @@ paths:
             - images
             - price_history
             - market
+            - translations
             type: string
           type: array
           default: null
+        style: form
+      - description: "Answer in this language where the property has it, as an ISO\
+          \ 639-1 code. A property that does not hold the language keeps its own text\
+          \ rather than being answered in another, and the response says which language\
+          \ it came back in. Feeds carrying several languages are what fills this."
+        example: es
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          type: string
         style: form
       responses:
         "200":
@@ -4196,17 +4299,26 @@ components:
     Building:
       example:
         condition: condition
+        construction_phase: construction_phase
         construction_type: construction_type
         heating_type: heating_type
+        leasehold: true
+        monument_protected: true
         year_built: 0
         year_renovated: 6
       properties:
         condition:
           type: string
+        construction_phase:
+          type: string
         construction_type:
           type: string
         heating_type:
           type: string
+        leasehold:
+          type: boolean
+        monument_protected:
+          type: boolean
         year_built:
           type: integer
         year_renovated:
@@ -4248,6 +4360,29 @@ components:
           default: null
       required:
       - data
+    ConnectorInput:
+      example:
+        secret: secret
+        settings:
+          key: settings
+        token_url: token_url
+        url: url
+        username: username
+      properties:
+        secret:
+          type: string
+        settings:
+          additionalProperties:
+            type: string
+        token_url:
+          type: string
+        url:
+          type: string
+        username:
+          type: string
+      required:
+      - secret
+      - url
     Delivery:
       example:
         attempts: 0
@@ -4299,7 +4434,6 @@ components:
           type: string
       required:
       - type
-      - url
     DeliveryList:
       description: Every Delivery record.
       example:
@@ -4330,6 +4464,18 @@ components:
           default: null
       required:
       - data
+    Descriptions:
+      example:
+        fittings: fittings
+        location: location
+        other: other
+      properties:
+        fittings:
+          type: string
+        location:
+          type: string
+        other:
+          type: string
     District:
       example:
         district: district
@@ -4360,12 +4506,33 @@ components:
       - data
     Energy:
       example:
-        consumption_kwh: 1.4658129805029452
+        certificate_type: certificate_type
+        co2_emissions: 1.4658129805029452
+        consumption_kwh: 5.962133916683182
+        demand_kwh: 5.637376656633329
+        includes_hot_water: true
+        issued_at: issued_at
         label: label
+        primary_carrier: primary_carrier
+        valid_until: valid_until
       properties:
+        certificate_type:
+          type: string
+        co2_emissions:
+          type: number
         consumption_kwh:
           type: number
+        demand_kwh:
+          type: number
+        includes_hot_water:
+          type: boolean
+        issued_at:
+          type: string
         label:
+          type: string
+        primary_carrier:
+          type: string
+        valid_until:
           type: string
     Envelope:
       description: "Every success puts the payload under `data`, and anything about\
@@ -4444,8 +4611,6 @@ components:
         format:
           type: string
       required:
-      - fields
-      - filters
       - format
     ExportList:
       description: Every Export record.
@@ -4498,6 +4663,63 @@ components:
           $ref: "#/components/schemas/Export"
       required:
       - data
+    Features:
+      example:
+        air_conditioning: true
+        alarm_system: true
+        balcony: true
+        barrier_free: true
+        cellar: true
+        fireplace: true
+        fitted_kitchen: true
+        flooring: flooring
+        furnished: true
+        garden: true
+        guest_toilet: true
+        kitchen_type: kitchen_type
+        lift: true
+        pool: true
+        sauna: true
+        solar_panels: true
+        terrace: true
+        window_glazing: window_glazing
+      properties:
+        air_conditioning:
+          type: boolean
+        alarm_system:
+          type: boolean
+        balcony:
+          type: boolean
+        barrier_free:
+          type: boolean
+        cellar:
+          type: boolean
+        fireplace:
+          type: boolean
+        fitted_kitchen:
+          type: boolean
+        flooring:
+          type: string
+        furnished:
+          type: boolean
+        garden:
+          type: boolean
+        guest_toilet:
+          type: boolean
+        kitchen_type:
+          type: string
+        lift:
+          type: boolean
+        pool:
+          type: boolean
+        sauna:
+          type: boolean
+        solar_panels:
+          type: boolean
+        terrace:
+          type: boolean
+        window_glazing:
+          type: string
     Generation:
       example:
         created_at: 2000-01-23T04:56:07.000+00:00
@@ -4564,10 +4786,7 @@ components:
           type: string
       required:
       - kind
-      - prompt
-      - room_type
       - source_image_id
-      - style
     GenerationList:
       description: Every Generation record.
       example:
@@ -4629,7 +4848,7 @@ components:
       example:
         id: id
         is_primary: true
-        position: 5
+        position: 2
         room_type: room_type
         url: url
       properties:
@@ -4648,18 +4867,35 @@ components:
       - is_primary
       - position
       - url
+    ImageInput:
+      example:
+        caption: caption
+        kind: kind
+        position: 1
+        url: url
+      properties:
+        caption:
+          type: string
+        kind:
+          type: string
+        position:
+          type: integer
+        url:
+          type: string
+      required:
+      - url
     ImageList:
       description: Every Image record.
       example:
         data:
         - id: id
           is_primary: true
-          position: 5
+          position: 2
           room_type: room_type
           url: url
         - id: id
           is_primary: true
-          position: 5
+          position: 2
           room_type: room_type
           url: url
       properties:
@@ -4676,7 +4912,7 @@ components:
         data:
           id: id
           is_primary: true
-          position: 5
+          position: 2
           room_type: room_type
           url: url
       properties:
@@ -4701,7 +4937,14 @@ components:
         finished_at: 2000-01-23T04:56:07.000+00:00
         format: format
         id: id
+        images_queued: 9
         mode: mode
+        shrink_guard:
+          baseline: 3
+          delivered: 2
+          ratio: 4.145608029883936
+          tripped: true
+          withdrawals_skipped: 7
         source_id: source_id
         started_at: 2000-01-23T04:56:07.000+00:00
         status: status
@@ -4726,8 +4969,12 @@ components:
           type: string
         id:
           type: string
+        images_queued:
+          type: integer
         mode:
           type: string
+        shrink_guard:
+          $ref: "#/components/schemas/ShrinkGuard"
         source_id:
           type: string
         started_at:
@@ -4790,7 +5037,14 @@ components:
           finished_at: 2000-01-23T04:56:07.000+00:00
           format: format
           id: id
+          images_queued: 9
           mode: mode
+          shrink_guard:
+            baseline: 3
+            delivered: 2
+            ratio: 4.145608029883936
+            tripped: true
+            withdrawals_skipped: 7
           source_id: source_id
           started_at: 2000-01-23T04:56:07.000+00:00
           status: status
@@ -4809,7 +5063,14 @@ components:
           finished_at: 2000-01-23T04:56:07.000+00:00
           format: format
           id: id
+          images_queued: 9
           mode: mode
+          shrink_guard:
+            baseline: 3
+            delivered: 2
+            ratio: 4.145608029883936
+            tripped: true
+            withdrawals_skipped: 7
           source_id: source_id
           started_at: 2000-01-23T04:56:07.000+00:00
           status: status
@@ -4892,7 +5153,14 @@ components:
           finished_at: 2000-01-23T04:56:07.000+00:00
           format: format
           id: id
+          images_queued: 9
           mode: mode
+          shrink_guard:
+            baseline: 3
+            delivered: 2
+            ratio: 4.145608029883936
+            tripped: true
+            withdrawals_skipped: 7
           source_id: source_id
           started_at: 2000-01-23T04:56:07.000+00:00
           status: status
@@ -4960,6 +5228,13 @@ components:
       - updated_at
     ImportSourceInput:
       example:
+        connector:
+          secret: secret
+          settings:
+            key: settings
+          token_url: token_url
+          url: url
+          username: username
         deletion_policy: deletion_policy
         delivery:
           type: type
@@ -4970,6 +5245,8 @@ components:
         name: name
         schedule: schedule
       properties:
+        connector:
+          $ref: "#/components/schemas/ConnectorInput"
         deletion_policy:
           type: string
         delivery:
@@ -4984,12 +5261,9 @@ components:
         schedule:
           type: string
       required:
-      - deletion_policy
       - delivery
       - format
-      - mapping
       - name
-      - schedule
     ImportSourceList:
       description: Every ImportSource record.
       example:
@@ -5191,25 +5465,44 @@ components:
     Listing:
       example:
         available_from: 2000-01-23T04:56:07.000+00:00
+        commission_amount: 7.061401241503109
+        commission_note: commission_note
+        commission_payer: commission_payer
+        commission_percent: 9.301444243932576
         currency: currency
-        deposit: 5.637376656633329
-        price: 2.3021358869347655
-        price_per_sqm: 7.061401241503109
+        deposit: 3.616076749251911
+        heating_costs: 2.027123023002322
+        price: 4.145608029883936
+        price_on_request: true
+        price_per_sqm: 7.386281948385884
         price_period: price_period
         published_at: 2000-01-23T04:56:07.000+00:00
-        service_charges: 9.301444243932576
+        service_charges: 1.2315135367772556
         status: status
+        total_rent: 1.0246457001441578
         transaction_type: transaction_type
       properties:
         available_from:
           format: date-time
           type: string
+        commission_amount:
+          type: number
+        commission_note:
+          type: string
+        commission_payer:
+          type: string
+        commission_percent:
+          type: number
         currency:
           type: string
         deposit:
           type: number
+        heating_costs:
+          type: number
         price:
           type: number
+        price_on_request:
+          type: boolean
         price_per_sqm:
           type: number
         price_period:
@@ -5221,6 +5514,8 @@ components:
           type: number
         status:
           type: string
+        total_rent:
+          type: number
         transaction_type:
           type: string
       required:
@@ -5228,32 +5523,53 @@ components:
       - transaction_type
     ListingInput:
       example:
+        commission_amount: 6.84685269835264
+        commission_note: commission_note
+        commission_payer: commission_payer
+        commission_percent: 7.457744773683766
         currency: currency
-        deposit: 9.301444243932576
-        price: 3.616076749251911
+        deposit: 1.1730742509559433
+        heating_costs: 4.965218492984954
+        price: 5.025004791520295
+        price_on_request: true
         price_period: price_period
-        service_charges: 2.027123023002322
+        service_charges: 9.965781217890562
         status: status
+        total_rent: 9.369310271410669
         transaction_type: transaction_type
       properties:
+        commission_amount:
+          type: number
+        commission_note:
+          type: string
+        commission_payer:
+          type: string
+        commission_percent:
+          type: number
         currency:
           type: string
         deposit:
           type: number
+        heating_costs:
+          type: number
         price:
           type: number
+        price_on_request:
+          type: boolean
         price_period:
           type: string
         service_charges:
           type: number
         status:
           type: string
+        total_rent:
+          type: number
         transaction_type:
           type: string
     Location:
       example:
-        latitude: 3.616076749251911
-        longitude: 2.027123023002322
+        latitude: 1.4894159098541704
+        longitude: 6.84685269835264
         precision: precision
       properties:
         latitude:
@@ -5421,11 +5737,23 @@ components:
           type: string
       required:
       - has_more
+    Parking:
+      example:
+        included: true
+        spaces: 7
+        type: type
+      properties:
+        included:
+          type: boolean
+        spaces:
+          type: integer
+        type:
+          type: string
     PriceObservation:
       example:
         currency: currency
         observed_at: 2000-01-23T04:56:07.000+00:00
-        price: 4.145608029883936
+        price: 1.1730742509559433
         source: source
       properties:
         currency:
@@ -5446,11 +5774,11 @@ components:
         data:
         - currency: currency
           observed_at: 2000-01-23T04:56:07.000+00:00
-          price: 4.145608029883936
+          price: 1.1730742509559433
           source: source
         - currency: currency
           observed_at: 2000-01-23T04:56:07.000+00:00
-          price: 4.145608029883936
+          price: 1.1730742509559433
           source: source
       properties:
         data:
@@ -5502,43 +5830,84 @@ components:
           street: street
         building:
           condition: condition
+          construction_phase: construction_phase
           construction_type: construction_type
           heating_type: heating_type
+          leasehold: true
+          monument_protected: true
           year_built: 0
           year_renovated: 6
         created_at: 2000-01-23T04:56:07.000+00:00
         description: description
+        descriptions:
+          fittings: fittings
+          location: location
+          other: other
         energy:
-          consumption_kwh: 1.4658129805029452
+          certificate_type: certificate_type
+          co2_emissions: 1.4658129805029452
+          consumption_kwh: 5.962133916683182
+          demand_kwh: 5.637376656633329
+          includes_hot_water: true
+          issued_at: issued_at
           label: label
+          primary_carrier: primary_carrier
+          valid_until: valid_until
         external_id: external_id
+        features:
+          air_conditioning: true
+          alarm_system: true
+          balcony: true
+          barrier_free: true
+          cellar: true
+          fireplace: true
+          fitted_kitchen: true
+          flooring: flooring
+          furnished: true
+          garden: true
+          guest_toilet: true
+          kitchen_type: kitchen_type
+          lift: true
+          pool: true
+          sauna: true
+          solar_panels: true
+          terrace: true
+          window_glazing: window_glazing
         id: id
         images:
         - id: id
           is_primary: true
-          position: 5
+          position: 2
           room_type: room_type
           url: url
         - id: id
           is_primary: true
-          position: 5
+          position: 2
           room_type: room_type
           url: url
+        language: language
         last_verified_at: 2000-01-23T04:56:07.000+00:00
         listing:
           available_from: 2000-01-23T04:56:07.000+00:00
+          commission_amount: 7.061401241503109
+          commission_note: commission_note
+          commission_payer: commission_payer
+          commission_percent: 9.301444243932576
           currency: currency
-          deposit: 5.637376656633329
-          price: 2.3021358869347655
-          price_per_sqm: 7.061401241503109
+          deposit: 3.616076749251911
+          heating_costs: 2.027123023002322
+          price: 4.145608029883936
+          price_on_request: true
+          price_per_sqm: 7.386281948385884
           price_period: price_period
           published_at: 2000-01-23T04:56:07.000+00:00
-          service_charges: 9.301444243932576
+          service_charges: 1.2315135367772556
           status: status
+          total_rent: 1.0246457001441578
           transaction_type: transaction_type
         location:
-          latitude: 3.616076749251911
-          longitude: 2.027123023002322
+          latitude: 1.4894159098541704
+          longitude: 6.84685269835264
           precision: precision
         market:
           city: city
@@ -5559,28 +5928,51 @@ components:
             unit: unit
             value: 1.4658129805029452
           period: period
+        parking:
+          included: true
+          spaces: 7
+          type: type
         price_history:
         - currency: currency
           observed_at: 2000-01-23T04:56:07.000+00:00
-          price: 4.145608029883936
+          price: 1.1730742509559433
           source: source
         - currency: currency
           observed_at: 2000-01-23T04:56:07.000+00:00
-          price: 4.145608029883936
+          price: 1.1730742509559433
           source: source
         rooms:
-          bathrooms: 7
-          bedrooms: 1
-          floor: 1
-          floors_in_building: 1
-          half_bathrooms: 6
-          total_rooms: 7
+          balconies: 4
+          bathrooms: 5
+          bedrooms: 9
+          floor: 9
+          floors_in_building: 6
+          half_bathrooms: 8
+          terraces: 9
+          total_rooms: 6
         size:
-          living_area_sqm: 1.1730742509559433
-          plot_area_sqm: 4.965218492984954
-          usable_area_sqm: 5.025004791520295
+          attic_sqm: 3.5571952270680973
+          balcony_terrace_sqm: 6.965117697638846
+          cellar_sqm: 1.284659006116532
+          garden_sqm: 2.8841621266687802
+          living_area_sqm: 6.778324963048013
+          office_area_sqm: 6.878052220127876
+          other_area_sqm: 5.944895607614016
+          plot_area_sqm: 6.704019297950036
+          retail_area_sqm: 3.353193347011243
+          storage_area_sqm: 3.0937452626664474
+          total_area_sqm: 7.143538047012306
+          usable_area_sqm: 0.8851374739011653
         source: source
+        subtype: subtype
         title: title
+        translations:
+        - field: field
+          language: language
+          value: value
+        - field: field
+          language: language
+          value: value
         type: type
         updated_at: 2000-01-23T04:56:07.000+00:00
       properties:
@@ -5593,10 +5985,14 @@ components:
           type: string
         description:
           type: string
+        descriptions:
+          $ref: "#/components/schemas/Descriptions"
         energy:
           $ref: "#/components/schemas/Energy"
         external_id:
           type: string
+        features:
+          $ref: "#/components/schemas/Features"
         id:
           type: string
         images:
@@ -5604,6 +6000,8 @@ components:
             $ref: "#/components/schemas/Image"
           type: array
           default: null
+        language:
+          type: string
         last_verified_at:
           format: date-time
           type: string
@@ -5613,6 +6011,8 @@ components:
           $ref: "#/components/schemas/Location"
         market:
           $ref: "#/components/schemas/MarketContext"
+        parking:
+          $ref: "#/components/schemas/Parking"
         price_history:
           items:
             $ref: "#/components/schemas/PriceObservation"
@@ -5624,8 +6024,15 @@ components:
           $ref: "#/components/schemas/Size"
         source:
           type: string
+        subtype:
+          type: string
         title:
           type: string
+        translations:
+          items:
+            $ref: "#/components/schemas/Translation"
+          type: array
+          default: null
         type:
           type: string
         updated_at:
@@ -5651,37 +6058,119 @@ components:
         address_postal_code: address_postal_code
         address_province: address_province
         address_street: address_street
-        bathrooms: 0
-        bedrooms: 6
+        attic_sqm: 0.8008281904610115
+        balcony_count: 6
+        balcony_terrace_sqm: 1.4658129805029452
+        bathrooms: 5
+        bedrooms: 5
+        building_amenities:
+        - building_amenities
+        - building_amenities
+        cellar_sqm: 2.3021358869347655
         condition: condition
+        construction_phase: construction_phase
         construction_type: construction_type
         description: description
-        energy_consumption_kwh: 1.4658129805029452
+        description_fittings: description_fittings
+        description_location: description_location
+        description_other: description_other
+        energy_certificate_issued_at: energy_certificate_issued_at
+        energy_certificate_type: energy_certificate_type
+        energy_certificate_valid_until: energy_certificate_valid_until
+        energy_co2_emissions: 7.061401241503109
+        energy_consumption_kwh: 9.301444243932576
+        energy_demand_kwh: 3.616076749251911
+        energy_includes_hot_water: true
         energy_label: energy_label
+        energy_primary_carrier: energy_primary_carrier
+        exterior_features:
+        - exterior_features
+        - exterior_features
         external_id: external_id
-        floor: 5
-        floors_in_building: 5
-        half_bathrooms: 2
+        floor: 2
+        flooring: flooring
+        floors_in_building: 4
+        garden_sqm: 7.386281948385884
+        half_bathrooms: 1
+        has_air_conditioning: true
+        has_alarm_system: true
+        has_balcony: true
+        has_cellar: true
+        has_fireplace: true
+        has_fitted_kitchen: true
+        has_garden: true
+        has_guest_toilet: true
+        has_lift: true
+        has_pool: true
+        has_sauna: true
+        has_solar_panels: true
+        has_terrace: true
         heating_type: heating_type
-        latitude: 7.061401241503109
+        images:
+        - caption: caption
+          kind: kind
+          position: 1
+          url: url
+        - caption: caption
+          kind: kind
+          position: 1
+          url: url
+        interior_features:
+        - interior_features
+        - interior_features
+        is_barrier_free: true
+        is_furnished: true
+        is_leasehold: true
+        is_monument_protected: true
+        kitchen_type: kitchen_type
+        latitude: 1.4894159098541704
         listing:
+          commission_amount: 6.84685269835264
+          commission_note: commission_note
+          commission_payer: commission_payer
+          commission_percent: 7.457744773683766
           currency: currency
-          deposit: 9.301444243932576
-          price: 3.616076749251911
+          deposit: 1.1730742509559433
+          heating_costs: 4.965218492984954
+          price: 5.025004791520295
+          price_on_request: true
           price_period: price_period
-          service_charges: 2.027123023002322
+          service_charges: 9.965781217890562
           status: status
+          total_rent: 9.369310271410669
           transaction_type: transaction_type
-        living_area_sqm: 4.145608029883936
+        living_area_sqm: 6.683562403749608
         location_precision: location_precision
-        longitude: 7.386281948385884
-        plot_area_sqm: 1.2315135367772556
+        longitude: 8.762042012749001
+        office_area_sqm: 9.018348186070783
+        other_area_sqm: 6.438423552598547
+        parking_included: true
+        parking_space_count: 3
+        parking_type: parking_type
+        plot_area_sqm: 6.965117697638846
+        property_subtype: property_subtype
+        publish_address: true
+        retail_area_sqm: 1.284659006116532
+        storage_area_sqm: 2.8841621266687802
+        surroundings:
+        - surroundings
+        - surroundings
+        terrace_count: 6
         title: title
-        total_rooms: 1
+        total_area_sqm: 6.878052220127876
+        total_rooms: 5
+        translations:
+        - field: field
+          language: language
+          value: value
+        - field: field
+          language: language
+          value: value
         type: type
-        usable_area_sqm: 1.4894159098541704
-        year_built: 6
-        year_renovated: 7
+        usable_area_sqm: 6.704019297950036
+        window_glazing: window_glazing
+        year_built: 3
+        year_renovated: 3
       properties:
         address_city:
           type: string
@@ -5697,29 +6186,119 @@ components:
           type: string
         address_street:
           type: string
+        attic_sqm:
+          type: number
+        balcony_count:
+          type: integer
+        balcony_terrace_sqm:
+          type: number
         bathrooms:
           type: integer
         bedrooms:
           type: integer
+        building_amenities:
+          items:
+            type: string
+          type: array
+          default: null
+        cellar_sqm:
+          type: number
         condition:
+          type: string
+        construction_phase:
           type: string
         construction_type:
           type: string
         description:
           type: string
+        description_fittings:
+          type: string
+        description_location:
+          type: string
+        description_other:
+          type: string
+        energy_certificate_issued_at:
+          type: string
+        energy_certificate_type:
+          type: string
+        energy_certificate_valid_until:
+          type: string
+        energy_co2_emissions:
+          type: number
         energy_consumption_kwh:
           type: number
+        energy_demand_kwh:
+          type: number
+        energy_includes_hot_water:
+          type: boolean
         energy_label:
           type: string
+        energy_primary_carrier:
+          type: string
+        exterior_features:
+          items:
+            type: string
+          type: array
+          default: null
         external_id:
           type: string
         floor:
           type: integer
+        flooring:
+          type: string
         floors_in_building:
           type: integer
+        garden_sqm:
+          type: number
         half_bathrooms:
           type: integer
+        has_air_conditioning:
+          type: boolean
+        has_alarm_system:
+          type: boolean
+        has_balcony:
+          type: boolean
+        has_cellar:
+          type: boolean
+        has_fireplace:
+          type: boolean
+        has_fitted_kitchen:
+          type: boolean
+        has_garden:
+          type: boolean
+        has_guest_toilet:
+          type: boolean
+        has_lift:
+          type: boolean
+        has_pool:
+          type: boolean
+        has_sauna:
+          type: boolean
+        has_solar_panels:
+          type: boolean
+        has_terrace:
+          type: boolean
         heating_type:
+          type: string
+        images:
+          items:
+            $ref: "#/components/schemas/ImageInput"
+          type: array
+          default: null
+        interior_features:
+          items:
+            type: string
+          type: array
+          default: null
+        is_barrier_free:
+          type: boolean
+        is_furnished:
+          type: boolean
+        is_leasehold:
+          type: boolean
+        is_monument_protected:
+          type: boolean
+        kitchen_type:
           type: string
         latitude:
           type: number
@@ -5731,16 +6310,50 @@ components:
           type: string
         longitude:
           type: number
+        office_area_sqm:
+          type: number
+        other_area_sqm:
+          type: number
+        parking_included:
+          type: boolean
+        parking_space_count:
+          type: integer
+        parking_type:
+          type: string
         plot_area_sqm:
           type: number
+        property_subtype:
+          type: string
+        publish_address:
+          type: boolean
+        retail_area_sqm:
+          type: number
+        storage_area_sqm:
+          type: number
+        surroundings:
+          items:
+            type: string
+          type: array
+          default: null
+        terrace_count:
+          type: integer
         title:
           type: string
+        total_area_sqm:
+          type: number
         total_rooms:
           type: integer
+        translations:
+          items:
+            $ref: "#/components/schemas/Translation"
+          type: array
+          default: null
         type:
           type: string
         usable_area_sqm:
           type: number
+        window_glazing:
+          type: string
         year_built:
           type: integer
         year_renovated:
@@ -5759,43 +6372,84 @@ components:
             street: street
           building:
             condition: condition
+            construction_phase: construction_phase
             construction_type: construction_type
             heating_type: heating_type
+            leasehold: true
+            monument_protected: true
             year_built: 0
             year_renovated: 6
           created_at: 2000-01-23T04:56:07.000+00:00
           description: description
+          descriptions:
+            fittings: fittings
+            location: location
+            other: other
           energy:
-            consumption_kwh: 1.4658129805029452
+            certificate_type: certificate_type
+            co2_emissions: 1.4658129805029452
+            consumption_kwh: 5.962133916683182
+            demand_kwh: 5.637376656633329
+            includes_hot_water: true
+            issued_at: issued_at
             label: label
+            primary_carrier: primary_carrier
+            valid_until: valid_until
           external_id: external_id
+          features:
+            air_conditioning: true
+            alarm_system: true
+            balcony: true
+            barrier_free: true
+            cellar: true
+            fireplace: true
+            fitted_kitchen: true
+            flooring: flooring
+            furnished: true
+            garden: true
+            guest_toilet: true
+            kitchen_type: kitchen_type
+            lift: true
+            pool: true
+            sauna: true
+            solar_panels: true
+            terrace: true
+            window_glazing: window_glazing
           id: id
           images:
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
+          language: language
           last_verified_at: 2000-01-23T04:56:07.000+00:00
           listing:
             available_from: 2000-01-23T04:56:07.000+00:00
+            commission_amount: 7.061401241503109
+            commission_note: commission_note
+            commission_payer: commission_payer
+            commission_percent: 9.301444243932576
             currency: currency
-            deposit: 5.637376656633329
-            price: 2.3021358869347655
-            price_per_sqm: 7.061401241503109
+            deposit: 3.616076749251911
+            heating_costs: 2.027123023002322
+            price: 4.145608029883936
+            price_on_request: true
+            price_per_sqm: 7.386281948385884
             price_period: price_period
             published_at: 2000-01-23T04:56:07.000+00:00
-            service_charges: 9.301444243932576
+            service_charges: 1.2315135367772556
             status: status
+            total_rent: 1.0246457001441578
             transaction_type: transaction_type
           location:
-            latitude: 3.616076749251911
-            longitude: 2.027123023002322
+            latitude: 1.4894159098541704
+            longitude: 6.84685269835264
             precision: precision
           market:
             city: city
@@ -5816,28 +6470,51 @@ components:
               unit: unit
               value: 1.4658129805029452
             period: period
+          parking:
+            included: true
+            spaces: 7
+            type: type
           price_history:
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           rooms:
-            bathrooms: 7
-            bedrooms: 1
-            floor: 1
-            floors_in_building: 1
-            half_bathrooms: 6
-            total_rooms: 7
+            balconies: 4
+            bathrooms: 5
+            bedrooms: 9
+            floor: 9
+            floors_in_building: 6
+            half_bathrooms: 8
+            terraces: 9
+            total_rooms: 6
           size:
-            living_area_sqm: 1.1730742509559433
-            plot_area_sqm: 4.965218492984954
-            usable_area_sqm: 5.025004791520295
+            attic_sqm: 3.5571952270680973
+            balcony_terrace_sqm: 6.965117697638846
+            cellar_sqm: 1.284659006116532
+            garden_sqm: 2.8841621266687802
+            living_area_sqm: 6.778324963048013
+            office_area_sqm: 6.878052220127876
+            other_area_sqm: 5.944895607614016
+            plot_area_sqm: 6.704019297950036
+            retail_area_sqm: 3.353193347011243
+            storage_area_sqm: 3.0937452626664474
+            total_area_sqm: 7.143538047012306
+            usable_area_sqm: 0.8851374739011653
           source: source
+          subtype: subtype
           title: title
+          translations:
+          - field: field
+            language: language
+            value: value
+          - field: field
+            language: language
+            value: value
           type: type
           updated_at: 2000-01-23T04:56:07.000+00:00
         - address:
@@ -5850,43 +6527,84 @@ components:
             street: street
           building:
             condition: condition
+            construction_phase: construction_phase
             construction_type: construction_type
             heating_type: heating_type
+            leasehold: true
+            monument_protected: true
             year_built: 0
             year_renovated: 6
           created_at: 2000-01-23T04:56:07.000+00:00
           description: description
+          descriptions:
+            fittings: fittings
+            location: location
+            other: other
           energy:
-            consumption_kwh: 1.4658129805029452
+            certificate_type: certificate_type
+            co2_emissions: 1.4658129805029452
+            consumption_kwh: 5.962133916683182
+            demand_kwh: 5.637376656633329
+            includes_hot_water: true
+            issued_at: issued_at
             label: label
+            primary_carrier: primary_carrier
+            valid_until: valid_until
           external_id: external_id
+          features:
+            air_conditioning: true
+            alarm_system: true
+            balcony: true
+            barrier_free: true
+            cellar: true
+            fireplace: true
+            fitted_kitchen: true
+            flooring: flooring
+            furnished: true
+            garden: true
+            guest_toilet: true
+            kitchen_type: kitchen_type
+            lift: true
+            pool: true
+            sauna: true
+            solar_panels: true
+            terrace: true
+            window_glazing: window_glazing
           id: id
           images:
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
+          language: language
           last_verified_at: 2000-01-23T04:56:07.000+00:00
           listing:
             available_from: 2000-01-23T04:56:07.000+00:00
+            commission_amount: 7.061401241503109
+            commission_note: commission_note
+            commission_payer: commission_payer
+            commission_percent: 9.301444243932576
             currency: currency
-            deposit: 5.637376656633329
-            price: 2.3021358869347655
-            price_per_sqm: 7.061401241503109
+            deposit: 3.616076749251911
+            heating_costs: 2.027123023002322
+            price: 4.145608029883936
+            price_on_request: true
+            price_per_sqm: 7.386281948385884
             price_period: price_period
             published_at: 2000-01-23T04:56:07.000+00:00
-            service_charges: 9.301444243932576
+            service_charges: 1.2315135367772556
             status: status
+            total_rent: 1.0246457001441578
             transaction_type: transaction_type
           location:
-            latitude: 3.616076749251911
-            longitude: 2.027123023002322
+            latitude: 1.4894159098541704
+            longitude: 6.84685269835264
             precision: precision
           market:
             city: city
@@ -5907,28 +6625,51 @@ components:
               unit: unit
               value: 1.4658129805029452
             period: period
+          parking:
+            included: true
+            spaces: 7
+            type: type
           price_history:
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           rooms:
-            bathrooms: 7
-            bedrooms: 1
-            floor: 1
-            floors_in_building: 1
-            half_bathrooms: 6
-            total_rooms: 7
+            balconies: 4
+            bathrooms: 5
+            bedrooms: 9
+            floor: 9
+            floors_in_building: 6
+            half_bathrooms: 8
+            terraces: 9
+            total_rooms: 6
           size:
-            living_area_sqm: 1.1730742509559433
-            plot_area_sqm: 4.965218492984954
-            usable_area_sqm: 5.025004791520295
+            attic_sqm: 3.5571952270680973
+            balcony_terrace_sqm: 6.965117697638846
+            cellar_sqm: 1.284659006116532
+            garden_sqm: 2.8841621266687802
+            living_area_sqm: 6.778324963048013
+            office_area_sqm: 6.878052220127876
+            other_area_sqm: 5.944895607614016
+            plot_area_sqm: 6.704019297950036
+            retail_area_sqm: 3.353193347011243
+            storage_area_sqm: 3.0937452626664474
+            total_area_sqm: 7.143538047012306
+            usable_area_sqm: 0.8851374739011653
           source: source
+          subtype: subtype
           title: title
+          translations:
+          - field: field
+            language: language
+            value: value
+          - field: field
+            language: language
+            value: value
           type: type
           updated_at: 2000-01-23T04:56:07.000+00:00
       properties:
@@ -5953,43 +6694,84 @@ components:
             street: street
           building:
             condition: condition
+            construction_phase: construction_phase
             construction_type: construction_type
             heating_type: heating_type
+            leasehold: true
+            monument_protected: true
             year_built: 0
             year_renovated: 6
           created_at: 2000-01-23T04:56:07.000+00:00
           description: description
+          descriptions:
+            fittings: fittings
+            location: location
+            other: other
           energy:
-            consumption_kwh: 1.4658129805029452
+            certificate_type: certificate_type
+            co2_emissions: 1.4658129805029452
+            consumption_kwh: 5.962133916683182
+            demand_kwh: 5.637376656633329
+            includes_hot_water: true
+            issued_at: issued_at
             label: label
+            primary_carrier: primary_carrier
+            valid_until: valid_until
           external_id: external_id
+          features:
+            air_conditioning: true
+            alarm_system: true
+            balcony: true
+            barrier_free: true
+            cellar: true
+            fireplace: true
+            fitted_kitchen: true
+            flooring: flooring
+            furnished: true
+            garden: true
+            guest_toilet: true
+            kitchen_type: kitchen_type
+            lift: true
+            pool: true
+            sauna: true
+            solar_panels: true
+            terrace: true
+            window_glazing: window_glazing
           id: id
           images:
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
+          language: language
           last_verified_at: 2000-01-23T04:56:07.000+00:00
           listing:
             available_from: 2000-01-23T04:56:07.000+00:00
+            commission_amount: 7.061401241503109
+            commission_note: commission_note
+            commission_payer: commission_payer
+            commission_percent: 9.301444243932576
             currency: currency
-            deposit: 5.637376656633329
-            price: 2.3021358869347655
-            price_per_sqm: 7.061401241503109
+            deposit: 3.616076749251911
+            heating_costs: 2.027123023002322
+            price: 4.145608029883936
+            price_on_request: true
+            price_per_sqm: 7.386281948385884
             price_period: price_period
             published_at: 2000-01-23T04:56:07.000+00:00
-            service_charges: 9.301444243932576
+            service_charges: 1.2315135367772556
             status: status
+            total_rent: 1.0246457001441578
             transaction_type: transaction_type
           location:
-            latitude: 3.616076749251911
-            longitude: 2.027123023002322
+            latitude: 1.4894159098541704
+            longitude: 6.84685269835264
             precision: precision
           market:
             city: city
@@ -6010,28 +6792,51 @@ components:
               unit: unit
               value: 1.4658129805029452
             period: period
+          parking:
+            included: true
+            spaces: 7
+            type: type
           price_history:
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           rooms:
-            bathrooms: 7
-            bedrooms: 1
-            floor: 1
-            floors_in_building: 1
-            half_bathrooms: 6
-            total_rooms: 7
+            balconies: 4
+            bathrooms: 5
+            bedrooms: 9
+            floor: 9
+            floors_in_building: 6
+            half_bathrooms: 8
+            terraces: 9
+            total_rooms: 6
           size:
-            living_area_sqm: 1.1730742509559433
-            plot_area_sqm: 4.965218492984954
-            usable_area_sqm: 5.025004791520295
+            attic_sqm: 3.5571952270680973
+            balcony_terrace_sqm: 6.965117697638846
+            cellar_sqm: 1.284659006116532
+            garden_sqm: 2.8841621266687802
+            living_area_sqm: 6.778324963048013
+            office_area_sqm: 6.878052220127876
+            other_area_sqm: 5.944895607614016
+            plot_area_sqm: 6.704019297950036
+            retail_area_sqm: 3.353193347011243
+            storage_area_sqm: 3.0937452626664474
+            total_area_sqm: 7.143538047012306
+            usable_area_sqm: 0.8851374739011653
           source: source
+          subtype: subtype
           title: title
+          translations:
+          - field: field
+            language: language
+            value: value
+          - field: field
+            language: language
+            value: value
           type: type
           updated_at: 2000-01-23T04:56:07.000+00:00
         - address:
@@ -6044,43 +6849,84 @@ components:
             street: street
           building:
             condition: condition
+            construction_phase: construction_phase
             construction_type: construction_type
             heating_type: heating_type
+            leasehold: true
+            monument_protected: true
             year_built: 0
             year_renovated: 6
           created_at: 2000-01-23T04:56:07.000+00:00
           description: description
+          descriptions:
+            fittings: fittings
+            location: location
+            other: other
           energy:
-            consumption_kwh: 1.4658129805029452
+            certificate_type: certificate_type
+            co2_emissions: 1.4658129805029452
+            consumption_kwh: 5.962133916683182
+            demand_kwh: 5.637376656633329
+            includes_hot_water: true
+            issued_at: issued_at
             label: label
+            primary_carrier: primary_carrier
+            valid_until: valid_until
           external_id: external_id
+          features:
+            air_conditioning: true
+            alarm_system: true
+            balcony: true
+            barrier_free: true
+            cellar: true
+            fireplace: true
+            fitted_kitchen: true
+            flooring: flooring
+            furnished: true
+            garden: true
+            guest_toilet: true
+            kitchen_type: kitchen_type
+            lift: true
+            pool: true
+            sauna: true
+            solar_panels: true
+            terrace: true
+            window_glazing: window_glazing
           id: id
           images:
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
+          language: language
           last_verified_at: 2000-01-23T04:56:07.000+00:00
           listing:
             available_from: 2000-01-23T04:56:07.000+00:00
+            commission_amount: 7.061401241503109
+            commission_note: commission_note
+            commission_payer: commission_payer
+            commission_percent: 9.301444243932576
             currency: currency
-            deposit: 5.637376656633329
-            price: 2.3021358869347655
-            price_per_sqm: 7.061401241503109
+            deposit: 3.616076749251911
+            heating_costs: 2.027123023002322
+            price: 4.145608029883936
+            price_on_request: true
+            price_per_sqm: 7.386281948385884
             price_period: price_period
             published_at: 2000-01-23T04:56:07.000+00:00
-            service_charges: 9.301444243932576
+            service_charges: 1.2315135367772556
             status: status
+            total_rent: 1.0246457001441578
             transaction_type: transaction_type
           location:
-            latitude: 3.616076749251911
-            longitude: 2.027123023002322
+            latitude: 1.4894159098541704
+            longitude: 6.84685269835264
             precision: precision
           market:
             city: city
@@ -6101,28 +6947,51 @@ components:
               unit: unit
               value: 1.4658129805029452
             period: period
+          parking:
+            included: true
+            spaces: 7
+            type: type
           price_history:
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           rooms:
-            bathrooms: 7
-            bedrooms: 1
-            floor: 1
-            floors_in_building: 1
-            half_bathrooms: 6
-            total_rooms: 7
+            balconies: 4
+            bathrooms: 5
+            bedrooms: 9
+            floor: 9
+            floors_in_building: 6
+            half_bathrooms: 8
+            terraces: 9
+            total_rooms: 6
           size:
-            living_area_sqm: 1.1730742509559433
-            plot_area_sqm: 4.965218492984954
-            usable_area_sqm: 5.025004791520295
+            attic_sqm: 3.5571952270680973
+            balcony_terrace_sqm: 6.965117697638846
+            cellar_sqm: 1.284659006116532
+            garden_sqm: 2.8841621266687802
+            living_area_sqm: 6.778324963048013
+            office_area_sqm: 6.878052220127876
+            other_area_sqm: 5.944895607614016
+            plot_area_sqm: 6.704019297950036
+            retail_area_sqm: 3.353193347011243
+            storage_area_sqm: 3.0937452626664474
+            total_area_sqm: 7.143538047012306
+            usable_area_sqm: 0.8851374739011653
           source: source
+          subtype: subtype
           title: title
+          translations:
+          - field: field
+            language: language
+            value: value
+          - field: field
+            language: language
+            value: value
           type: type
           updated_at: 2000-01-23T04:56:07.000+00:00
         meta:
@@ -6153,43 +7022,84 @@ components:
             street: street
           building:
             condition: condition
+            construction_phase: construction_phase
             construction_type: construction_type
             heating_type: heating_type
+            leasehold: true
+            monument_protected: true
             year_built: 0
             year_renovated: 6
           created_at: 2000-01-23T04:56:07.000+00:00
           description: description
+          descriptions:
+            fittings: fittings
+            location: location
+            other: other
           energy:
-            consumption_kwh: 1.4658129805029452
+            certificate_type: certificate_type
+            co2_emissions: 1.4658129805029452
+            consumption_kwh: 5.962133916683182
+            demand_kwh: 5.637376656633329
+            includes_hot_water: true
+            issued_at: issued_at
             label: label
+            primary_carrier: primary_carrier
+            valid_until: valid_until
           external_id: external_id
+          features:
+            air_conditioning: true
+            alarm_system: true
+            balcony: true
+            barrier_free: true
+            cellar: true
+            fireplace: true
+            fitted_kitchen: true
+            flooring: flooring
+            furnished: true
+            garden: true
+            guest_toilet: true
+            kitchen_type: kitchen_type
+            lift: true
+            pool: true
+            sauna: true
+            solar_panels: true
+            terrace: true
+            window_glazing: window_glazing
           id: id
           images:
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
           - id: id
             is_primary: true
-            position: 5
+            position: 2
             room_type: room_type
             url: url
+          language: language
           last_verified_at: 2000-01-23T04:56:07.000+00:00
           listing:
             available_from: 2000-01-23T04:56:07.000+00:00
+            commission_amount: 7.061401241503109
+            commission_note: commission_note
+            commission_payer: commission_payer
+            commission_percent: 9.301444243932576
             currency: currency
-            deposit: 5.637376656633329
-            price: 2.3021358869347655
-            price_per_sqm: 7.061401241503109
+            deposit: 3.616076749251911
+            heating_costs: 2.027123023002322
+            price: 4.145608029883936
+            price_on_request: true
+            price_per_sqm: 7.386281948385884
             price_period: price_period
             published_at: 2000-01-23T04:56:07.000+00:00
-            service_charges: 9.301444243932576
+            service_charges: 1.2315135367772556
             status: status
+            total_rent: 1.0246457001441578
             transaction_type: transaction_type
           location:
-            latitude: 3.616076749251911
-            longitude: 2.027123023002322
+            latitude: 1.4894159098541704
+            longitude: 6.84685269835264
             precision: precision
           market:
             city: city
@@ -6210,28 +7120,51 @@ components:
               unit: unit
               value: 1.4658129805029452
             period: period
+          parking:
+            included: true
+            spaces: 7
+            type: type
           price_history:
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           - currency: currency
             observed_at: 2000-01-23T04:56:07.000+00:00
-            price: 4.145608029883936
+            price: 1.1730742509559433
             source: source
           rooms:
-            bathrooms: 7
-            bedrooms: 1
-            floor: 1
-            floors_in_building: 1
-            half_bathrooms: 6
-            total_rooms: 7
+            balconies: 4
+            bathrooms: 5
+            bedrooms: 9
+            floor: 9
+            floors_in_building: 6
+            half_bathrooms: 8
+            terraces: 9
+            total_rooms: 6
           size:
-            living_area_sqm: 1.1730742509559433
-            plot_area_sqm: 4.965218492984954
-            usable_area_sqm: 5.025004791520295
+            attic_sqm: 3.5571952270680973
+            balcony_terrace_sqm: 6.965117697638846
+            cellar_sqm: 1.284659006116532
+            garden_sqm: 2.8841621266687802
+            living_area_sqm: 6.778324963048013
+            office_area_sqm: 6.878052220127876
+            other_area_sqm: 5.944895607614016
+            plot_area_sqm: 6.704019297950036
+            retail_area_sqm: 3.353193347011243
+            storage_area_sqm: 3.0937452626664474
+            total_area_sqm: 7.143538047012306
+            usable_area_sqm: 0.8851374739011653
           source: source
+          subtype: subtype
           title: title
+          translations:
+          - field: field
+            language: language
+            value: value
+          - field: field
+            language: language
+            value: value
           type: type
           updated_at: 2000-01-23T04:56:07.000+00:00
       properties:
@@ -6241,13 +7174,17 @@ components:
       - data
     Rooms:
       example:
-        bathrooms: 7
-        bedrooms: 1
-        floor: 1
-        floors_in_building: 1
-        half_bathrooms: 6
-        total_rooms: 7
+        balconies: 4
+        bathrooms: 5
+        bedrooms: 9
+        floor: 9
+        floors_in_building: 6
+        half_bathrooms: 8
+        terraces: 9
+        total_rooms: 6
       properties:
+        balconies:
+          type: integer
         bathrooms:
           type: integer
         bedrooms:
@@ -6257,6 +7194,8 @@ components:
         floors_in_building:
           type: integer
         half_bathrooms:
+          type: integer
+        terraces:
           type: integer
         total_rooms:
           type: integer
@@ -6427,15 +7366,66 @@ components:
           $ref: "#/components/schemas/Series"
       required:
       - data
+    ShrinkGuard:
+      example:
+        baseline: 3
+        delivered: 2
+        ratio: 4.145608029883936
+        tripped: true
+        withdrawals_skipped: 7
+      properties:
+        baseline:
+          type: integer
+        delivered:
+          type: integer
+        ratio:
+          type: number
+        tripped:
+          type: boolean
+        withdrawals_skipped:
+          type: integer
+      required:
+      - baseline
+      - delivered
+      - ratio
+      - tripped
+      - withdrawals_skipped
     Size:
       example:
-        living_area_sqm: 1.1730742509559433
-        plot_area_sqm: 4.965218492984954
-        usable_area_sqm: 5.025004791520295
+        attic_sqm: 3.5571952270680973
+        balcony_terrace_sqm: 6.965117697638846
+        cellar_sqm: 1.284659006116532
+        garden_sqm: 2.8841621266687802
+        living_area_sqm: 6.778324963048013
+        office_area_sqm: 6.878052220127876
+        other_area_sqm: 5.944895607614016
+        plot_area_sqm: 6.704019297950036
+        retail_area_sqm: 3.353193347011243
+        storage_area_sqm: 3.0937452626664474
+        total_area_sqm: 7.143538047012306
+        usable_area_sqm: 0.8851374739011653
       properties:
+        attic_sqm:
+          type: number
+        balcony_terrace_sqm:
+          type: number
+        cellar_sqm:
+          type: number
+        garden_sqm:
+          type: number
         living_area_sqm:
           type: number
+        office_area_sqm:
+          type: number
+        other_area_sqm:
+          type: number
         plot_area_sqm:
+          type: number
+        retail_area_sqm:
+          type: number
+        storage_area_sqm:
+          type: number
+        total_area_sqm:
           type: number
         usable_area_sqm:
           type: number
@@ -6476,6 +7466,22 @@ components:
           type: string
         schedule:
           type: string
+    Translation:
+      example:
+        field: field
+        language: language
+        value: value
+      properties:
+        field:
+          type: string
+        language:
+          type: string
+        value:
+          type: string
+      required:
+      - field
+      - language
+      - value
     Webhook:
       example:
         active: true

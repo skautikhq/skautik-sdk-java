@@ -27,7 +27,7 @@ public final class PropertiesResource {
      */
     public PropertyPage list(ListPropertiesOptions options) throws ApiException {
         ListPropertiesOptions settings = options == null ? ListPropertiesOptions.builder().build() : options;
-        return api.listProperties(settings.city(), settings.district(), settings.postalCode(), settings.type(), settings.transactionType(), settings.status(), settings.externalId(), settings.minPrice(), settings.maxPrice(), settings.minLivingArea(), settings.minBedrooms(), settings.limit(), settings.cursor(), settings.sort(), settings.expand());
+        return api.listProperties(settings.city(), settings.district(), settings.postalCode(), settings.type(), settings.transactionType(), settings.status(), settings.externalId(), settings.minPrice(), settings.maxPrice(), settings.minLivingArea(), settings.minBedrooms(), settings.limit(), settings.cursor(), settings.sort(), settings.expand(), settings.language());
     }
 
     /**
@@ -128,8 +128,18 @@ public final class PropertiesResource {
      *
      * <p>Requires the {@code properties:read} scope.
      */
-    public PropertyResponse get(String propertyId, List<String> expand) throws ApiException {
-        return api.getProperty(propertyId, expand);
+    public PropertyResponse get(String propertyId, GetPropertyOptions options) throws ApiException {
+        GetPropertyOptions settings = options == null ? GetPropertyOptions.builder().build() : options;
+        return api.getProperty(propertyId, settings.expand(), settings.language());
+    }
+
+    /**
+     * Retrieve a property
+     *
+     * <p>Requires the {@code properties:read} scope.
+     */
+    public PropertyResponse get(String propertyId) throws ApiException {
+        return get(propertyId, GetPropertyOptions.builder().build());
     }
 
     /**

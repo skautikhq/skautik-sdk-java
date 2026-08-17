@@ -26,14 +26,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.skautik.sdk.model.Address;
 import com.skautik.sdk.model.Building;
+import com.skautik.sdk.model.Descriptions;
 import com.skautik.sdk.model.Energy;
+import com.skautik.sdk.model.Features;
 import com.skautik.sdk.model.Image;
 import com.skautik.sdk.model.Listing;
 import com.skautik.sdk.model.Location;
 import com.skautik.sdk.model.MarketContext;
+import com.skautik.sdk.model.Parking;
 import com.skautik.sdk.model.PriceObservation;
 import com.skautik.sdk.model.Rooms;
 import com.skautik.sdk.model.Size;
+import com.skautik.sdk.model.Translation;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,19 +54,25 @@ import com.skautik.sdk.ApiClient;
   Property.JSON_PROPERTY_BUILDING,
   Property.JSON_PROPERTY_CREATED_AT,
   Property.JSON_PROPERTY_DESCRIPTION,
+  Property.JSON_PROPERTY_DESCRIPTIONS,
   Property.JSON_PROPERTY_ENERGY,
   Property.JSON_PROPERTY_EXTERNAL_ID,
+  Property.JSON_PROPERTY_FEATURES,
   Property.JSON_PROPERTY_ID,
   Property.JSON_PROPERTY_IMAGES,
+  Property.JSON_PROPERTY_LANGUAGE,
   Property.JSON_PROPERTY_LAST_VERIFIED_AT,
   Property.JSON_PROPERTY_LISTING,
   Property.JSON_PROPERTY_LOCATION,
   Property.JSON_PROPERTY_MARKET,
+  Property.JSON_PROPERTY_PARKING,
   Property.JSON_PROPERTY_PRICE_HISTORY,
   Property.JSON_PROPERTY_ROOMS,
   Property.JSON_PROPERTY_SIZE,
   Property.JSON_PROPERTY_SOURCE,
+  Property.JSON_PROPERTY_SUBTYPE,
   Property.JSON_PROPERTY_TITLE,
+  Property.JSON_PROPERTY_TRANSLATIONS,
   Property.JSON_PROPERTY_TYPE,
   Property.JSON_PROPERTY_UPDATED_AT
 })
@@ -84,6 +94,10 @@ public class Property {
   @javax.annotation.Nullable
   private String description;
 
+  public static final String JSON_PROPERTY_DESCRIPTIONS = "descriptions";
+  @javax.annotation.Nullable
+  private Descriptions descriptions;
+
   public static final String JSON_PROPERTY_ENERGY = "energy";
   @javax.annotation.Nullable
   private Energy energy;
@@ -92,6 +106,10 @@ public class Property {
   @javax.annotation.Nullable
   private String externalId;
 
+  public static final String JSON_PROPERTY_FEATURES = "features";
+  @javax.annotation.Nullable
+  private Features features;
+
   public static final String JSON_PROPERTY_ID = "id";
   @javax.annotation.Nonnull
   private String id;
@@ -99,6 +117,10 @@ public class Property {
   public static final String JSON_PROPERTY_IMAGES = "images";
   @javax.annotation.Nullable
   private List<Image> images = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_LANGUAGE = "language";
+  @javax.annotation.Nullable
+  private String language;
 
   public static final String JSON_PROPERTY_LAST_VERIFIED_AT = "last_verified_at";
   @javax.annotation.Nullable
@@ -116,6 +138,10 @@ public class Property {
   @javax.annotation.Nullable
   private MarketContext market;
 
+  public static final String JSON_PROPERTY_PARKING = "parking";
+  @javax.annotation.Nullable
+  private Parking parking;
+
   public static final String JSON_PROPERTY_PRICE_HISTORY = "price_history";
   @javax.annotation.Nullable
   private List<PriceObservation> priceHistory = new ArrayList<>();
@@ -132,9 +158,17 @@ public class Property {
   @javax.annotation.Nonnull
   private String source;
 
+  public static final String JSON_PROPERTY_SUBTYPE = "subtype";
+  @javax.annotation.Nullable
+  private String subtype;
+
   public static final String JSON_PROPERTY_TITLE = "title";
   @javax.annotation.Nonnull
   private String title;
+
+  public static final String JSON_PROPERTY_TRANSLATIONS = "translations";
+  @javax.annotation.Nullable
+  private List<Translation> translations = new ArrayList<>();
 
   public static final String JSON_PROPERTY_TYPE = "type";
   @javax.annotation.Nonnull
@@ -243,6 +277,30 @@ public class Property {
   }
 
 
+  public Property descriptions(@javax.annotation.Nullable Descriptions descriptions) {
+    this.descriptions = descriptions;
+    return this;
+  }
+
+  /**
+   * Get descriptions
+   * @return descriptions
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Descriptions getDescriptions() {
+    return descriptions;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDescriptions(@javax.annotation.Nullable Descriptions descriptions) {
+    this.descriptions = descriptions;
+  }
+
+
   public Property energy(@javax.annotation.Nullable Energy energy) {
     this.energy = energy;
     return this;
@@ -288,6 +346,30 @@ public class Property {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setExternalId(@javax.annotation.Nullable String externalId) {
     this.externalId = externalId;
+  }
+
+
+  public Property features(@javax.annotation.Nullable Features features) {
+    this.features = features;
+    return this;
+  }
+
+  /**
+   * Get features
+   * @return features
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Features getFeatures() {
+    return features;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setFeatures(@javax.annotation.Nullable Features features) {
+    this.features = features;
   }
 
 
@@ -344,6 +426,30 @@ public class Property {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setImages(@javax.annotation.Nullable List<Image> images) {
     this.images = images;
+  }
+
+
+  public Property language(@javax.annotation.Nullable String language) {
+    this.language = language;
+    return this;
+  }
+
+  /**
+   * Get language
+   * @return language
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LANGUAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getLanguage() {
+    return language;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LANGUAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLanguage(@javax.annotation.Nullable String language) {
+    this.language = language;
   }
 
 
@@ -440,6 +546,30 @@ public class Property {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setMarket(@javax.annotation.Nullable MarketContext market) {
     this.market = market;
+  }
+
+
+  public Property parking(@javax.annotation.Nullable Parking parking) {
+    this.parking = parking;
+    return this;
+  }
+
+  /**
+   * Get parking
+   * @return parking
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PARKING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Parking getParking() {
+    return parking;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PARKING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setParking(@javax.annotation.Nullable Parking parking) {
+    this.parking = parking;
   }
 
 
@@ -547,6 +677,30 @@ public class Property {
   }
 
 
+  public Property subtype(@javax.annotation.Nullable String subtype) {
+    this.subtype = subtype;
+    return this;
+  }
+
+  /**
+   * Get subtype
+   * @return subtype
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SUBTYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getSubtype() {
+    return subtype;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SUBTYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSubtype(@javax.annotation.Nullable String subtype) {
+    this.subtype = subtype;
+  }
+
+
   public Property title(@javax.annotation.Nonnull String title) {
     this.title = title;
     return this;
@@ -568,6 +722,38 @@ public class Property {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setTitle(@javax.annotation.Nonnull String title) {
     this.title = title;
+  }
+
+
+  public Property translations(@javax.annotation.Nullable List<Translation> translations) {
+    this.translations = translations;
+    return this;
+  }
+
+  public Property addTranslationsItem(Translation translationsItem) {
+    if (this.translations == null) {
+      this.translations = new ArrayList<>();
+    }
+    this.translations.add(translationsItem);
+    return this;
+  }
+
+  /**
+   * Get translations
+   * @return translations
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TRANSLATIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<Translation> getTranslations() {
+    return translations;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_TRANSLATIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTranslations(@javax.annotation.Nullable List<Translation> translations) {
+    this.translations = translations;
   }
 
 
@@ -635,26 +821,32 @@ public class Property {
         Objects.equals(this.building, property.building) &&
         Objects.equals(this.createdAt, property.createdAt) &&
         Objects.equals(this.description, property.description) &&
+        Objects.equals(this.descriptions, property.descriptions) &&
         Objects.equals(this.energy, property.energy) &&
         Objects.equals(this.externalId, property.externalId) &&
+        Objects.equals(this.features, property.features) &&
         Objects.equals(this.id, property.id) &&
         Objects.equals(this.images, property.images) &&
+        Objects.equals(this.language, property.language) &&
         Objects.equals(this.lastVerifiedAt, property.lastVerifiedAt) &&
         Objects.equals(this.listing, property.listing) &&
         Objects.equals(this.location, property.location) &&
         Objects.equals(this.market, property.market) &&
+        Objects.equals(this.parking, property.parking) &&
         Objects.equals(this.priceHistory, property.priceHistory) &&
         Objects.equals(this.rooms, property.rooms) &&
         Objects.equals(this.size, property.size) &&
         Objects.equals(this.source, property.source) &&
+        Objects.equals(this.subtype, property.subtype) &&
         Objects.equals(this.title, property.title) &&
+        Objects.equals(this.translations, property.translations) &&
         Objects.equals(this.type, property.type) &&
         Objects.equals(this.updatedAt, property.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(address, building, createdAt, description, energy, externalId, id, images, lastVerifiedAt, listing, location, market, priceHistory, rooms, size, source, title, type, updatedAt);
+    return Objects.hash(address, building, createdAt, description, descriptions, energy, externalId, features, id, images, language, lastVerifiedAt, listing, location, market, parking, priceHistory, rooms, size, source, subtype, title, translations, type, updatedAt);
   }
 
   @Override
@@ -665,19 +857,25 @@ public class Property {
     sb.append("    building: ").append(toIndentedString(building)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    descriptions: ").append(toIndentedString(descriptions)).append("\n");
     sb.append("    energy: ").append(toIndentedString(energy)).append("\n");
     sb.append("    externalId: ").append(toIndentedString(externalId)).append("\n");
+    sb.append("    features: ").append(toIndentedString(features)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    images: ").append(toIndentedString(images)).append("\n");
+    sb.append("    language: ").append(toIndentedString(language)).append("\n");
     sb.append("    lastVerifiedAt: ").append(toIndentedString(lastVerifiedAt)).append("\n");
     sb.append("    listing: ").append(toIndentedString(listing)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("    market: ").append(toIndentedString(market)).append("\n");
+    sb.append("    parking: ").append(toIndentedString(parking)).append("\n");
     sb.append("    priceHistory: ").append(toIndentedString(priceHistory)).append("\n");
     sb.append("    rooms: ").append(toIndentedString(rooms)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    source: ").append(toIndentedString(source)).append("\n");
+    sb.append("    subtype: ").append(toIndentedString(subtype)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    translations: ").append(toIndentedString(translations)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("}");
@@ -744,6 +942,11 @@ public class Property {
       joiner.add(String.format(java.util.Locale.ROOT, "%sdescription%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescription()))));
     }
 
+    // add `descriptions` to the URL query string
+    if (getDescriptions() != null) {
+      joiner.add(getDescriptions().toUrlQueryString(prefix + "descriptions" + suffix));
+    }
+
     // add `energy` to the URL query string
     if (getEnergy() != null) {
       joiner.add(getEnergy().toUrlQueryString(prefix + "energy" + suffix));
@@ -752,6 +955,11 @@ public class Property {
     // add `external_id` to the URL query string
     if (getExternalId() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sexternal_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExternalId()))));
+    }
+
+    // add `features` to the URL query string
+    if (getFeatures() != null) {
+      joiner.add(getFeatures().toUrlQueryString(prefix + "features" + suffix));
     }
 
     // add `id` to the URL query string
@@ -767,6 +975,11 @@ public class Property {
           "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
         }
       }
+    }
+
+    // add `language` to the URL query string
+    if (getLanguage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slanguage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLanguage()))));
     }
 
     // add `last_verified_at` to the URL query string
@@ -787,6 +1000,11 @@ public class Property {
     // add `market` to the URL query string
     if (getMarket() != null) {
       joiner.add(getMarket().toUrlQueryString(prefix + "market" + suffix));
+    }
+
+    // add `parking` to the URL query string
+    if (getParking() != null) {
+      joiner.add(getParking().toUrlQueryString(prefix + "parking" + suffix));
     }
 
     // add `price_history` to the URL query string
@@ -814,9 +1032,24 @@ public class Property {
       joiner.add(String.format(java.util.Locale.ROOT, "%ssource%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSource()))));
     }
 
+    // add `subtype` to the URL query string
+    if (getSubtype() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssubtype%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSubtype()))));
+    }
+
     // add `title` to the URL query string
     if (getTitle() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%stitle%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTitle()))));
+    }
+
+    // add `translations` to the URL query string
+    if (getTranslations() != null) {
+      for (int i = 0; i < getTranslations().size(); i++) {
+        if (getTranslations().get(i) != null) {
+          joiner.add(getTranslations().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%stranslations%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
     }
 
     // add `type` to the URL query string

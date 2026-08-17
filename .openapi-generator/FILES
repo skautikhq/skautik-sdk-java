@@ -40,9 +40,11 @@ src/main/java/com/skautik/sdk/model/Bounds.java
 src/main/java/com/skautik/sdk/model/Building.java
 src/main/java/com/skautik/sdk/model/City.java
 src/main/java/com/skautik/sdk/model/CityList.java
+src/main/java/com/skautik/sdk/model/ConnectorInput.java
 src/main/java/com/skautik/sdk/model/Delivery.java
 src/main/java/com/skautik/sdk/model/DeliveryInput.java
 src/main/java/com/skautik/sdk/model/DeliveryList.java
+src/main/java/com/skautik/sdk/model/Descriptions.java
 src/main/java/com/skautik/sdk/model/District.java
 src/main/java/com/skautik/sdk/model/DistrictList.java
 src/main/java/com/skautik/sdk/model/Energy.java
@@ -51,11 +53,13 @@ src/main/java/com/skautik/sdk/model/Export.java
 src/main/java/com/skautik/sdk/model/ExportInput.java
 src/main/java/com/skautik/sdk/model/ExportList.java
 src/main/java/com/skautik/sdk/model/ExportResponse.java
+src/main/java/com/skautik/sdk/model/Features.java
 src/main/java/com/skautik/sdk/model/Generation.java
 src/main/java/com/skautik/sdk/model/GenerationInput.java
 src/main/java/com/skautik/sdk/model/GenerationList.java
 src/main/java/com/skautik/sdk/model/GenerationResponse.java
 src/main/java/com/skautik/sdk/model/Image.java
+src/main/java/com/skautik/sdk/model/ImageInput.java
 src/main/java/com/skautik/sdk/model/ImageList.java
 src/main/java/com/skautik/sdk/model/ImageResponse.java
 src/main/java/com/skautik/sdk/model/ImportCounts.java
@@ -80,6 +84,7 @@ src/main/java/com/skautik/sdk/model/MarketMetric.java
 src/main/java/com/skautik/sdk/model/MarketResponse.java
 src/main/java/com/skautik/sdk/model/ModelImport.java
 src/main/java/com/skautik/sdk/model/PageMeta.java
+src/main/java/com/skautik/sdk/model/Parking.java
 src/main/java/com/skautik/sdk/model/PriceObservation.java
 src/main/java/com/skautik/sdk/model/PriceObservationList.java
 src/main/java/com/skautik/sdk/model/Problem.java
@@ -95,9 +100,11 @@ src/main/java/com/skautik/sdk/model/SearchRequest.java
 src/main/java/com/skautik/sdk/model/Series.java
 src/main/java/com/skautik/sdk/model/SeriesPoint.java
 src/main/java/com/skautik/sdk/model/SeriesResponse.java
+src/main/java/com/skautik/sdk/model/ShrinkGuard.java
 src/main/java/com/skautik/sdk/model/Size.java
 src/main/java/com/skautik/sdk/model/SourceDelivery.java
 src/main/java/com/skautik/sdk/model/SourceUpdate.java
+src/main/java/com/skautik/sdk/model/Translation.java
 src/main/java/com/skautik/sdk/model/Webhook.java
 src/main/java/com/skautik/sdk/model/WebhookInput.java
 src/main/java/com/skautik/sdk/model/WebhookList.java

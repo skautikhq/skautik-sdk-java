@@ -9,7 +9,7 @@ import java.util.List;
  * What to ask for from {@code list}.
  *
  * <p>Every field is optional, and unset means unconstrained. Built rather than
- * passed positionally, because the call underneath takes 15
+ * passed positionally, because the call underneath takes 16
  * arguments in order and Java cannot name them at the call site.
  */
 public final class ListPropertiesOptions {
@@ -29,8 +29,9 @@ public final class ListPropertiesOptions {
     private final String cursor;
     private final String sort;
     private final List<String> expand;
+    private final String language;
 
-    private ListPropertiesOptions(String city, String district, String postalCode, String type, String transactionType, String status, String externalId, BigDecimal minPrice, BigDecimal maxPrice, BigDecimal minLivingArea, Integer minBedrooms, Integer limit, String cursor, String sort, List<String> expand) {
+    private ListPropertiesOptions(String city, String district, String postalCode, String type, String transactionType, String status, String externalId, BigDecimal minPrice, BigDecimal maxPrice, BigDecimal minLivingArea, Integer minBedrooms, Integer limit, String cursor, String sort, List<String> expand, String language) {
         this.city = city;
         this.district = district;
         this.postalCode = postalCode;
@@ -46,6 +47,7 @@ public final class ListPropertiesOptions {
         this.cursor = cursor;
         this.sort = sort;
         this.expand = expand;
+        this.language = language;
     }
 
     public static Builder builder() {
@@ -112,9 +114,13 @@ public final class ListPropertiesOptions {
         return expand;
     }
 
+    public String language() {
+        return language;
+    }
+
     /** The same options, reading from a different page. */
     public ListPropertiesOptions withCursor(String cursor) {
-        return new ListPropertiesOptions(this.city, this.district, this.postalCode, this.type, this.transactionType, this.status, this.externalId, this.minPrice, this.maxPrice, this.minLivingArea, this.minBedrooms, this.limit, cursor, this.sort, this.expand);
+        return new ListPropertiesOptions(this.city, this.district, this.postalCode, this.type, this.transactionType, this.status, this.externalId, this.minPrice, this.maxPrice, this.minLivingArea, this.minBedrooms, this.limit, cursor, this.sort, this.expand, this.language);
     }
 
     public static final class Builder {
@@ -134,6 +140,7 @@ public final class ListPropertiesOptions {
         private String cursor;
         private String sort;
         private List<String> expand;
+        private String language;
 
         public Builder city(String city) {
             this.city = city;
@@ -210,8 +217,13 @@ public final class ListPropertiesOptions {
             return this;
         }
 
+        public Builder language(String language) {
+            this.language = language;
+            return this;
+        }
+
         public ListPropertiesOptions build() {
-            return new ListPropertiesOptions(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand);
+            return new ListPropertiesOptions(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, language);
         }
     }
 }

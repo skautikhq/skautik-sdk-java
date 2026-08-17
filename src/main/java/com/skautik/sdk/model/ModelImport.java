@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.skautik.sdk.model.ImportCounts;
+import com.skautik.sdk.model.ShrinkGuard;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -44,7 +45,9 @@ import com.skautik.sdk.ApiClient;
   ModelImport.JSON_PROPERTY_FINISHED_AT,
   ModelImport.JSON_PROPERTY_FORMAT,
   ModelImport.JSON_PROPERTY_ID,
+  ModelImport.JSON_PROPERTY_IMAGES_QUEUED,
   ModelImport.JSON_PROPERTY_MODE,
+  ModelImport.JSON_PROPERTY_SHRINK_GUARD,
   ModelImport.JSON_PROPERTY_SOURCE_ID,
   ModelImport.JSON_PROPERTY_STARTED_AT,
   ModelImport.JSON_PROPERTY_STATUS
@@ -87,9 +90,17 @@ public class ModelImport {
   @javax.annotation.Nonnull
   private String id;
 
+  public static final String JSON_PROPERTY_IMAGES_QUEUED = "images_queued";
+  @javax.annotation.Nullable
+  private Integer imagesQueued;
+
   public static final String JSON_PROPERTY_MODE = "mode";
   @javax.annotation.Nonnull
   private String mode;
+
+  public static final String JSON_PROPERTY_SHRINK_GUARD = "shrink_guard";
+  @javax.annotation.Nullable
+  private ShrinkGuard shrinkGuard;
 
   public static final String JSON_PROPERTY_SOURCE_ID = "source_id";
   @javax.annotation.Nullable
@@ -322,6 +333,30 @@ public class ModelImport {
   }
 
 
+  public ModelImport imagesQueued(@javax.annotation.Nullable Integer imagesQueued) {
+    this.imagesQueued = imagesQueued;
+    return this;
+  }
+
+  /**
+   * Get imagesQueued
+   * @return imagesQueued
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IMAGES_QUEUED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Integer getImagesQueued() {
+    return imagesQueued;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_IMAGES_QUEUED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setImagesQueued(@javax.annotation.Nullable Integer imagesQueued) {
+    this.imagesQueued = imagesQueued;
+  }
+
+
   public ModelImport mode(@javax.annotation.Nonnull String mode) {
     this.mode = mode;
     return this;
@@ -343,6 +378,30 @@ public class ModelImport {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setMode(@javax.annotation.Nonnull String mode) {
     this.mode = mode;
+  }
+
+
+  public ModelImport shrinkGuard(@javax.annotation.Nullable ShrinkGuard shrinkGuard) {
+    this.shrinkGuard = shrinkGuard;
+    return this;
+  }
+
+  /**
+   * Get shrinkGuard
+   * @return shrinkGuard
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SHRINK_GUARD, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public ShrinkGuard getShrinkGuard() {
+    return shrinkGuard;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SHRINK_GUARD, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setShrinkGuard(@javax.annotation.Nullable ShrinkGuard shrinkGuard) {
+    this.shrinkGuard = shrinkGuard;
   }
 
 
@@ -439,7 +498,9 @@ public class ModelImport {
         Objects.equals(this.finishedAt, _import.finishedAt) &&
         Objects.equals(this.format, _import.format) &&
         Objects.equals(this.id, _import.id) &&
+        Objects.equals(this.imagesQueued, _import.imagesQueued) &&
         Objects.equals(this.mode, _import.mode) &&
+        Objects.equals(this.shrinkGuard, _import.shrinkGuard) &&
         Objects.equals(this.sourceId, _import.sourceId) &&
         Objects.equals(this.startedAt, _import.startedAt) &&
         Objects.equals(this.status, _import.status);
@@ -447,7 +508,7 @@ public class ModelImport {
 
   @Override
   public int hashCode() {
-    return Objects.hash(bytes, counts, createdAt, dryRun, failureReason, filename, finishedAt, format, id, mode, sourceId, startedAt, status);
+    return Objects.hash(bytes, counts, createdAt, dryRun, failureReason, filename, finishedAt, format, id, imagesQueued, mode, shrinkGuard, sourceId, startedAt, status);
   }
 
   @Override
@@ -463,7 +524,9 @@ public class ModelImport {
     sb.append("    finishedAt: ").append(toIndentedString(finishedAt)).append("\n");
     sb.append("    format: ").append(toIndentedString(format)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    imagesQueued: ").append(toIndentedString(imagesQueued)).append("\n");
     sb.append("    mode: ").append(toIndentedString(mode)).append("\n");
+    sb.append("    shrinkGuard: ").append(toIndentedString(shrinkGuard)).append("\n");
     sb.append("    sourceId: ").append(toIndentedString(sourceId)).append("\n");
     sb.append("    startedAt: ").append(toIndentedString(startedAt)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
@@ -556,9 +619,19 @@ public class ModelImport {
       joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
     }
 
+    // add `images_queued` to the URL query string
+    if (getImagesQueued() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%simages_queued%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getImagesQueued()))));
+    }
+
     // add `mode` to the URL query string
     if (getMode() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%smode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMode()))));
+    }
+
+    // add `shrink_guard` to the URL query string
+    if (getShrinkGuard() != null) {
+      joiner.add(getShrinkGuard().toUrlQueryString(prefix + "shrink_guard" + suffix));
     }
 
     // add `source_id` to the URL query string

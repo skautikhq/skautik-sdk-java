@@ -44,11 +44,11 @@ import com.skautik.sdk.ApiClient;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
 public class ExportInput {
   public static final String JSON_PROPERTY_FIELDS = "fields";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private List<String> fields = new ArrayList<>();
 
   public static final String JSON_PROPERTY_FILTERS = "filters";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private Map<String, String> filters = new HashMap<>();
 
   public static final String JSON_PROPERTY_FORMAT = "format";
@@ -58,7 +58,7 @@ public class ExportInput {
   public ExportInput() { 
   }
 
-  public ExportInput fields(@javax.annotation.Nonnull List<String> fields) {
+  public ExportInput fields(@javax.annotation.Nullable List<String> fields) {
     this.fields = fields;
     return this;
   }
@@ -75,22 +75,22 @@ public class ExportInput {
    * Get fields
    * @return fields
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public List<String> getFields() {
     return fields;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFields(@javax.annotation.Nonnull List<String> fields) {
+  @JsonProperty(value = JSON_PROPERTY_FIELDS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setFields(@javax.annotation.Nullable List<String> fields) {
     this.fields = fields;
   }
 
 
-  public ExportInput filters(@javax.annotation.Nonnull Map<String, String> filters) {
+  public ExportInput filters(@javax.annotation.Nullable Map<String, String> filters) {
     this.filters = filters;
     return this;
   }
@@ -107,17 +107,17 @@ public class ExportInput {
    * Get filters
    * @return filters
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Map<String, String> getFilters() {
     return filters;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFilters(@javax.annotation.Nonnull Map<String, String> filters) {
+  @JsonProperty(value = JSON_PROPERTY_FILTERS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setFilters(@javax.annotation.Nullable Map<String, String> filters) {
     this.filters = filters;
   }
 

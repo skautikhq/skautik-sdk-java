@@ -9,7 +9,7 @@ import java.util.List;
  * What to ask for from {@code create}.
  *
  * <p>Every field is optional, and unset means unconstrained. Built rather than
- * passed positionally, because the call underneath takes 7
+ * passed positionally, because the call underneath takes 8
  * arguments in order and Java cannot name them at the call site.
  */
 public final class CreateImportOptions {
@@ -19,14 +19,16 @@ public final class CreateImportOptions {
     private final String sourceId;
     private final Boolean dryRun;
     private final String filename;
+    private final Boolean confirmShrink;
     private final String idempotencyKey;
 
-    private CreateImportOptions(String format, String mode, String sourceId, Boolean dryRun, String filename, String idempotencyKey) {
+    private CreateImportOptions(String format, String mode, String sourceId, Boolean dryRun, String filename, Boolean confirmShrink, String idempotencyKey) {
         this.format = format;
         this.mode = mode;
         this.sourceId = sourceId;
         this.dryRun = dryRun;
         this.filename = filename;
+        this.confirmShrink = confirmShrink;
         this.idempotencyKey = idempotencyKey;
     }
 
@@ -54,6 +56,10 @@ public final class CreateImportOptions {
         return filename;
     }
 
+    public Boolean confirmShrink() {
+        return confirmShrink;
+    }
+
     public String idempotencyKey() {
         return idempotencyKey;
     }
@@ -65,6 +71,7 @@ public final class CreateImportOptions {
         private String sourceId;
         private Boolean dryRun;
         private String filename;
+        private Boolean confirmShrink;
         private String idempotencyKey;
 
         public Builder format(String format) {
@@ -92,13 +99,18 @@ public final class CreateImportOptions {
             return this;
         }
 
+        public Builder confirmShrink(Boolean confirmShrink) {
+            this.confirmShrink = confirmShrink;
+            return this;
+        }
+
         public Builder idempotencyKey(String idempotencyKey) {
             this.idempotencyKey = idempotencyKey;
             return this;
         }
 
         public CreateImportOptions build() {
-            return new CreateImportOptions(format, mode, sourceId, dryRun, filename, idempotencyKey);
+            return new CreateImportOptions(format, mode, sourceId, dryRun, filename, confirmShrink, idempotencyKey);
         }
     }
 }

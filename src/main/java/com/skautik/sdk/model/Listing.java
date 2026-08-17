@@ -36,14 +36,21 @@ import com.skautik.sdk.ApiClient;
  */
 @JsonPropertyOrder({
   Listing.JSON_PROPERTY_AVAILABLE_FROM,
+  Listing.JSON_PROPERTY_COMMISSION_AMOUNT,
+  Listing.JSON_PROPERTY_COMMISSION_NOTE,
+  Listing.JSON_PROPERTY_COMMISSION_PAYER,
+  Listing.JSON_PROPERTY_COMMISSION_PERCENT,
   Listing.JSON_PROPERTY_CURRENCY,
   Listing.JSON_PROPERTY_DEPOSIT,
+  Listing.JSON_PROPERTY_HEATING_COSTS,
   Listing.JSON_PROPERTY_PRICE,
+  Listing.JSON_PROPERTY_PRICE_ON_REQUEST,
   Listing.JSON_PROPERTY_PRICE_PER_SQM,
   Listing.JSON_PROPERTY_PRICE_PERIOD,
   Listing.JSON_PROPERTY_PUBLISHED_AT,
   Listing.JSON_PROPERTY_SERVICE_CHARGES,
   Listing.JSON_PROPERTY_STATUS,
+  Listing.JSON_PROPERTY_TOTAL_RENT,
   Listing.JSON_PROPERTY_TRANSACTION_TYPE
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
@@ -51,6 +58,22 @@ public class Listing {
   public static final String JSON_PROPERTY_AVAILABLE_FROM = "available_from";
   @javax.annotation.Nullable
   private OffsetDateTime availableFrom;
+
+  public static final String JSON_PROPERTY_COMMISSION_AMOUNT = "commission_amount";
+  @javax.annotation.Nullable
+  private BigDecimal commissionAmount;
+
+  public static final String JSON_PROPERTY_COMMISSION_NOTE = "commission_note";
+  @javax.annotation.Nullable
+  private String commissionNote;
+
+  public static final String JSON_PROPERTY_COMMISSION_PAYER = "commission_payer";
+  @javax.annotation.Nullable
+  private String commissionPayer;
+
+  public static final String JSON_PROPERTY_COMMISSION_PERCENT = "commission_percent";
+  @javax.annotation.Nullable
+  private BigDecimal commissionPercent;
 
   public static final String JSON_PROPERTY_CURRENCY = "currency";
   @javax.annotation.Nullable
@@ -60,9 +83,17 @@ public class Listing {
   @javax.annotation.Nullable
   private BigDecimal deposit;
 
+  public static final String JSON_PROPERTY_HEATING_COSTS = "heating_costs";
+  @javax.annotation.Nullable
+  private BigDecimal heatingCosts;
+
   public static final String JSON_PROPERTY_PRICE = "price";
   @javax.annotation.Nullable
   private BigDecimal price;
+
+  public static final String JSON_PROPERTY_PRICE_ON_REQUEST = "price_on_request";
+  @javax.annotation.Nullable
+  private Boolean priceOnRequest;
 
   public static final String JSON_PROPERTY_PRICE_PER_SQM = "price_per_sqm";
   @javax.annotation.Nullable
@@ -83,6 +114,10 @@ public class Listing {
   public static final String JSON_PROPERTY_STATUS = "status";
   @javax.annotation.Nonnull
   private String status;
+
+  public static final String JSON_PROPERTY_TOTAL_RENT = "total_rent";
+  @javax.annotation.Nullable
+  private BigDecimal totalRent;
 
   public static final String JSON_PROPERTY_TRANSACTION_TYPE = "transaction_type";
   @javax.annotation.Nonnull
@@ -112,6 +147,102 @@ public class Listing {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAvailableFrom(@javax.annotation.Nullable OffsetDateTime availableFrom) {
     this.availableFrom = availableFrom;
+  }
+
+
+  public Listing commissionAmount(@javax.annotation.Nullable BigDecimal commissionAmount) {
+    this.commissionAmount = commissionAmount;
+    return this;
+  }
+
+  /**
+   * Get commissionAmount
+   * @return commissionAmount
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_COMMISSION_AMOUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getCommissionAmount() {
+    return commissionAmount;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_COMMISSION_AMOUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCommissionAmount(@javax.annotation.Nullable BigDecimal commissionAmount) {
+    this.commissionAmount = commissionAmount;
+  }
+
+
+  public Listing commissionNote(@javax.annotation.Nullable String commissionNote) {
+    this.commissionNote = commissionNote;
+    return this;
+  }
+
+  /**
+   * Get commissionNote
+   * @return commissionNote
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_COMMISSION_NOTE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getCommissionNote() {
+    return commissionNote;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_COMMISSION_NOTE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCommissionNote(@javax.annotation.Nullable String commissionNote) {
+    this.commissionNote = commissionNote;
+  }
+
+
+  public Listing commissionPayer(@javax.annotation.Nullable String commissionPayer) {
+    this.commissionPayer = commissionPayer;
+    return this;
+  }
+
+  /**
+   * Get commissionPayer
+   * @return commissionPayer
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_COMMISSION_PAYER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getCommissionPayer() {
+    return commissionPayer;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_COMMISSION_PAYER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCommissionPayer(@javax.annotation.Nullable String commissionPayer) {
+    this.commissionPayer = commissionPayer;
+  }
+
+
+  public Listing commissionPercent(@javax.annotation.Nullable BigDecimal commissionPercent) {
+    this.commissionPercent = commissionPercent;
+    return this;
+  }
+
+  /**
+   * Get commissionPercent
+   * @return commissionPercent
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_COMMISSION_PERCENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getCommissionPercent() {
+    return commissionPercent;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_COMMISSION_PERCENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCommissionPercent(@javax.annotation.Nullable BigDecimal commissionPercent) {
+    this.commissionPercent = commissionPercent;
   }
 
 
@@ -163,6 +294,30 @@ public class Listing {
   }
 
 
+  public Listing heatingCosts(@javax.annotation.Nullable BigDecimal heatingCosts) {
+    this.heatingCosts = heatingCosts;
+    return this;
+  }
+
+  /**
+   * Get heatingCosts
+   * @return heatingCosts
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HEATING_COSTS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getHeatingCosts() {
+    return heatingCosts;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HEATING_COSTS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHeatingCosts(@javax.annotation.Nullable BigDecimal heatingCosts) {
+    this.heatingCosts = heatingCosts;
+  }
+
+
   public Listing price(@javax.annotation.Nullable BigDecimal price) {
     this.price = price;
     return this;
@@ -184,6 +339,30 @@ public class Listing {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPrice(@javax.annotation.Nullable BigDecimal price) {
     this.price = price;
+  }
+
+
+  public Listing priceOnRequest(@javax.annotation.Nullable Boolean priceOnRequest) {
+    this.priceOnRequest = priceOnRequest;
+    return this;
+  }
+
+  /**
+   * Get priceOnRequest
+   * @return priceOnRequest
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PRICE_ON_REQUEST, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getPriceOnRequest() {
+    return priceOnRequest;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PRICE_ON_REQUEST, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPriceOnRequest(@javax.annotation.Nullable Boolean priceOnRequest) {
+    this.priceOnRequest = priceOnRequest;
   }
 
 
@@ -307,6 +486,30 @@ public class Listing {
   }
 
 
+  public Listing totalRent(@javax.annotation.Nullable BigDecimal totalRent) {
+    this.totalRent = totalRent;
+    return this;
+  }
+
+  /**
+   * Get totalRent
+   * @return totalRent
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_RENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getTotalRent() {
+    return totalRent;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_RENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTotalRent(@javax.annotation.Nullable BigDecimal totalRent) {
+    this.totalRent = totalRent;
+  }
+
+
   public Listing transactionType(@javax.annotation.Nonnull String transactionType) {
     this.transactionType = transactionType;
     return this;
@@ -344,20 +547,27 @@ public class Listing {
     }
     Listing listing = (Listing) o;
     return Objects.equals(this.availableFrom, listing.availableFrom) &&
+        Objects.equals(this.commissionAmount, listing.commissionAmount) &&
+        Objects.equals(this.commissionNote, listing.commissionNote) &&
+        Objects.equals(this.commissionPayer, listing.commissionPayer) &&
+        Objects.equals(this.commissionPercent, listing.commissionPercent) &&
         Objects.equals(this.currency, listing.currency) &&
         Objects.equals(this.deposit, listing.deposit) &&
+        Objects.equals(this.heatingCosts, listing.heatingCosts) &&
         Objects.equals(this.price, listing.price) &&
+        Objects.equals(this.priceOnRequest, listing.priceOnRequest) &&
         Objects.equals(this.pricePerSqm, listing.pricePerSqm) &&
         Objects.equals(this.pricePeriod, listing.pricePeriod) &&
         Objects.equals(this.publishedAt, listing.publishedAt) &&
         Objects.equals(this.serviceCharges, listing.serviceCharges) &&
         Objects.equals(this.status, listing.status) &&
+        Objects.equals(this.totalRent, listing.totalRent) &&
         Objects.equals(this.transactionType, listing.transactionType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(availableFrom, currency, deposit, price, pricePerSqm, pricePeriod, publishedAt, serviceCharges, status, transactionType);
+    return Objects.hash(availableFrom, commissionAmount, commissionNote, commissionPayer, commissionPercent, currency, deposit, heatingCosts, price, priceOnRequest, pricePerSqm, pricePeriod, publishedAt, serviceCharges, status, totalRent, transactionType);
   }
 
   @Override
@@ -365,14 +575,21 @@ public class Listing {
     StringBuilder sb = new StringBuilder();
     sb.append("class Listing {\n");
     sb.append("    availableFrom: ").append(toIndentedString(availableFrom)).append("\n");
+    sb.append("    commissionAmount: ").append(toIndentedString(commissionAmount)).append("\n");
+    sb.append("    commissionNote: ").append(toIndentedString(commissionNote)).append("\n");
+    sb.append("    commissionPayer: ").append(toIndentedString(commissionPayer)).append("\n");
+    sb.append("    commissionPercent: ").append(toIndentedString(commissionPercent)).append("\n");
     sb.append("    currency: ").append(toIndentedString(currency)).append("\n");
     sb.append("    deposit: ").append(toIndentedString(deposit)).append("\n");
+    sb.append("    heatingCosts: ").append(toIndentedString(heatingCosts)).append("\n");
     sb.append("    price: ").append(toIndentedString(price)).append("\n");
+    sb.append("    priceOnRequest: ").append(toIndentedString(priceOnRequest)).append("\n");
     sb.append("    pricePerSqm: ").append(toIndentedString(pricePerSqm)).append("\n");
     sb.append("    pricePeriod: ").append(toIndentedString(pricePeriod)).append("\n");
     sb.append("    publishedAt: ").append(toIndentedString(publishedAt)).append("\n");
     sb.append("    serviceCharges: ").append(toIndentedString(serviceCharges)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    totalRent: ").append(toIndentedString(totalRent)).append("\n");
     sb.append("    transactionType: ").append(toIndentedString(transactionType)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -423,6 +640,26 @@ public class Listing {
       joiner.add(String.format(java.util.Locale.ROOT, "%savailable_from%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAvailableFrom()))));
     }
 
+    // add `commission_amount` to the URL query string
+    if (getCommissionAmount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scommission_amount%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCommissionAmount()))));
+    }
+
+    // add `commission_note` to the URL query string
+    if (getCommissionNote() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scommission_note%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCommissionNote()))));
+    }
+
+    // add `commission_payer` to the URL query string
+    if (getCommissionPayer() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scommission_payer%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCommissionPayer()))));
+    }
+
+    // add `commission_percent` to the URL query string
+    if (getCommissionPercent() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scommission_percent%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCommissionPercent()))));
+    }
+
     // add `currency` to the URL query string
     if (getCurrency() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%scurrency%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCurrency()))));
@@ -433,9 +670,19 @@ public class Listing {
       joiner.add(String.format(java.util.Locale.ROOT, "%sdeposit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeposit()))));
     }
 
+    // add `heating_costs` to the URL query string
+    if (getHeatingCosts() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sheating_costs%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHeatingCosts()))));
+    }
+
     // add `price` to the URL query string
     if (getPrice() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sprice%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPrice()))));
+    }
+
+    // add `price_on_request` to the URL query string
+    if (getPriceOnRequest() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sprice_on_request%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPriceOnRequest()))));
     }
 
     // add `price_per_sqm` to the URL query string
@@ -461,6 +708,11 @@ public class Listing {
     // add `status` to the URL query string
     if (getStatus() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sstatus%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStatus()))));
+    }
+
+    // add `total_rent` to the URL query string
+    if (getTotalRent() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stotal_rent%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTotalRent()))));
     }
 
     // add `transaction_type` to the URL query string

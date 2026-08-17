@@ -46,11 +46,11 @@ public class GenerationInput {
   private String kind;
 
   public static final String JSON_PROPERTY_PROMPT = "prompt";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String prompt;
 
   public static final String JSON_PROPERTY_ROOM_TYPE = "room_type";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String roomType;
 
   public static final String JSON_PROPERTY_SOURCE_IMAGE_ID = "source_image_id";
@@ -58,7 +58,7 @@ public class GenerationInput {
   private String sourceImageId;
 
   public static final String JSON_PROPERTY_STYLE = "style";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String style;
 
   public GenerationInput() { 
@@ -88,7 +88,7 @@ public class GenerationInput {
   }
 
 
-  public GenerationInput prompt(@javax.annotation.Nonnull String prompt) {
+  public GenerationInput prompt(@javax.annotation.Nullable String prompt) {
     this.prompt = prompt;
     return this;
   }
@@ -97,22 +97,22 @@ public class GenerationInput {
    * Get prompt
    * @return prompt
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_PROMPT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PROMPT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public String getPrompt() {
     return prompt;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_PROMPT, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPrompt(@javax.annotation.Nonnull String prompt) {
+  @JsonProperty(value = JSON_PROPERTY_PROMPT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPrompt(@javax.annotation.Nullable String prompt) {
     this.prompt = prompt;
   }
 
 
-  public GenerationInput roomType(@javax.annotation.Nonnull String roomType) {
+  public GenerationInput roomType(@javax.annotation.Nullable String roomType) {
     this.roomType = roomType;
     return this;
   }
@@ -121,17 +121,17 @@ public class GenerationInput {
    * Get roomType
    * @return roomType
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_ROOM_TYPE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ROOM_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public String getRoomType() {
     return roomType;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_ROOM_TYPE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setRoomType(@javax.annotation.Nonnull String roomType) {
+  @JsonProperty(value = JSON_PROPERTY_ROOM_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setRoomType(@javax.annotation.Nullable String roomType) {
     this.roomType = roomType;
   }
 
@@ -160,7 +160,7 @@ public class GenerationInput {
   }
 
 
-  public GenerationInput style(@javax.annotation.Nonnull String style) {
+  public GenerationInput style(@javax.annotation.Nullable String style) {
     this.style = style;
     return this;
   }
@@ -169,17 +169,17 @@ public class GenerationInput {
    * Get style
    * @return style
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_STYLE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_STYLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public String getStyle() {
     return style;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_STYLE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setStyle(@javax.annotation.Nonnull String style) {
+  @JsonProperty(value = JSON_PROPERTY_STYLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setStyle(@javax.annotation.Nullable String style) {
     this.style = style;
   }
 

@@ -530,25 +530,27 @@ public class PropertiesApi {
    * Retrieve a property
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
-   * @param expand Related records to inline rather than fetch separately. (optional)
+   * @param expand Related records to inline rather than fetch separately. Available: images, price_history, market, translations. (optional)
+   * @param language Answer in this language where the property has it, as an ISO 639-1 code. A property that does not hold the language keeps its own text rather than being answered in another, and the response says which language it came back in. Feeds carrying several languages are what fills this. (optional)
    * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public PropertyResponse getProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand) throws ApiException {
-    return getProperty(propertyId, expand, null);
+  public PropertyResponse getProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language) throws ApiException {
+    return getProperty(propertyId, expand, language, null);
   }
 
   /**
    * Retrieve a property
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
-   * @param expand Related records to inline rather than fetch separately. (optional)
+   * @param expand Related records to inline rather than fetch separately. Available: images, price_history, market, translations. (optional)
+   * @param language Answer in this language where the property has it, as an ISO 639-1 code. A property that does not hold the language keeps its own text rather than being answered in another, and the response says which language it came back in. Feeds carrying several languages are what fills this. (optional)
    * @param headers Optional headers to include in the request
    * @return PropertyResponse
    * @throws ApiException if fails to make API call
    */
-  public PropertyResponse getProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
-    ApiResponse<PropertyResponse> localVarResponse = getPropertyWithHttpInfo(propertyId, expand, headers);
+  public PropertyResponse getProperty(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyResponse> localVarResponse = getPropertyWithHttpInfo(propertyId, expand, language, headers);
     return localVarResponse.getData();
   }
 
@@ -556,25 +558,27 @@ public class PropertiesApi {
    * Retrieve a property
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
-   * @param expand Related records to inline rather than fetch separately. (optional)
+   * @param expand Related records to inline rather than fetch separately. Available: images, price_history, market, translations. (optional)
+   * @param language Answer in this language where the property has it, as an ISO 639-1 code. A property that does not hold the language keeps its own text rather than being answered in another, and the response says which language it came back in. Feeds carrying several languages are what fills this. (optional)
    * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyResponse> getPropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand) throws ApiException {
-    return getPropertyWithHttpInfo(propertyId, expand, null);
+  public ApiResponse<PropertyResponse> getPropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language) throws ApiException {
+    return getPropertyWithHttpInfo(propertyId, expand, language, null);
   }
 
   /**
    * Retrieve a property
    * One property with its full attribute set.  Requires the &#x60;properties:read&#x60; scope.
    * @param propertyId Identifier returned by any collection endpoint. (required)
-   * @param expand Related records to inline rather than fetch separately. (optional)
+   * @param expand Related records to inline rather than fetch separately. Available: images, price_history, market, translations. (optional)
+   * @param language Answer in this language where the property has it, as an ISO 639-1 code. A property that does not hold the language keeps its own text rather than being answered in another, and the response says which language it came back in. Feeds carrying several languages are what fills this. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;PropertyResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyResponse> getPropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getPropertyRequestBuilder(propertyId, expand, headers);
+  public ApiResponse<PropertyResponse> getPropertyWithHttpInfo(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getPropertyRequestBuilder(propertyId, expand, language, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -621,7 +625,7 @@ public class PropertiesApi {
     }
   }
 
-  private HttpRequest.Builder getPropertyRequestBuilder(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder getPropertyRequestBuilder(@javax.annotation.Nonnull String propertyId, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'propertyId' is set
     if (propertyId == null) {
       throw new ApiException(400, "Missing the required parameter 'propertyId' when calling getProperty");
@@ -637,6 +641,8 @@ public class PropertiesApi {
     String localVarQueryParameterBaseName;
     localVarQueryParameterBaseName = "expand";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("csv", "expand", expand));
+    localVarQueryParameterBaseName = "language";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("language", language));
 
     if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
       StringJoiner queryJoiner = new StringJoiner("&");
@@ -680,12 +686,13 @@ public class PropertiesApi {
    * @param limit Records per page. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @param sort Field to order by. Prefix with a minus for descending. (optional)
-   * @param expand Related records to inline rather than fetch separately. (optional)
+   * @param expand Related records to inline rather than fetch separately. Available: images, price_history, market, translations. (optional)
+   * @param language Answer in this language where the property has it, as an ISO 639-1 code. A property that does not hold the language keeps its own text rather than being answered in another, and the response says which language it came back in. Feeds carrying several languages are what fills this. (optional)
    * @return PropertyPage
    * @throws ApiException if fails to make API call
    */
-  public PropertyPage listProperties(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand) throws ApiException {
-    return listProperties(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, null);
+  public PropertyPage listProperties(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language) throws ApiException {
+    return listProperties(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, language, null);
   }
 
   /**
@@ -705,13 +712,14 @@ public class PropertiesApi {
    * @param limit Records per page. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @param sort Field to order by. Prefix with a minus for descending. (optional)
-   * @param expand Related records to inline rather than fetch separately. (optional)
+   * @param expand Related records to inline rather than fetch separately. Available: images, price_history, market, translations. (optional)
+   * @param language Answer in this language where the property has it, as an ISO 639-1 code. A property that does not hold the language keeps its own text rather than being answered in another, and the response says which language it came back in. Feeds carrying several languages are what fills this. (optional)
    * @param headers Optional headers to include in the request
    * @return PropertyPage
    * @throws ApiException if fails to make API call
    */
-  public PropertyPage listProperties(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
-    ApiResponse<PropertyPage> localVarResponse = listPropertiesWithHttpInfo(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, headers);
+  public PropertyPage listProperties(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language, Map<String, String> headers) throws ApiException {
+    ApiResponse<PropertyPage> localVarResponse = listPropertiesWithHttpInfo(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, language, headers);
     return localVarResponse.getData();
   }
 
@@ -732,12 +740,13 @@ public class PropertiesApi {
    * @param limit Records per page. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @param sort Field to order by. Prefix with a minus for descending. (optional)
-   * @param expand Related records to inline rather than fetch separately. (optional)
+   * @param expand Related records to inline rather than fetch separately. Available: images, price_history, market, translations. (optional)
+   * @param language Answer in this language where the property has it, as an ISO 639-1 code. A property that does not hold the language keeps its own text rather than being answered in another, and the response says which language it came back in. Feeds carrying several languages are what fills this. (optional)
    * @return ApiResponse&lt;PropertyPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand) throws ApiException {
-    return listPropertiesWithHttpInfo(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, null);
+  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language) throws ApiException {
+    return listPropertiesWithHttpInfo(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, language, null);
   }
 
   /**
@@ -757,13 +766,14 @@ public class PropertiesApi {
    * @param limit Records per page. (optional, default to 50)
    * @param cursor Opaque pointer from the previous response. Omit for the first page. Cursors are stable across inserts, so paging never skips or repeats a record the way an offset does. (optional)
    * @param sort Field to order by. Prefix with a minus for descending. (optional)
-   * @param expand Related records to inline rather than fetch separately. (optional)
+   * @param expand Related records to inline rather than fetch separately. Available: images, price_history, market, translations. (optional)
+   * @param language Answer in this language where the property has it, as an ISO 639-1 code. A property that does not hold the language keeps its own text rather than being answered in another, and the response says which language it came back in. Feeds carrying several languages are what fills this. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;PropertyPage&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listPropertiesRequestBuilder(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, headers);
+  public ApiResponse<PropertyPage> listPropertiesWithHttpInfo(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listPropertiesRequestBuilder(city, district, postalCode, type, transactionType, status, externalId, minPrice, maxPrice, minLivingArea, minBedrooms, limit, cursor, sort, expand, language, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -810,7 +820,7 @@ public class PropertiesApi {
     }
   }
 
-  private HttpRequest.Builder listPropertiesRequestBuilder(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder listPropertiesRequestBuilder(@javax.annotation.Nullable String city, @javax.annotation.Nullable String district, @javax.annotation.Nullable String postalCode, @javax.annotation.Nullable String type, @javax.annotation.Nullable String transactionType, @javax.annotation.Nullable String status, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable BigDecimal minPrice, @javax.annotation.Nullable BigDecimal maxPrice, @javax.annotation.Nullable BigDecimal minLivingArea, @javax.annotation.Nullable Integer minBedrooms, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String cursor, @javax.annotation.Nullable String sort, @javax.annotation.Nullable List<String> expand, @javax.annotation.Nullable String language, Map<String, String> headers) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -849,6 +859,8 @@ public class PropertiesApi {
     localVarQueryParams.addAll(ApiClient.parameterToPairs("sort", sort));
     localVarQueryParameterBaseName = "expand";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("csv", "expand", expand));
+    localVarQueryParameterBaseName = "language";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("language", language));
 
     if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
       StringJoiner queryJoiner = new StringJoiner("&");

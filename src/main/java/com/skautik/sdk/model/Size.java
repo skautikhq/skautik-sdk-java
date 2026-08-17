@@ -34,19 +34,64 @@ import com.skautik.sdk.ApiClient;
  * Size
  */
 @JsonPropertyOrder({
+  Size.JSON_PROPERTY_ATTIC_SQM,
+  Size.JSON_PROPERTY_BALCONY_TERRACE_SQM,
+  Size.JSON_PROPERTY_CELLAR_SQM,
+  Size.JSON_PROPERTY_GARDEN_SQM,
   Size.JSON_PROPERTY_LIVING_AREA_SQM,
+  Size.JSON_PROPERTY_OFFICE_AREA_SQM,
+  Size.JSON_PROPERTY_OTHER_AREA_SQM,
   Size.JSON_PROPERTY_PLOT_AREA_SQM,
+  Size.JSON_PROPERTY_RETAIL_AREA_SQM,
+  Size.JSON_PROPERTY_STORAGE_AREA_SQM,
+  Size.JSON_PROPERTY_TOTAL_AREA_SQM,
   Size.JSON_PROPERTY_USABLE_AREA_SQM
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
 public class Size {
+  public static final String JSON_PROPERTY_ATTIC_SQM = "attic_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal atticSqm;
+
+  public static final String JSON_PROPERTY_BALCONY_TERRACE_SQM = "balcony_terrace_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal balconyTerraceSqm;
+
+  public static final String JSON_PROPERTY_CELLAR_SQM = "cellar_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal cellarSqm;
+
+  public static final String JSON_PROPERTY_GARDEN_SQM = "garden_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal gardenSqm;
+
   public static final String JSON_PROPERTY_LIVING_AREA_SQM = "living_area_sqm";
   @javax.annotation.Nullable
   private BigDecimal livingAreaSqm;
 
+  public static final String JSON_PROPERTY_OFFICE_AREA_SQM = "office_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal officeAreaSqm;
+
+  public static final String JSON_PROPERTY_OTHER_AREA_SQM = "other_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal otherAreaSqm;
+
   public static final String JSON_PROPERTY_PLOT_AREA_SQM = "plot_area_sqm";
   @javax.annotation.Nullable
   private BigDecimal plotAreaSqm;
+
+  public static final String JSON_PROPERTY_RETAIL_AREA_SQM = "retail_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal retailAreaSqm;
+
+  public static final String JSON_PROPERTY_STORAGE_AREA_SQM = "storage_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal storageAreaSqm;
+
+  public static final String JSON_PROPERTY_TOTAL_AREA_SQM = "total_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal totalAreaSqm;
 
   public static final String JSON_PROPERTY_USABLE_AREA_SQM = "usable_area_sqm";
   @javax.annotation.Nullable
@@ -54,6 +99,102 @@ public class Size {
 
   public Size() { 
   }
+
+  public Size atticSqm(@javax.annotation.Nullable BigDecimal atticSqm) {
+    this.atticSqm = atticSqm;
+    return this;
+  }
+
+  /**
+   * Get atticSqm
+   * @return atticSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ATTIC_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getAtticSqm() {
+    return atticSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ATTIC_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAtticSqm(@javax.annotation.Nullable BigDecimal atticSqm) {
+    this.atticSqm = atticSqm;
+  }
+
+
+  public Size balconyTerraceSqm(@javax.annotation.Nullable BigDecimal balconyTerraceSqm) {
+    this.balconyTerraceSqm = balconyTerraceSqm;
+    return this;
+  }
+
+  /**
+   * Get balconyTerraceSqm
+   * @return balconyTerraceSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_BALCONY_TERRACE_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getBalconyTerraceSqm() {
+    return balconyTerraceSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_BALCONY_TERRACE_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBalconyTerraceSqm(@javax.annotation.Nullable BigDecimal balconyTerraceSqm) {
+    this.balconyTerraceSqm = balconyTerraceSqm;
+  }
+
+
+  public Size cellarSqm(@javax.annotation.Nullable BigDecimal cellarSqm) {
+    this.cellarSqm = cellarSqm;
+    return this;
+  }
+
+  /**
+   * Get cellarSqm
+   * @return cellarSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CELLAR_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getCellarSqm() {
+    return cellarSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CELLAR_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCellarSqm(@javax.annotation.Nullable BigDecimal cellarSqm) {
+    this.cellarSqm = cellarSqm;
+  }
+
+
+  public Size gardenSqm(@javax.annotation.Nullable BigDecimal gardenSqm) {
+    this.gardenSqm = gardenSqm;
+    return this;
+  }
+
+  /**
+   * Get gardenSqm
+   * @return gardenSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_GARDEN_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getGardenSqm() {
+    return gardenSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_GARDEN_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setGardenSqm(@javax.annotation.Nullable BigDecimal gardenSqm) {
+    this.gardenSqm = gardenSqm;
+  }
+
 
   public Size livingAreaSqm(@javax.annotation.Nullable BigDecimal livingAreaSqm) {
     this.livingAreaSqm = livingAreaSqm;
@@ -79,6 +220,54 @@ public class Size {
   }
 
 
+  public Size officeAreaSqm(@javax.annotation.Nullable BigDecimal officeAreaSqm) {
+    this.officeAreaSqm = officeAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get officeAreaSqm
+   * @return officeAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OFFICE_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getOfficeAreaSqm() {
+    return officeAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OFFICE_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOfficeAreaSqm(@javax.annotation.Nullable BigDecimal officeAreaSqm) {
+    this.officeAreaSqm = officeAreaSqm;
+  }
+
+
+  public Size otherAreaSqm(@javax.annotation.Nullable BigDecimal otherAreaSqm) {
+    this.otherAreaSqm = otherAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get otherAreaSqm
+   * @return otherAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OTHER_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getOtherAreaSqm() {
+    return otherAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OTHER_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOtherAreaSqm(@javax.annotation.Nullable BigDecimal otherAreaSqm) {
+    this.otherAreaSqm = otherAreaSqm;
+  }
+
+
   public Size plotAreaSqm(@javax.annotation.Nullable BigDecimal plotAreaSqm) {
     this.plotAreaSqm = plotAreaSqm;
     return this;
@@ -100,6 +289,78 @@ public class Size {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPlotAreaSqm(@javax.annotation.Nullable BigDecimal plotAreaSqm) {
     this.plotAreaSqm = plotAreaSqm;
+  }
+
+
+  public Size retailAreaSqm(@javax.annotation.Nullable BigDecimal retailAreaSqm) {
+    this.retailAreaSqm = retailAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get retailAreaSqm
+   * @return retailAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RETAIL_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getRetailAreaSqm() {
+    return retailAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_RETAIL_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setRetailAreaSqm(@javax.annotation.Nullable BigDecimal retailAreaSqm) {
+    this.retailAreaSqm = retailAreaSqm;
+  }
+
+
+  public Size storageAreaSqm(@javax.annotation.Nullable BigDecimal storageAreaSqm) {
+    this.storageAreaSqm = storageAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get storageAreaSqm
+   * @return storageAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_STORAGE_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getStorageAreaSqm() {
+    return storageAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_STORAGE_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setStorageAreaSqm(@javax.annotation.Nullable BigDecimal storageAreaSqm) {
+    this.storageAreaSqm = storageAreaSqm;
+  }
+
+
+  public Size totalAreaSqm(@javax.annotation.Nullable BigDecimal totalAreaSqm) {
+    this.totalAreaSqm = totalAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get totalAreaSqm
+   * @return totalAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getTotalAreaSqm() {
+    return totalAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTotalAreaSqm(@javax.annotation.Nullable BigDecimal totalAreaSqm) {
+    this.totalAreaSqm = totalAreaSqm;
   }
 
 
@@ -139,22 +400,40 @@ public class Size {
       return false;
     }
     Size size = (Size) o;
-    return Objects.equals(this.livingAreaSqm, size.livingAreaSqm) &&
+    return Objects.equals(this.atticSqm, size.atticSqm) &&
+        Objects.equals(this.balconyTerraceSqm, size.balconyTerraceSqm) &&
+        Objects.equals(this.cellarSqm, size.cellarSqm) &&
+        Objects.equals(this.gardenSqm, size.gardenSqm) &&
+        Objects.equals(this.livingAreaSqm, size.livingAreaSqm) &&
+        Objects.equals(this.officeAreaSqm, size.officeAreaSqm) &&
+        Objects.equals(this.otherAreaSqm, size.otherAreaSqm) &&
         Objects.equals(this.plotAreaSqm, size.plotAreaSqm) &&
+        Objects.equals(this.retailAreaSqm, size.retailAreaSqm) &&
+        Objects.equals(this.storageAreaSqm, size.storageAreaSqm) &&
+        Objects.equals(this.totalAreaSqm, size.totalAreaSqm) &&
         Objects.equals(this.usableAreaSqm, size.usableAreaSqm);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(livingAreaSqm, plotAreaSqm, usableAreaSqm);
+    return Objects.hash(atticSqm, balconyTerraceSqm, cellarSqm, gardenSqm, livingAreaSqm, officeAreaSqm, otherAreaSqm, plotAreaSqm, retailAreaSqm, storageAreaSqm, totalAreaSqm, usableAreaSqm);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Size {\n");
+    sb.append("    atticSqm: ").append(toIndentedString(atticSqm)).append("\n");
+    sb.append("    balconyTerraceSqm: ").append(toIndentedString(balconyTerraceSqm)).append("\n");
+    sb.append("    cellarSqm: ").append(toIndentedString(cellarSqm)).append("\n");
+    sb.append("    gardenSqm: ").append(toIndentedString(gardenSqm)).append("\n");
     sb.append("    livingAreaSqm: ").append(toIndentedString(livingAreaSqm)).append("\n");
+    sb.append("    officeAreaSqm: ").append(toIndentedString(officeAreaSqm)).append("\n");
+    sb.append("    otherAreaSqm: ").append(toIndentedString(otherAreaSqm)).append("\n");
     sb.append("    plotAreaSqm: ").append(toIndentedString(plotAreaSqm)).append("\n");
+    sb.append("    retailAreaSqm: ").append(toIndentedString(retailAreaSqm)).append("\n");
+    sb.append("    storageAreaSqm: ").append(toIndentedString(storageAreaSqm)).append("\n");
+    sb.append("    totalAreaSqm: ").append(toIndentedString(totalAreaSqm)).append("\n");
     sb.append("    usableAreaSqm: ").append(toIndentedString(usableAreaSqm)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -200,14 +479,59 @@ public class Size {
 
     StringJoiner joiner = new StringJoiner("&");
 
+    // add `attic_sqm` to the URL query string
+    if (getAtticSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sattic_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAtticSqm()))));
+    }
+
+    // add `balcony_terrace_sqm` to the URL query string
+    if (getBalconyTerraceSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbalcony_terrace_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBalconyTerraceSqm()))));
+    }
+
+    // add `cellar_sqm` to the URL query string
+    if (getCellarSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scellar_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCellarSqm()))));
+    }
+
+    // add `garden_sqm` to the URL query string
+    if (getGardenSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgarden_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGardenSqm()))));
+    }
+
     // add `living_area_sqm` to the URL query string
     if (getLivingAreaSqm() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sliving_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLivingAreaSqm()))));
     }
 
+    // add `office_area_sqm` to the URL query string
+    if (getOfficeAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%soffice_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOfficeAreaSqm()))));
+    }
+
+    // add `other_area_sqm` to the URL query string
+    if (getOtherAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sother_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOtherAreaSqm()))));
+    }
+
     // add `plot_area_sqm` to the URL query string
     if (getPlotAreaSqm() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%splot_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPlotAreaSqm()))));
+    }
+
+    // add `retail_area_sqm` to the URL query string
+    if (getRetailAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sretail_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRetailAreaSqm()))));
+    }
+
+    // add `storage_area_sqm` to the URL query string
+    if (getStorageAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sstorage_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStorageAreaSqm()))));
+    }
+
+    // add `total_area_sqm` to the URL query string
+    if (getTotalAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stotal_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTotalAreaSqm()))));
     }
 
     // add `usable_area_sqm` to the URL query string

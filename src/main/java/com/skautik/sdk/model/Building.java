@@ -34,8 +34,11 @@ import com.skautik.sdk.ApiClient;
  */
 @JsonPropertyOrder({
   Building.JSON_PROPERTY_CONDITION,
+  Building.JSON_PROPERTY_CONSTRUCTION_PHASE,
   Building.JSON_PROPERTY_CONSTRUCTION_TYPE,
   Building.JSON_PROPERTY_HEATING_TYPE,
+  Building.JSON_PROPERTY_LEASEHOLD,
+  Building.JSON_PROPERTY_MONUMENT_PROTECTED,
   Building.JSON_PROPERTY_YEAR_BUILT,
   Building.JSON_PROPERTY_YEAR_RENOVATED
 })
@@ -45,6 +48,10 @@ public class Building {
   @javax.annotation.Nullable
   private String condition;
 
+  public static final String JSON_PROPERTY_CONSTRUCTION_PHASE = "construction_phase";
+  @javax.annotation.Nullable
+  private String constructionPhase;
+
   public static final String JSON_PROPERTY_CONSTRUCTION_TYPE = "construction_type";
   @javax.annotation.Nullable
   private String constructionType;
@@ -52,6 +59,14 @@ public class Building {
   public static final String JSON_PROPERTY_HEATING_TYPE = "heating_type";
   @javax.annotation.Nullable
   private String heatingType;
+
+  public static final String JSON_PROPERTY_LEASEHOLD = "leasehold";
+  @javax.annotation.Nullable
+  private Boolean leasehold;
+
+  public static final String JSON_PROPERTY_MONUMENT_PROTECTED = "monument_protected";
+  @javax.annotation.Nullable
+  private Boolean monumentProtected;
 
   public static final String JSON_PROPERTY_YEAR_BUILT = "year_built";
   @javax.annotation.Nullable
@@ -85,6 +100,30 @@ public class Building {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCondition(@javax.annotation.Nullable String condition) {
     this.condition = condition;
+  }
+
+
+  public Building constructionPhase(@javax.annotation.Nullable String constructionPhase) {
+    this.constructionPhase = constructionPhase;
+    return this;
+  }
+
+  /**
+   * Get constructionPhase
+   * @return constructionPhase
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CONSTRUCTION_PHASE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getConstructionPhase() {
+    return constructionPhase;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CONSTRUCTION_PHASE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setConstructionPhase(@javax.annotation.Nullable String constructionPhase) {
+    this.constructionPhase = constructionPhase;
   }
 
 
@@ -133,6 +172,54 @@ public class Building {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHeatingType(@javax.annotation.Nullable String heatingType) {
     this.heatingType = heatingType;
+  }
+
+
+  public Building leasehold(@javax.annotation.Nullable Boolean leasehold) {
+    this.leasehold = leasehold;
+    return this;
+  }
+
+  /**
+   * Get leasehold
+   * @return leasehold
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LEASEHOLD, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getLeasehold() {
+    return leasehold;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LEASEHOLD, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLeasehold(@javax.annotation.Nullable Boolean leasehold) {
+    this.leasehold = leasehold;
+  }
+
+
+  public Building monumentProtected(@javax.annotation.Nullable Boolean monumentProtected) {
+    this.monumentProtected = monumentProtected;
+    return this;
+  }
+
+  /**
+   * Get monumentProtected
+   * @return monumentProtected
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MONUMENT_PROTECTED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getMonumentProtected() {
+    return monumentProtected;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_MONUMENT_PROTECTED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMonumentProtected(@javax.annotation.Nullable Boolean monumentProtected) {
+    this.monumentProtected = monumentProtected;
   }
 
 
@@ -197,15 +284,18 @@ public class Building {
     }
     Building building = (Building) o;
     return Objects.equals(this.condition, building.condition) &&
+        Objects.equals(this.constructionPhase, building.constructionPhase) &&
         Objects.equals(this.constructionType, building.constructionType) &&
         Objects.equals(this.heatingType, building.heatingType) &&
+        Objects.equals(this.leasehold, building.leasehold) &&
+        Objects.equals(this.monumentProtected, building.monumentProtected) &&
         Objects.equals(this.yearBuilt, building.yearBuilt) &&
         Objects.equals(this.yearRenovated, building.yearRenovated);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(condition, constructionType, heatingType, yearBuilt, yearRenovated);
+    return Objects.hash(condition, constructionPhase, constructionType, heatingType, leasehold, monumentProtected, yearBuilt, yearRenovated);
   }
 
   @Override
@@ -213,8 +303,11 @@ public class Building {
     StringBuilder sb = new StringBuilder();
     sb.append("class Building {\n");
     sb.append("    condition: ").append(toIndentedString(condition)).append("\n");
+    sb.append("    constructionPhase: ").append(toIndentedString(constructionPhase)).append("\n");
     sb.append("    constructionType: ").append(toIndentedString(constructionType)).append("\n");
     sb.append("    heatingType: ").append(toIndentedString(heatingType)).append("\n");
+    sb.append("    leasehold: ").append(toIndentedString(leasehold)).append("\n");
+    sb.append("    monumentProtected: ").append(toIndentedString(monumentProtected)).append("\n");
     sb.append("    yearBuilt: ").append(toIndentedString(yearBuilt)).append("\n");
     sb.append("    yearRenovated: ").append(toIndentedString(yearRenovated)).append("\n");
     sb.append("}");
@@ -266,6 +359,11 @@ public class Building {
       joiner.add(String.format(java.util.Locale.ROOT, "%scondition%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCondition()))));
     }
 
+    // add `construction_phase` to the URL query string
+    if (getConstructionPhase() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconstruction_phase%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConstructionPhase()))));
+    }
+
     // add `construction_type` to the URL query string
     if (getConstructionType() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sconstruction_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConstructionType()))));
@@ -274,6 +372,16 @@ public class Building {
     // add `heating_type` to the URL query string
     if (getHeatingType() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sheating_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHeatingType()))));
+    }
+
+    // add `leasehold` to the URL query string
+    if (getLeasehold() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sleasehold%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLeasehold()))));
+    }
+
+    // add `monument_protected` to the URL query string
+    if (getMonumentProtected() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smonument_protected%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMonumentProtected()))));
     }
 
     // add `year_built` to the URL query string

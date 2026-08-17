@@ -81,7 +81,7 @@ public final class ImportsResource {
      */
     public ImportResponse create(File _file, CreateImportOptions options) throws ApiException {
         CreateImportOptions settings = options == null ? CreateImportOptions.builder().build() : options;
-        return api.createImport(settings.format(), settings.mode(), settings.sourceId(), settings.dryRun(), settings.filename(), settings.idempotencyKey(), _file);
+        return api.createImport(settings.format(), settings.mode(), settings.sourceId(), settings.dryRun(), settings.filename(), settings.confirmShrink(), settings.idempotencyKey(), _file);
     }
 
     /**

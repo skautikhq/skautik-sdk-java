@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.skautik.sdk.model.ConnectorInput;
 import com.skautik.sdk.model.DeliveryInput;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import com.skautik.sdk.ApiClient;
  * ImportSourceInput
  */
 @JsonPropertyOrder({
+  ImportSourceInput.JSON_PROPERTY_CONNECTOR,
   ImportSourceInput.JSON_PROPERTY_DELETION_POLICY,
   ImportSourceInput.JSON_PROPERTY_DELIVERY,
   ImportSourceInput.JSON_PROPERTY_FORMAT,
@@ -45,8 +47,12 @@ import com.skautik.sdk.ApiClient;
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
 public class ImportSourceInput {
+  public static final String JSON_PROPERTY_CONNECTOR = "connector";
+  @javax.annotation.Nullable
+  private ConnectorInput connector;
+
   public static final String JSON_PROPERTY_DELETION_POLICY = "deletion_policy";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String deletionPolicy;
 
   public static final String JSON_PROPERTY_DELIVERY = "delivery";
@@ -58,7 +64,7 @@ public class ImportSourceInput {
   private String format;
 
   public static final String JSON_PROPERTY_MAPPING = "mapping";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private Map<String, String> mapping = new HashMap<>();
 
   public static final String JSON_PROPERTY_NAME = "name";
@@ -66,13 +72,37 @@ public class ImportSourceInput {
   private String name;
 
   public static final String JSON_PROPERTY_SCHEDULE = "schedule";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String schedule;
 
   public ImportSourceInput() { 
   }
 
-  public ImportSourceInput deletionPolicy(@javax.annotation.Nonnull String deletionPolicy) {
+  public ImportSourceInput connector(@javax.annotation.Nullable ConnectorInput connector) {
+    this.connector = connector;
+    return this;
+  }
+
+  /**
+   * Get connector
+   * @return connector
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CONNECTOR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public ConnectorInput getConnector() {
+    return connector;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CONNECTOR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setConnector(@javax.annotation.Nullable ConnectorInput connector) {
+    this.connector = connector;
+  }
+
+
+  public ImportSourceInput deletionPolicy(@javax.annotation.Nullable String deletionPolicy) {
     this.deletionPolicy = deletionPolicy;
     return this;
   }
@@ -81,17 +111,17 @@ public class ImportSourceInput {
    * Get deletionPolicy
    * @return deletionPolicy
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_DELETION_POLICY, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DELETION_POLICY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public String getDeletionPolicy() {
     return deletionPolicy;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_DELETION_POLICY, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setDeletionPolicy(@javax.annotation.Nonnull String deletionPolicy) {
+  @JsonProperty(value = JSON_PROPERTY_DELETION_POLICY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDeletionPolicy(@javax.annotation.Nullable String deletionPolicy) {
     this.deletionPolicy = deletionPolicy;
   }
 
@@ -144,7 +174,7 @@ public class ImportSourceInput {
   }
 
 
-  public ImportSourceInput mapping(@javax.annotation.Nonnull Map<String, String> mapping) {
+  public ImportSourceInput mapping(@javax.annotation.Nullable Map<String, String> mapping) {
     this.mapping = mapping;
     return this;
   }
@@ -161,17 +191,17 @@ public class ImportSourceInput {
    * Get mapping
    * @return mapping
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_MAPPING, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAPPING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Map<String, String> getMapping() {
     return mapping;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_MAPPING, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setMapping(@javax.annotation.Nonnull Map<String, String> mapping) {
+  @JsonProperty(value = JSON_PROPERTY_MAPPING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMapping(@javax.annotation.Nullable Map<String, String> mapping) {
     this.mapping = mapping;
   }
 
@@ -200,7 +230,7 @@ public class ImportSourceInput {
   }
 
 
-  public ImportSourceInput schedule(@javax.annotation.Nonnull String schedule) {
+  public ImportSourceInput schedule(@javax.annotation.Nullable String schedule) {
     this.schedule = schedule;
     return this;
   }
@@ -209,17 +239,17 @@ public class ImportSourceInput {
    * Get schedule
    * @return schedule
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_SCHEDULE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SCHEDULE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public String getSchedule() {
     return schedule;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_SCHEDULE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setSchedule(@javax.annotation.Nonnull String schedule) {
+  @JsonProperty(value = JSON_PROPERTY_SCHEDULE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSchedule(@javax.annotation.Nullable String schedule) {
     this.schedule = schedule;
   }
 
@@ -236,7 +266,8 @@ public class ImportSourceInput {
       return false;
     }
     ImportSourceInput importSourceInput = (ImportSourceInput) o;
-    return Objects.equals(this.deletionPolicy, importSourceInput.deletionPolicy) &&
+    return Objects.equals(this.connector, importSourceInput.connector) &&
+        Objects.equals(this.deletionPolicy, importSourceInput.deletionPolicy) &&
         Objects.equals(this.delivery, importSourceInput.delivery) &&
         Objects.equals(this.format, importSourceInput.format) &&
         Objects.equals(this.mapping, importSourceInput.mapping) &&
@@ -246,13 +277,14 @@ public class ImportSourceInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(deletionPolicy, delivery, format, mapping, name, schedule);
+    return Objects.hash(connector, deletionPolicy, delivery, format, mapping, name, schedule);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ImportSourceInput {\n");
+    sb.append("    connector: ").append(toIndentedString(connector)).append("\n");
     sb.append("    deletionPolicy: ").append(toIndentedString(deletionPolicy)).append("\n");
     sb.append("    delivery: ").append(toIndentedString(delivery)).append("\n");
     sb.append("    format: ").append(toIndentedString(format)).append("\n");
@@ -302,6 +334,11 @@ public class ImportSourceInput {
     }
 
     StringJoiner joiner = new StringJoiner("&");
+
+    // add `connector` to the URL query string
+    if (getConnector() != null) {
+      joiner.add(getConnector().toUrlQueryString(prefix + "connector" + suffix));
+    }
 
     // add `deletion_policy` to the URL query string
     if (getDeletionPolicy() != null) {

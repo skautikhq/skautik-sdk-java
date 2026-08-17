@@ -185,13 +185,14 @@ public class ImportsApi {
    * @param sourceId Import source this transfer belongs to, when it comes from a standing connector rather than a one-off upload. (optional)
    * @param dryRun Parse and report what would change without writing anything. Worth doing once with a new mapping. (optional)
    * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
+   * @param confirmShrink Allow a full sync that would withdraw a large share of the source&#39;s portfolio. Without it, a delivery carrying far fewer records than the source currently holds has its withdrawals held back and the run is reported as partial, on the assumption that the export was truncated. Set this when the reduction is real. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
    * @param _file The payload. Mutually exclusive with url. (optional)
    * @return ImportResponse
    * @throws ApiException if fails to make API call
    */
-  public ImportResponse createImport(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file) throws ApiException {
-    return createImport(format, mode, sourceId, dryRun, filename, idempotencyKey, _file, null);
+  public ImportResponse createImport(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable Boolean confirmShrink, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file) throws ApiException {
+    return createImport(format, mode, sourceId, dryRun, filename, confirmShrink, idempotencyKey, _file, null);
   }
 
   /**
@@ -202,14 +203,15 @@ public class ImportsApi {
    * @param sourceId Import source this transfer belongs to, when it comes from a standing connector rather than a one-off upload. (optional)
    * @param dryRun Parse and report what would change without writing anything. Worth doing once with a new mapping. (optional)
    * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
+   * @param confirmShrink Allow a full sync that would withdraw a large share of the source&#39;s portfolio. Without it, a delivery carrying far fewer records than the source currently holds has its withdrawals held back and the run is reported as partial, on the assumption that the export was truncated. Set this when the reduction is real. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
    * @param _file The payload. Mutually exclusive with url. (optional)
    * @param headers Optional headers to include in the request
    * @return ImportResponse
    * @throws ApiException if fails to make API call
    */
-  public ImportResponse createImport(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
-    ApiResponse<ImportResponse> localVarResponse = createImportWithHttpInfo(format, mode, sourceId, dryRun, filename, idempotencyKey, _file, headers);
+  public ImportResponse createImport(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable Boolean confirmShrink, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportResponse> localVarResponse = createImportWithHttpInfo(format, mode, sourceId, dryRun, filename, confirmShrink, idempotencyKey, _file, headers);
     return localVarResponse.getData();
   }
 
@@ -221,13 +223,14 @@ public class ImportsApi {
    * @param sourceId Import source this transfer belongs to, when it comes from a standing connector rather than a one-off upload. (optional)
    * @param dryRun Parse and report what would change without writing anything. Worth doing once with a new mapping. (optional)
    * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
+   * @param confirmShrink Allow a full sync that would withdraw a large share of the source&#39;s portfolio. Without it, a delivery carrying far fewer records than the source currently holds has its withdrawals held back and the run is reported as partial, on the assumption that the export was truncated. Set this when the reduction is real. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
    * @param _file The payload. Mutually exclusive with url. (optional)
    * @return ApiResponse&lt;ImportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportResponse> createImportWithHttpInfo(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file) throws ApiException {
-    return createImportWithHttpInfo(format, mode, sourceId, dryRun, filename, idempotencyKey, _file, null);
+  public ApiResponse<ImportResponse> createImportWithHttpInfo(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable Boolean confirmShrink, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file) throws ApiException {
+    return createImportWithHttpInfo(format, mode, sourceId, dryRun, filename, confirmShrink, idempotencyKey, _file, null);
   }
 
   /**
@@ -238,14 +241,15 @@ public class ImportsApi {
    * @param sourceId Import source this transfer belongs to, when it comes from a standing connector rather than a one-off upload. (optional)
    * @param dryRun Parse and report what would change without writing anything. Worth doing once with a new mapping. (optional)
    * @param filename Original filename, recorded on the run so a failure can be traced back to the file that caused it. (optional)
+   * @param confirmShrink Allow a full sync that would withdraw a large share of the source&#39;s portfolio. Without it, a delivery carrying far fewer records than the source currently holds has its withdrawals held back and the run is reported as partial, on the assumption that the export was truncated. Set this when the reduction is real. (optional)
    * @param idempotencyKey Prevents a retried upload from being processed twice. (optional)
    * @param _file The payload. Mutually exclusive with url. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;ImportResponse&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ImportResponse> createImportWithHttpInfo(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createImportRequestBuilder(format, mode, sourceId, dryRun, filename, idempotencyKey, _file, headers);
+  public ApiResponse<ImportResponse> createImportWithHttpInfo(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable Boolean confirmShrink, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = createImportRequestBuilder(format, mode, sourceId, dryRun, filename, confirmShrink, idempotencyKey, _file, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -292,7 +296,7 @@ public class ImportsApi {
     }
   }
 
-  private HttpRequest.Builder createImportRequestBuilder(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder createImportRequestBuilder(@javax.annotation.Nonnull String format, @javax.annotation.Nullable String mode, @javax.annotation.Nullable String sourceId, @javax.annotation.Nullable Boolean dryRun, @javax.annotation.Nullable String filename, @javax.annotation.Nullable Boolean confirmShrink, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'format' is set
     if (format == null) {
       throw new ApiException(400, "Missing the required parameter 'format' when calling createImport");
@@ -315,6 +319,8 @@ public class ImportsApi {
     localVarQueryParams.addAll(ApiClient.parameterToPairs("dry_run", dryRun));
     localVarQueryParameterBaseName = "filename";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("filename", filename));
+    localVarQueryParameterBaseName = "confirm_shrink";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("confirm_shrink", confirmShrink));
 
     if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
       StringJoiner queryJoiner = new StringJoiner("&");

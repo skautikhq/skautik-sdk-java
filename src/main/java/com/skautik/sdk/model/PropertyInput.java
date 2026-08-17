@@ -24,9 +24,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.skautik.sdk.model.ImageInput;
 import com.skautik.sdk.model.ListingInput;
+import com.skautik.sdk.model.Translation;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
@@ -42,28 +46,81 @@ import com.skautik.sdk.ApiClient;
   PropertyInput.JSON_PROPERTY_ADDRESS_POSTAL_CODE,
   PropertyInput.JSON_PROPERTY_ADDRESS_PROVINCE,
   PropertyInput.JSON_PROPERTY_ADDRESS_STREET,
+  PropertyInput.JSON_PROPERTY_ATTIC_SQM,
+  PropertyInput.JSON_PROPERTY_BALCONY_COUNT,
+  PropertyInput.JSON_PROPERTY_BALCONY_TERRACE_SQM,
   PropertyInput.JSON_PROPERTY_BATHROOMS,
   PropertyInput.JSON_PROPERTY_BEDROOMS,
+  PropertyInput.JSON_PROPERTY_BUILDING_AMENITIES,
+  PropertyInput.JSON_PROPERTY_CELLAR_SQM,
   PropertyInput.JSON_PROPERTY_CONDITION,
+  PropertyInput.JSON_PROPERTY_CONSTRUCTION_PHASE,
   PropertyInput.JSON_PROPERTY_CONSTRUCTION_TYPE,
   PropertyInput.JSON_PROPERTY_DESCRIPTION,
+  PropertyInput.JSON_PROPERTY_DESCRIPTION_FITTINGS,
+  PropertyInput.JSON_PROPERTY_DESCRIPTION_LOCATION,
+  PropertyInput.JSON_PROPERTY_DESCRIPTION_OTHER,
+  PropertyInput.JSON_PROPERTY_ENERGY_CERTIFICATE_ISSUED_AT,
+  PropertyInput.JSON_PROPERTY_ENERGY_CERTIFICATE_TYPE,
+  PropertyInput.JSON_PROPERTY_ENERGY_CERTIFICATE_VALID_UNTIL,
+  PropertyInput.JSON_PROPERTY_ENERGY_CO2_EMISSIONS,
   PropertyInput.JSON_PROPERTY_ENERGY_CONSUMPTION_KWH,
+  PropertyInput.JSON_PROPERTY_ENERGY_DEMAND_KWH,
+  PropertyInput.JSON_PROPERTY_ENERGY_INCLUDES_HOT_WATER,
   PropertyInput.JSON_PROPERTY_ENERGY_LABEL,
+  PropertyInput.JSON_PROPERTY_ENERGY_PRIMARY_CARRIER,
+  PropertyInput.JSON_PROPERTY_EXTERIOR_FEATURES,
   PropertyInput.JSON_PROPERTY_EXTERNAL_ID,
   PropertyInput.JSON_PROPERTY_FLOOR,
+  PropertyInput.JSON_PROPERTY_FLOORING,
   PropertyInput.JSON_PROPERTY_FLOORS_IN_BUILDING,
+  PropertyInput.JSON_PROPERTY_GARDEN_SQM,
   PropertyInput.JSON_PROPERTY_HALF_BATHROOMS,
+  PropertyInput.JSON_PROPERTY_HAS_AIR_CONDITIONING,
+  PropertyInput.JSON_PROPERTY_HAS_ALARM_SYSTEM,
+  PropertyInput.JSON_PROPERTY_HAS_BALCONY,
+  PropertyInput.JSON_PROPERTY_HAS_CELLAR,
+  PropertyInput.JSON_PROPERTY_HAS_FIREPLACE,
+  PropertyInput.JSON_PROPERTY_HAS_FITTED_KITCHEN,
+  PropertyInput.JSON_PROPERTY_HAS_GARDEN,
+  PropertyInput.JSON_PROPERTY_HAS_GUEST_TOILET,
+  PropertyInput.JSON_PROPERTY_HAS_LIFT,
+  PropertyInput.JSON_PROPERTY_HAS_POOL,
+  PropertyInput.JSON_PROPERTY_HAS_SAUNA,
+  PropertyInput.JSON_PROPERTY_HAS_SOLAR_PANELS,
+  PropertyInput.JSON_PROPERTY_HAS_TERRACE,
   PropertyInput.JSON_PROPERTY_HEATING_TYPE,
+  PropertyInput.JSON_PROPERTY_IMAGES,
+  PropertyInput.JSON_PROPERTY_INTERIOR_FEATURES,
+  PropertyInput.JSON_PROPERTY_IS_BARRIER_FREE,
+  PropertyInput.JSON_PROPERTY_IS_FURNISHED,
+  PropertyInput.JSON_PROPERTY_IS_LEASEHOLD,
+  PropertyInput.JSON_PROPERTY_IS_MONUMENT_PROTECTED,
+  PropertyInput.JSON_PROPERTY_KITCHEN_TYPE,
   PropertyInput.JSON_PROPERTY_LATITUDE,
   PropertyInput.JSON_PROPERTY_LISTING,
   PropertyInput.JSON_PROPERTY_LIVING_AREA_SQM,
   PropertyInput.JSON_PROPERTY_LOCATION_PRECISION,
   PropertyInput.JSON_PROPERTY_LONGITUDE,
+  PropertyInput.JSON_PROPERTY_OFFICE_AREA_SQM,
+  PropertyInput.JSON_PROPERTY_OTHER_AREA_SQM,
+  PropertyInput.JSON_PROPERTY_PARKING_INCLUDED,
+  PropertyInput.JSON_PROPERTY_PARKING_SPACE_COUNT,
+  PropertyInput.JSON_PROPERTY_PARKING_TYPE,
   PropertyInput.JSON_PROPERTY_PLOT_AREA_SQM,
+  PropertyInput.JSON_PROPERTY_PROPERTY_SUBTYPE,
+  PropertyInput.JSON_PROPERTY_PUBLISH_ADDRESS,
+  PropertyInput.JSON_PROPERTY_RETAIL_AREA_SQM,
+  PropertyInput.JSON_PROPERTY_STORAGE_AREA_SQM,
+  PropertyInput.JSON_PROPERTY_SURROUNDINGS,
+  PropertyInput.JSON_PROPERTY_TERRACE_COUNT,
   PropertyInput.JSON_PROPERTY_TITLE,
+  PropertyInput.JSON_PROPERTY_TOTAL_AREA_SQM,
   PropertyInput.JSON_PROPERTY_TOTAL_ROOMS,
+  PropertyInput.JSON_PROPERTY_TRANSLATIONS,
   PropertyInput.JSON_PROPERTY_TYPE,
   PropertyInput.JSON_PROPERTY_USABLE_AREA_SQM,
+  PropertyInput.JSON_PROPERTY_WINDOW_GLAZING,
   PropertyInput.JSON_PROPERTY_YEAR_BUILT,
   PropertyInput.JSON_PROPERTY_YEAR_RENOVATED
 })
@@ -97,6 +154,18 @@ public class PropertyInput {
   @javax.annotation.Nullable
   private String addressStreet;
 
+  public static final String JSON_PROPERTY_ATTIC_SQM = "attic_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal atticSqm;
+
+  public static final String JSON_PROPERTY_BALCONY_COUNT = "balcony_count";
+  @javax.annotation.Nullable
+  private Integer balconyCount;
+
+  public static final String JSON_PROPERTY_BALCONY_TERRACE_SQM = "balcony_terrace_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal balconyTerraceSqm;
+
   public static final String JSON_PROPERTY_BATHROOMS = "bathrooms";
   @javax.annotation.Nullable
   private Integer bathrooms;
@@ -105,9 +174,21 @@ public class PropertyInput {
   @javax.annotation.Nullable
   private Integer bedrooms;
 
+  public static final String JSON_PROPERTY_BUILDING_AMENITIES = "building_amenities";
+  @javax.annotation.Nullable
+  private List<String> buildingAmenities = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_CELLAR_SQM = "cellar_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal cellarSqm;
+
   public static final String JSON_PROPERTY_CONDITION = "condition";
   @javax.annotation.Nullable
   private String condition;
+
+  public static final String JSON_PROPERTY_CONSTRUCTION_PHASE = "construction_phase";
+  @javax.annotation.Nullable
+  private String constructionPhase;
 
   public static final String JSON_PROPERTY_CONSTRUCTION_TYPE = "construction_type";
   @javax.annotation.Nullable
@@ -117,13 +198,57 @@ public class PropertyInput {
   @javax.annotation.Nullable
   private String description;
 
+  public static final String JSON_PROPERTY_DESCRIPTION_FITTINGS = "description_fittings";
+  @javax.annotation.Nullable
+  private String descriptionFittings;
+
+  public static final String JSON_PROPERTY_DESCRIPTION_LOCATION = "description_location";
+  @javax.annotation.Nullable
+  private String descriptionLocation;
+
+  public static final String JSON_PROPERTY_DESCRIPTION_OTHER = "description_other";
+  @javax.annotation.Nullable
+  private String descriptionOther;
+
+  public static final String JSON_PROPERTY_ENERGY_CERTIFICATE_ISSUED_AT = "energy_certificate_issued_at";
+  @javax.annotation.Nullable
+  private String energyCertificateIssuedAt;
+
+  public static final String JSON_PROPERTY_ENERGY_CERTIFICATE_TYPE = "energy_certificate_type";
+  @javax.annotation.Nullable
+  private String energyCertificateType;
+
+  public static final String JSON_PROPERTY_ENERGY_CERTIFICATE_VALID_UNTIL = "energy_certificate_valid_until";
+  @javax.annotation.Nullable
+  private String energyCertificateValidUntil;
+
+  public static final String JSON_PROPERTY_ENERGY_CO2_EMISSIONS = "energy_co2_emissions";
+  @javax.annotation.Nullable
+  private BigDecimal energyCo2Emissions;
+
   public static final String JSON_PROPERTY_ENERGY_CONSUMPTION_KWH = "energy_consumption_kwh";
   @javax.annotation.Nullable
   private BigDecimal energyConsumptionKwh;
 
+  public static final String JSON_PROPERTY_ENERGY_DEMAND_KWH = "energy_demand_kwh";
+  @javax.annotation.Nullable
+  private BigDecimal energyDemandKwh;
+
+  public static final String JSON_PROPERTY_ENERGY_INCLUDES_HOT_WATER = "energy_includes_hot_water";
+  @javax.annotation.Nullable
+  private Boolean energyIncludesHotWater;
+
   public static final String JSON_PROPERTY_ENERGY_LABEL = "energy_label";
   @javax.annotation.Nullable
   private String energyLabel;
+
+  public static final String JSON_PROPERTY_ENERGY_PRIMARY_CARRIER = "energy_primary_carrier";
+  @javax.annotation.Nullable
+  private String energyPrimaryCarrier;
+
+  public static final String JSON_PROPERTY_EXTERIOR_FEATURES = "exterior_features";
+  @javax.annotation.Nullable
+  private List<String> exteriorFeatures = new ArrayList<>();
 
   public static final String JSON_PROPERTY_EXTERNAL_ID = "external_id";
   @javax.annotation.Nullable
@@ -133,17 +258,105 @@ public class PropertyInput {
   @javax.annotation.Nullable
   private Integer floor;
 
+  public static final String JSON_PROPERTY_FLOORING = "flooring";
+  @javax.annotation.Nullable
+  private String flooring;
+
   public static final String JSON_PROPERTY_FLOORS_IN_BUILDING = "floors_in_building";
   @javax.annotation.Nullable
   private Integer floorsInBuilding;
+
+  public static final String JSON_PROPERTY_GARDEN_SQM = "garden_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal gardenSqm;
 
   public static final String JSON_PROPERTY_HALF_BATHROOMS = "half_bathrooms";
   @javax.annotation.Nullable
   private Integer halfBathrooms;
 
+  public static final String JSON_PROPERTY_HAS_AIR_CONDITIONING = "has_air_conditioning";
+  @javax.annotation.Nullable
+  private Boolean hasAirConditioning;
+
+  public static final String JSON_PROPERTY_HAS_ALARM_SYSTEM = "has_alarm_system";
+  @javax.annotation.Nullable
+  private Boolean hasAlarmSystem;
+
+  public static final String JSON_PROPERTY_HAS_BALCONY = "has_balcony";
+  @javax.annotation.Nullable
+  private Boolean hasBalcony;
+
+  public static final String JSON_PROPERTY_HAS_CELLAR = "has_cellar";
+  @javax.annotation.Nullable
+  private Boolean hasCellar;
+
+  public static final String JSON_PROPERTY_HAS_FIREPLACE = "has_fireplace";
+  @javax.annotation.Nullable
+  private Boolean hasFireplace;
+
+  public static final String JSON_PROPERTY_HAS_FITTED_KITCHEN = "has_fitted_kitchen";
+  @javax.annotation.Nullable
+  private Boolean hasFittedKitchen;
+
+  public static final String JSON_PROPERTY_HAS_GARDEN = "has_garden";
+  @javax.annotation.Nullable
+  private Boolean hasGarden;
+
+  public static final String JSON_PROPERTY_HAS_GUEST_TOILET = "has_guest_toilet";
+  @javax.annotation.Nullable
+  private Boolean hasGuestToilet;
+
+  public static final String JSON_PROPERTY_HAS_LIFT = "has_lift";
+  @javax.annotation.Nullable
+  private Boolean hasLift;
+
+  public static final String JSON_PROPERTY_HAS_POOL = "has_pool";
+  @javax.annotation.Nullable
+  private Boolean hasPool;
+
+  public static final String JSON_PROPERTY_HAS_SAUNA = "has_sauna";
+  @javax.annotation.Nullable
+  private Boolean hasSauna;
+
+  public static final String JSON_PROPERTY_HAS_SOLAR_PANELS = "has_solar_panels";
+  @javax.annotation.Nullable
+  private Boolean hasSolarPanels;
+
+  public static final String JSON_PROPERTY_HAS_TERRACE = "has_terrace";
+  @javax.annotation.Nullable
+  private Boolean hasTerrace;
+
   public static final String JSON_PROPERTY_HEATING_TYPE = "heating_type";
   @javax.annotation.Nullable
   private String heatingType;
+
+  public static final String JSON_PROPERTY_IMAGES = "images";
+  @javax.annotation.Nullable
+  private List<ImageInput> images = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_INTERIOR_FEATURES = "interior_features";
+  @javax.annotation.Nullable
+  private List<String> interiorFeatures = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_IS_BARRIER_FREE = "is_barrier_free";
+  @javax.annotation.Nullable
+  private Boolean isBarrierFree;
+
+  public static final String JSON_PROPERTY_IS_FURNISHED = "is_furnished";
+  @javax.annotation.Nullable
+  private Boolean isFurnished;
+
+  public static final String JSON_PROPERTY_IS_LEASEHOLD = "is_leasehold";
+  @javax.annotation.Nullable
+  private Boolean isLeasehold;
+
+  public static final String JSON_PROPERTY_IS_MONUMENT_PROTECTED = "is_monument_protected";
+  @javax.annotation.Nullable
+  private Boolean isMonumentProtected;
+
+  public static final String JSON_PROPERTY_KITCHEN_TYPE = "kitchen_type";
+  @javax.annotation.Nullable
+  private String kitchenType;
 
   public static final String JSON_PROPERTY_LATITUDE = "latitude";
   @javax.annotation.Nullable
@@ -165,17 +378,69 @@ public class PropertyInput {
   @javax.annotation.Nullable
   private BigDecimal longitude;
 
+  public static final String JSON_PROPERTY_OFFICE_AREA_SQM = "office_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal officeAreaSqm;
+
+  public static final String JSON_PROPERTY_OTHER_AREA_SQM = "other_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal otherAreaSqm;
+
+  public static final String JSON_PROPERTY_PARKING_INCLUDED = "parking_included";
+  @javax.annotation.Nullable
+  private Boolean parkingIncluded;
+
+  public static final String JSON_PROPERTY_PARKING_SPACE_COUNT = "parking_space_count";
+  @javax.annotation.Nullable
+  private Integer parkingSpaceCount;
+
+  public static final String JSON_PROPERTY_PARKING_TYPE = "parking_type";
+  @javax.annotation.Nullable
+  private String parkingType;
+
   public static final String JSON_PROPERTY_PLOT_AREA_SQM = "plot_area_sqm";
   @javax.annotation.Nullable
   private BigDecimal plotAreaSqm;
+
+  public static final String JSON_PROPERTY_PROPERTY_SUBTYPE = "property_subtype";
+  @javax.annotation.Nullable
+  private String propertySubtype;
+
+  public static final String JSON_PROPERTY_PUBLISH_ADDRESS = "publish_address";
+  @javax.annotation.Nullable
+  private Boolean publishAddress;
+
+  public static final String JSON_PROPERTY_RETAIL_AREA_SQM = "retail_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal retailAreaSqm;
+
+  public static final String JSON_PROPERTY_STORAGE_AREA_SQM = "storage_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal storageAreaSqm;
+
+  public static final String JSON_PROPERTY_SURROUNDINGS = "surroundings";
+  @javax.annotation.Nullable
+  private List<String> surroundings = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_TERRACE_COUNT = "terrace_count";
+  @javax.annotation.Nullable
+  private Integer terraceCount;
 
   public static final String JSON_PROPERTY_TITLE = "title";
   @javax.annotation.Nullable
   private String title;
 
+  public static final String JSON_PROPERTY_TOTAL_AREA_SQM = "total_area_sqm";
+  @javax.annotation.Nullable
+  private BigDecimal totalAreaSqm;
+
   public static final String JSON_PROPERTY_TOTAL_ROOMS = "total_rooms";
   @javax.annotation.Nullable
   private Integer totalRooms;
+
+  public static final String JSON_PROPERTY_TRANSLATIONS = "translations";
+  @javax.annotation.Nullable
+  private List<Translation> translations = new ArrayList<>();
 
   public static final String JSON_PROPERTY_TYPE = "type";
   @javax.annotation.Nullable
@@ -184,6 +449,10 @@ public class PropertyInput {
   public static final String JSON_PROPERTY_USABLE_AREA_SQM = "usable_area_sqm";
   @javax.annotation.Nullable
   private BigDecimal usableAreaSqm;
+
+  public static final String JSON_PROPERTY_WINDOW_GLAZING = "window_glazing";
+  @javax.annotation.Nullable
+  private String windowGlazing;
 
   public static final String JSON_PROPERTY_YEAR_BUILT = "year_built";
   @javax.annotation.Nullable
@@ -364,6 +633,78 @@ public class PropertyInput {
   }
 
 
+  public PropertyInput atticSqm(@javax.annotation.Nullable BigDecimal atticSqm) {
+    this.atticSqm = atticSqm;
+    return this;
+  }
+
+  /**
+   * Get atticSqm
+   * @return atticSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ATTIC_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getAtticSqm() {
+    return atticSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ATTIC_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAtticSqm(@javax.annotation.Nullable BigDecimal atticSqm) {
+    this.atticSqm = atticSqm;
+  }
+
+
+  public PropertyInput balconyCount(@javax.annotation.Nullable Integer balconyCount) {
+    this.balconyCount = balconyCount;
+    return this;
+  }
+
+  /**
+   * Get balconyCount
+   * @return balconyCount
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_BALCONY_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Integer getBalconyCount() {
+    return balconyCount;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_BALCONY_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBalconyCount(@javax.annotation.Nullable Integer balconyCount) {
+    this.balconyCount = balconyCount;
+  }
+
+
+  public PropertyInput balconyTerraceSqm(@javax.annotation.Nullable BigDecimal balconyTerraceSqm) {
+    this.balconyTerraceSqm = balconyTerraceSqm;
+    return this;
+  }
+
+  /**
+   * Get balconyTerraceSqm
+   * @return balconyTerraceSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_BALCONY_TERRACE_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getBalconyTerraceSqm() {
+    return balconyTerraceSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_BALCONY_TERRACE_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBalconyTerraceSqm(@javax.annotation.Nullable BigDecimal balconyTerraceSqm) {
+    this.balconyTerraceSqm = balconyTerraceSqm;
+  }
+
+
   public PropertyInput bathrooms(@javax.annotation.Nullable Integer bathrooms) {
     this.bathrooms = bathrooms;
     return this;
@@ -412,6 +753,62 @@ public class PropertyInput {
   }
 
 
+  public PropertyInput buildingAmenities(@javax.annotation.Nullable List<String> buildingAmenities) {
+    this.buildingAmenities = buildingAmenities;
+    return this;
+  }
+
+  public PropertyInput addBuildingAmenitiesItem(String buildingAmenitiesItem) {
+    if (this.buildingAmenities == null) {
+      this.buildingAmenities = new ArrayList<>();
+    }
+    this.buildingAmenities.add(buildingAmenitiesItem);
+    return this;
+  }
+
+  /**
+   * Get buildingAmenities
+   * @return buildingAmenities
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_BUILDING_AMENITIES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<String> getBuildingAmenities() {
+    return buildingAmenities;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_BUILDING_AMENITIES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBuildingAmenities(@javax.annotation.Nullable List<String> buildingAmenities) {
+    this.buildingAmenities = buildingAmenities;
+  }
+
+
+  public PropertyInput cellarSqm(@javax.annotation.Nullable BigDecimal cellarSqm) {
+    this.cellarSqm = cellarSqm;
+    return this;
+  }
+
+  /**
+   * Get cellarSqm
+   * @return cellarSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CELLAR_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getCellarSqm() {
+    return cellarSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CELLAR_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCellarSqm(@javax.annotation.Nullable BigDecimal cellarSqm) {
+    this.cellarSqm = cellarSqm;
+  }
+
+
   public PropertyInput condition(@javax.annotation.Nullable String condition) {
     this.condition = condition;
     return this;
@@ -433,6 +830,30 @@ public class PropertyInput {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCondition(@javax.annotation.Nullable String condition) {
     this.condition = condition;
+  }
+
+
+  public PropertyInput constructionPhase(@javax.annotation.Nullable String constructionPhase) {
+    this.constructionPhase = constructionPhase;
+    return this;
+  }
+
+  /**
+   * Get constructionPhase
+   * @return constructionPhase
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CONSTRUCTION_PHASE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getConstructionPhase() {
+    return constructionPhase;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_CONSTRUCTION_PHASE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setConstructionPhase(@javax.annotation.Nullable String constructionPhase) {
+    this.constructionPhase = constructionPhase;
   }
 
 
@@ -484,6 +905,174 @@ public class PropertyInput {
   }
 
 
+  public PropertyInput descriptionFittings(@javax.annotation.Nullable String descriptionFittings) {
+    this.descriptionFittings = descriptionFittings;
+    return this;
+  }
+
+  /**
+   * Get descriptionFittings
+   * @return descriptionFittings
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION_FITTINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getDescriptionFittings() {
+    return descriptionFittings;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION_FITTINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDescriptionFittings(@javax.annotation.Nullable String descriptionFittings) {
+    this.descriptionFittings = descriptionFittings;
+  }
+
+
+  public PropertyInput descriptionLocation(@javax.annotation.Nullable String descriptionLocation) {
+    this.descriptionLocation = descriptionLocation;
+    return this;
+  }
+
+  /**
+   * Get descriptionLocation
+   * @return descriptionLocation
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION_LOCATION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getDescriptionLocation() {
+    return descriptionLocation;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION_LOCATION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDescriptionLocation(@javax.annotation.Nullable String descriptionLocation) {
+    this.descriptionLocation = descriptionLocation;
+  }
+
+
+  public PropertyInput descriptionOther(@javax.annotation.Nullable String descriptionOther) {
+    this.descriptionOther = descriptionOther;
+    return this;
+  }
+
+  /**
+   * Get descriptionOther
+   * @return descriptionOther
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION_OTHER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getDescriptionOther() {
+    return descriptionOther;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION_OTHER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDescriptionOther(@javax.annotation.Nullable String descriptionOther) {
+    this.descriptionOther = descriptionOther;
+  }
+
+
+  public PropertyInput energyCertificateIssuedAt(@javax.annotation.Nullable String energyCertificateIssuedAt) {
+    this.energyCertificateIssuedAt = energyCertificateIssuedAt;
+    return this;
+  }
+
+  /**
+   * Get energyCertificateIssuedAt
+   * @return energyCertificateIssuedAt
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_CERTIFICATE_ISSUED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getEnergyCertificateIssuedAt() {
+    return energyCertificateIssuedAt;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_CERTIFICATE_ISSUED_AT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnergyCertificateIssuedAt(@javax.annotation.Nullable String energyCertificateIssuedAt) {
+    this.energyCertificateIssuedAt = energyCertificateIssuedAt;
+  }
+
+
+  public PropertyInput energyCertificateType(@javax.annotation.Nullable String energyCertificateType) {
+    this.energyCertificateType = energyCertificateType;
+    return this;
+  }
+
+  /**
+   * Get energyCertificateType
+   * @return energyCertificateType
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_CERTIFICATE_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getEnergyCertificateType() {
+    return energyCertificateType;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_CERTIFICATE_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnergyCertificateType(@javax.annotation.Nullable String energyCertificateType) {
+    this.energyCertificateType = energyCertificateType;
+  }
+
+
+  public PropertyInput energyCertificateValidUntil(@javax.annotation.Nullable String energyCertificateValidUntil) {
+    this.energyCertificateValidUntil = energyCertificateValidUntil;
+    return this;
+  }
+
+  /**
+   * Get energyCertificateValidUntil
+   * @return energyCertificateValidUntil
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_CERTIFICATE_VALID_UNTIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getEnergyCertificateValidUntil() {
+    return energyCertificateValidUntil;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_CERTIFICATE_VALID_UNTIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnergyCertificateValidUntil(@javax.annotation.Nullable String energyCertificateValidUntil) {
+    this.energyCertificateValidUntil = energyCertificateValidUntil;
+  }
+
+
+  public PropertyInput energyCo2Emissions(@javax.annotation.Nullable BigDecimal energyCo2Emissions) {
+    this.energyCo2Emissions = energyCo2Emissions;
+    return this;
+  }
+
+  /**
+   * Get energyCo2Emissions
+   * @return energyCo2Emissions
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_CO2_EMISSIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getEnergyCo2Emissions() {
+    return energyCo2Emissions;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_CO2_EMISSIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnergyCo2Emissions(@javax.annotation.Nullable BigDecimal energyCo2Emissions) {
+    this.energyCo2Emissions = energyCo2Emissions;
+  }
+
+
   public PropertyInput energyConsumptionKwh(@javax.annotation.Nullable BigDecimal energyConsumptionKwh) {
     this.energyConsumptionKwh = energyConsumptionKwh;
     return this;
@@ -508,6 +1097,54 @@ public class PropertyInput {
   }
 
 
+  public PropertyInput energyDemandKwh(@javax.annotation.Nullable BigDecimal energyDemandKwh) {
+    this.energyDemandKwh = energyDemandKwh;
+    return this;
+  }
+
+  /**
+   * Get energyDemandKwh
+   * @return energyDemandKwh
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_DEMAND_KWH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getEnergyDemandKwh() {
+    return energyDemandKwh;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_DEMAND_KWH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnergyDemandKwh(@javax.annotation.Nullable BigDecimal energyDemandKwh) {
+    this.energyDemandKwh = energyDemandKwh;
+  }
+
+
+  public PropertyInput energyIncludesHotWater(@javax.annotation.Nullable Boolean energyIncludesHotWater) {
+    this.energyIncludesHotWater = energyIncludesHotWater;
+    return this;
+  }
+
+  /**
+   * Get energyIncludesHotWater
+   * @return energyIncludesHotWater
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_INCLUDES_HOT_WATER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getEnergyIncludesHotWater() {
+    return energyIncludesHotWater;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_INCLUDES_HOT_WATER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnergyIncludesHotWater(@javax.annotation.Nullable Boolean energyIncludesHotWater) {
+    this.energyIncludesHotWater = energyIncludesHotWater;
+  }
+
+
   public PropertyInput energyLabel(@javax.annotation.Nullable String energyLabel) {
     this.energyLabel = energyLabel;
     return this;
@@ -529,6 +1166,62 @@ public class PropertyInput {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setEnergyLabel(@javax.annotation.Nullable String energyLabel) {
     this.energyLabel = energyLabel;
+  }
+
+
+  public PropertyInput energyPrimaryCarrier(@javax.annotation.Nullable String energyPrimaryCarrier) {
+    this.energyPrimaryCarrier = energyPrimaryCarrier;
+    return this;
+  }
+
+  /**
+   * Get energyPrimaryCarrier
+   * @return energyPrimaryCarrier
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_PRIMARY_CARRIER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getEnergyPrimaryCarrier() {
+    return energyPrimaryCarrier;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ENERGY_PRIMARY_CARRIER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnergyPrimaryCarrier(@javax.annotation.Nullable String energyPrimaryCarrier) {
+    this.energyPrimaryCarrier = energyPrimaryCarrier;
+  }
+
+
+  public PropertyInput exteriorFeatures(@javax.annotation.Nullable List<String> exteriorFeatures) {
+    this.exteriorFeatures = exteriorFeatures;
+    return this;
+  }
+
+  public PropertyInput addExteriorFeaturesItem(String exteriorFeaturesItem) {
+    if (this.exteriorFeatures == null) {
+      this.exteriorFeatures = new ArrayList<>();
+    }
+    this.exteriorFeatures.add(exteriorFeaturesItem);
+    return this;
+  }
+
+  /**
+   * Get exteriorFeatures
+   * @return exteriorFeatures
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EXTERIOR_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<String> getExteriorFeatures() {
+    return exteriorFeatures;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EXTERIOR_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExteriorFeatures(@javax.annotation.Nullable List<String> exteriorFeatures) {
+    this.exteriorFeatures = exteriorFeatures;
   }
 
 
@@ -580,6 +1273,30 @@ public class PropertyInput {
   }
 
 
+  public PropertyInput flooring(@javax.annotation.Nullable String flooring) {
+    this.flooring = flooring;
+    return this;
+  }
+
+  /**
+   * Get flooring
+   * @return flooring
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_FLOORING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getFlooring() {
+    return flooring;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FLOORING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setFlooring(@javax.annotation.Nullable String flooring) {
+    this.flooring = flooring;
+  }
+
+
   public PropertyInput floorsInBuilding(@javax.annotation.Nullable Integer floorsInBuilding) {
     this.floorsInBuilding = floorsInBuilding;
     return this;
@@ -601,6 +1318,30 @@ public class PropertyInput {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFloorsInBuilding(@javax.annotation.Nullable Integer floorsInBuilding) {
     this.floorsInBuilding = floorsInBuilding;
+  }
+
+
+  public PropertyInput gardenSqm(@javax.annotation.Nullable BigDecimal gardenSqm) {
+    this.gardenSqm = gardenSqm;
+    return this;
+  }
+
+  /**
+   * Get gardenSqm
+   * @return gardenSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_GARDEN_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getGardenSqm() {
+    return gardenSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_GARDEN_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setGardenSqm(@javax.annotation.Nullable BigDecimal gardenSqm) {
+    this.gardenSqm = gardenSqm;
   }
 
 
@@ -628,6 +1369,318 @@ public class PropertyInput {
   }
 
 
+  public PropertyInput hasAirConditioning(@javax.annotation.Nullable Boolean hasAirConditioning) {
+    this.hasAirConditioning = hasAirConditioning;
+    return this;
+  }
+
+  /**
+   * Get hasAirConditioning
+   * @return hasAirConditioning
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_AIR_CONDITIONING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasAirConditioning() {
+    return hasAirConditioning;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_AIR_CONDITIONING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasAirConditioning(@javax.annotation.Nullable Boolean hasAirConditioning) {
+    this.hasAirConditioning = hasAirConditioning;
+  }
+
+
+  public PropertyInput hasAlarmSystem(@javax.annotation.Nullable Boolean hasAlarmSystem) {
+    this.hasAlarmSystem = hasAlarmSystem;
+    return this;
+  }
+
+  /**
+   * Get hasAlarmSystem
+   * @return hasAlarmSystem
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_ALARM_SYSTEM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasAlarmSystem() {
+    return hasAlarmSystem;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_ALARM_SYSTEM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasAlarmSystem(@javax.annotation.Nullable Boolean hasAlarmSystem) {
+    this.hasAlarmSystem = hasAlarmSystem;
+  }
+
+
+  public PropertyInput hasBalcony(@javax.annotation.Nullable Boolean hasBalcony) {
+    this.hasBalcony = hasBalcony;
+    return this;
+  }
+
+  /**
+   * Get hasBalcony
+   * @return hasBalcony
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_BALCONY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasBalcony() {
+    return hasBalcony;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_BALCONY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasBalcony(@javax.annotation.Nullable Boolean hasBalcony) {
+    this.hasBalcony = hasBalcony;
+  }
+
+
+  public PropertyInput hasCellar(@javax.annotation.Nullable Boolean hasCellar) {
+    this.hasCellar = hasCellar;
+    return this;
+  }
+
+  /**
+   * Get hasCellar
+   * @return hasCellar
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_CELLAR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasCellar() {
+    return hasCellar;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_CELLAR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasCellar(@javax.annotation.Nullable Boolean hasCellar) {
+    this.hasCellar = hasCellar;
+  }
+
+
+  public PropertyInput hasFireplace(@javax.annotation.Nullable Boolean hasFireplace) {
+    this.hasFireplace = hasFireplace;
+    return this;
+  }
+
+  /**
+   * Get hasFireplace
+   * @return hasFireplace
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_FIREPLACE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasFireplace() {
+    return hasFireplace;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_FIREPLACE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasFireplace(@javax.annotation.Nullable Boolean hasFireplace) {
+    this.hasFireplace = hasFireplace;
+  }
+
+
+  public PropertyInput hasFittedKitchen(@javax.annotation.Nullable Boolean hasFittedKitchen) {
+    this.hasFittedKitchen = hasFittedKitchen;
+    return this;
+  }
+
+  /**
+   * Get hasFittedKitchen
+   * @return hasFittedKitchen
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_FITTED_KITCHEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasFittedKitchen() {
+    return hasFittedKitchen;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_FITTED_KITCHEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasFittedKitchen(@javax.annotation.Nullable Boolean hasFittedKitchen) {
+    this.hasFittedKitchen = hasFittedKitchen;
+  }
+
+
+  public PropertyInput hasGarden(@javax.annotation.Nullable Boolean hasGarden) {
+    this.hasGarden = hasGarden;
+    return this;
+  }
+
+  /**
+   * Get hasGarden
+   * @return hasGarden
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_GARDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasGarden() {
+    return hasGarden;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_GARDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasGarden(@javax.annotation.Nullable Boolean hasGarden) {
+    this.hasGarden = hasGarden;
+  }
+
+
+  public PropertyInput hasGuestToilet(@javax.annotation.Nullable Boolean hasGuestToilet) {
+    this.hasGuestToilet = hasGuestToilet;
+    return this;
+  }
+
+  /**
+   * Get hasGuestToilet
+   * @return hasGuestToilet
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_GUEST_TOILET, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasGuestToilet() {
+    return hasGuestToilet;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_GUEST_TOILET, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasGuestToilet(@javax.annotation.Nullable Boolean hasGuestToilet) {
+    this.hasGuestToilet = hasGuestToilet;
+  }
+
+
+  public PropertyInput hasLift(@javax.annotation.Nullable Boolean hasLift) {
+    this.hasLift = hasLift;
+    return this;
+  }
+
+  /**
+   * Get hasLift
+   * @return hasLift
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_LIFT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasLift() {
+    return hasLift;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_LIFT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasLift(@javax.annotation.Nullable Boolean hasLift) {
+    this.hasLift = hasLift;
+  }
+
+
+  public PropertyInput hasPool(@javax.annotation.Nullable Boolean hasPool) {
+    this.hasPool = hasPool;
+    return this;
+  }
+
+  /**
+   * Get hasPool
+   * @return hasPool
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_POOL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasPool() {
+    return hasPool;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_POOL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasPool(@javax.annotation.Nullable Boolean hasPool) {
+    this.hasPool = hasPool;
+  }
+
+
+  public PropertyInput hasSauna(@javax.annotation.Nullable Boolean hasSauna) {
+    this.hasSauna = hasSauna;
+    return this;
+  }
+
+  /**
+   * Get hasSauna
+   * @return hasSauna
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_SAUNA, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasSauna() {
+    return hasSauna;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_SAUNA, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasSauna(@javax.annotation.Nullable Boolean hasSauna) {
+    this.hasSauna = hasSauna;
+  }
+
+
+  public PropertyInput hasSolarPanels(@javax.annotation.Nullable Boolean hasSolarPanels) {
+    this.hasSolarPanels = hasSolarPanels;
+    return this;
+  }
+
+  /**
+   * Get hasSolarPanels
+   * @return hasSolarPanels
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_SOLAR_PANELS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasSolarPanels() {
+    return hasSolarPanels;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_SOLAR_PANELS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasSolarPanels(@javax.annotation.Nullable Boolean hasSolarPanels) {
+    this.hasSolarPanels = hasSolarPanels;
+  }
+
+
+  public PropertyInput hasTerrace(@javax.annotation.Nullable Boolean hasTerrace) {
+    this.hasTerrace = hasTerrace;
+    return this;
+  }
+
+  /**
+   * Get hasTerrace
+   * @return hasTerrace
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_HAS_TERRACE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getHasTerrace() {
+    return hasTerrace;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_HAS_TERRACE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setHasTerrace(@javax.annotation.Nullable Boolean hasTerrace) {
+    this.hasTerrace = hasTerrace;
+  }
+
+
   public PropertyInput heatingType(@javax.annotation.Nullable String heatingType) {
     this.heatingType = heatingType;
     return this;
@@ -649,6 +1702,190 @@ public class PropertyInput {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHeatingType(@javax.annotation.Nullable String heatingType) {
     this.heatingType = heatingType;
+  }
+
+
+  public PropertyInput images(@javax.annotation.Nullable List<ImageInput> images) {
+    this.images = images;
+    return this;
+  }
+
+  public PropertyInput addImagesItem(ImageInput imagesItem) {
+    if (this.images == null) {
+      this.images = new ArrayList<>();
+    }
+    this.images.add(imagesItem);
+    return this;
+  }
+
+  /**
+   * Get images
+   * @return images
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IMAGES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<ImageInput> getImages() {
+    return images;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_IMAGES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setImages(@javax.annotation.Nullable List<ImageInput> images) {
+    this.images = images;
+  }
+
+
+  public PropertyInput interiorFeatures(@javax.annotation.Nullable List<String> interiorFeatures) {
+    this.interiorFeatures = interiorFeatures;
+    return this;
+  }
+
+  public PropertyInput addInteriorFeaturesItem(String interiorFeaturesItem) {
+    if (this.interiorFeatures == null) {
+      this.interiorFeatures = new ArrayList<>();
+    }
+    this.interiorFeatures.add(interiorFeaturesItem);
+    return this;
+  }
+
+  /**
+   * Get interiorFeatures
+   * @return interiorFeatures
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_INTERIOR_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<String> getInteriorFeatures() {
+    return interiorFeatures;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_INTERIOR_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setInteriorFeatures(@javax.annotation.Nullable List<String> interiorFeatures) {
+    this.interiorFeatures = interiorFeatures;
+  }
+
+
+  public PropertyInput isBarrierFree(@javax.annotation.Nullable Boolean isBarrierFree) {
+    this.isBarrierFree = isBarrierFree;
+    return this;
+  }
+
+  /**
+   * Get isBarrierFree
+   * @return isBarrierFree
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_BARRIER_FREE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getIsBarrierFree() {
+    return isBarrierFree;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_IS_BARRIER_FREE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsBarrierFree(@javax.annotation.Nullable Boolean isBarrierFree) {
+    this.isBarrierFree = isBarrierFree;
+  }
+
+
+  public PropertyInput isFurnished(@javax.annotation.Nullable Boolean isFurnished) {
+    this.isFurnished = isFurnished;
+    return this;
+  }
+
+  /**
+   * Get isFurnished
+   * @return isFurnished
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_FURNISHED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getIsFurnished() {
+    return isFurnished;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_IS_FURNISHED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsFurnished(@javax.annotation.Nullable Boolean isFurnished) {
+    this.isFurnished = isFurnished;
+  }
+
+
+  public PropertyInput isLeasehold(@javax.annotation.Nullable Boolean isLeasehold) {
+    this.isLeasehold = isLeasehold;
+    return this;
+  }
+
+  /**
+   * Get isLeasehold
+   * @return isLeasehold
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_LEASEHOLD, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getIsLeasehold() {
+    return isLeasehold;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_IS_LEASEHOLD, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsLeasehold(@javax.annotation.Nullable Boolean isLeasehold) {
+    this.isLeasehold = isLeasehold;
+  }
+
+
+  public PropertyInput isMonumentProtected(@javax.annotation.Nullable Boolean isMonumentProtected) {
+    this.isMonumentProtected = isMonumentProtected;
+    return this;
+  }
+
+  /**
+   * Get isMonumentProtected
+   * @return isMonumentProtected
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_MONUMENT_PROTECTED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getIsMonumentProtected() {
+    return isMonumentProtected;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_IS_MONUMENT_PROTECTED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsMonumentProtected(@javax.annotation.Nullable Boolean isMonumentProtected) {
+    this.isMonumentProtected = isMonumentProtected;
+  }
+
+
+  public PropertyInput kitchenType(@javax.annotation.Nullable String kitchenType) {
+    this.kitchenType = kitchenType;
+    return this;
+  }
+
+  /**
+   * Get kitchenType
+   * @return kitchenType
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_KITCHEN_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getKitchenType() {
+    return kitchenType;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_KITCHEN_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setKitchenType(@javax.annotation.Nullable String kitchenType) {
+    this.kitchenType = kitchenType;
   }
 
 
@@ -772,6 +2009,126 @@ public class PropertyInput {
   }
 
 
+  public PropertyInput officeAreaSqm(@javax.annotation.Nullable BigDecimal officeAreaSqm) {
+    this.officeAreaSqm = officeAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get officeAreaSqm
+   * @return officeAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OFFICE_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getOfficeAreaSqm() {
+    return officeAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OFFICE_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOfficeAreaSqm(@javax.annotation.Nullable BigDecimal officeAreaSqm) {
+    this.officeAreaSqm = officeAreaSqm;
+  }
+
+
+  public PropertyInput otherAreaSqm(@javax.annotation.Nullable BigDecimal otherAreaSqm) {
+    this.otherAreaSqm = otherAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get otherAreaSqm
+   * @return otherAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OTHER_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getOtherAreaSqm() {
+    return otherAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_OTHER_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOtherAreaSqm(@javax.annotation.Nullable BigDecimal otherAreaSqm) {
+    this.otherAreaSqm = otherAreaSqm;
+  }
+
+
+  public PropertyInput parkingIncluded(@javax.annotation.Nullable Boolean parkingIncluded) {
+    this.parkingIncluded = parkingIncluded;
+    return this;
+  }
+
+  /**
+   * Get parkingIncluded
+   * @return parkingIncluded
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PARKING_INCLUDED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getParkingIncluded() {
+    return parkingIncluded;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PARKING_INCLUDED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setParkingIncluded(@javax.annotation.Nullable Boolean parkingIncluded) {
+    this.parkingIncluded = parkingIncluded;
+  }
+
+
+  public PropertyInput parkingSpaceCount(@javax.annotation.Nullable Integer parkingSpaceCount) {
+    this.parkingSpaceCount = parkingSpaceCount;
+    return this;
+  }
+
+  /**
+   * Get parkingSpaceCount
+   * @return parkingSpaceCount
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PARKING_SPACE_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Integer getParkingSpaceCount() {
+    return parkingSpaceCount;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PARKING_SPACE_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setParkingSpaceCount(@javax.annotation.Nullable Integer parkingSpaceCount) {
+    this.parkingSpaceCount = parkingSpaceCount;
+  }
+
+
+  public PropertyInput parkingType(@javax.annotation.Nullable String parkingType) {
+    this.parkingType = parkingType;
+    return this;
+  }
+
+  /**
+   * Get parkingType
+   * @return parkingType
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PARKING_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getParkingType() {
+    return parkingType;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PARKING_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setParkingType(@javax.annotation.Nullable String parkingType) {
+    this.parkingType = parkingType;
+  }
+
+
   public PropertyInput plotAreaSqm(@javax.annotation.Nullable BigDecimal plotAreaSqm) {
     this.plotAreaSqm = plotAreaSqm;
     return this;
@@ -793,6 +2150,158 @@ public class PropertyInput {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPlotAreaSqm(@javax.annotation.Nullable BigDecimal plotAreaSqm) {
     this.plotAreaSqm = plotAreaSqm;
+  }
+
+
+  public PropertyInput propertySubtype(@javax.annotation.Nullable String propertySubtype) {
+    this.propertySubtype = propertySubtype;
+    return this;
+  }
+
+  /**
+   * Get propertySubtype
+   * @return propertySubtype
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PROPERTY_SUBTYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getPropertySubtype() {
+    return propertySubtype;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PROPERTY_SUBTYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPropertySubtype(@javax.annotation.Nullable String propertySubtype) {
+    this.propertySubtype = propertySubtype;
+  }
+
+
+  public PropertyInput publishAddress(@javax.annotation.Nullable Boolean publishAddress) {
+    this.publishAddress = publishAddress;
+    return this;
+  }
+
+  /**
+   * Get publishAddress
+   * @return publishAddress
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PUBLISH_ADDRESS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getPublishAddress() {
+    return publishAddress;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_PUBLISH_ADDRESS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPublishAddress(@javax.annotation.Nullable Boolean publishAddress) {
+    this.publishAddress = publishAddress;
+  }
+
+
+  public PropertyInput retailAreaSqm(@javax.annotation.Nullable BigDecimal retailAreaSqm) {
+    this.retailAreaSqm = retailAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get retailAreaSqm
+   * @return retailAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RETAIL_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getRetailAreaSqm() {
+    return retailAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_RETAIL_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setRetailAreaSqm(@javax.annotation.Nullable BigDecimal retailAreaSqm) {
+    this.retailAreaSqm = retailAreaSqm;
+  }
+
+
+  public PropertyInput storageAreaSqm(@javax.annotation.Nullable BigDecimal storageAreaSqm) {
+    this.storageAreaSqm = storageAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get storageAreaSqm
+   * @return storageAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_STORAGE_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getStorageAreaSqm() {
+    return storageAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_STORAGE_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setStorageAreaSqm(@javax.annotation.Nullable BigDecimal storageAreaSqm) {
+    this.storageAreaSqm = storageAreaSqm;
+  }
+
+
+  public PropertyInput surroundings(@javax.annotation.Nullable List<String> surroundings) {
+    this.surroundings = surroundings;
+    return this;
+  }
+
+  public PropertyInput addSurroundingsItem(String surroundingsItem) {
+    if (this.surroundings == null) {
+      this.surroundings = new ArrayList<>();
+    }
+    this.surroundings.add(surroundingsItem);
+    return this;
+  }
+
+  /**
+   * Get surroundings
+   * @return surroundings
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SURROUNDINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<String> getSurroundings() {
+    return surroundings;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SURROUNDINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSurroundings(@javax.annotation.Nullable List<String> surroundings) {
+    this.surroundings = surroundings;
+  }
+
+
+  public PropertyInput terraceCount(@javax.annotation.Nullable Integer terraceCount) {
+    this.terraceCount = terraceCount;
+    return this;
+  }
+
+  /**
+   * Get terraceCount
+   * @return terraceCount
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TERRACE_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Integer getTerraceCount() {
+    return terraceCount;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_TERRACE_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTerraceCount(@javax.annotation.Nullable Integer terraceCount) {
+    this.terraceCount = terraceCount;
   }
 
 
@@ -820,6 +2329,30 @@ public class PropertyInput {
   }
 
 
+  public PropertyInput totalAreaSqm(@javax.annotation.Nullable BigDecimal totalAreaSqm) {
+    this.totalAreaSqm = totalAreaSqm;
+    return this;
+  }
+
+  /**
+   * Get totalAreaSqm
+   * @return totalAreaSqm
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getTotalAreaSqm() {
+    return totalAreaSqm;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_AREA_SQM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTotalAreaSqm(@javax.annotation.Nullable BigDecimal totalAreaSqm) {
+    this.totalAreaSqm = totalAreaSqm;
+  }
+
+
   public PropertyInput totalRooms(@javax.annotation.Nullable Integer totalRooms) {
     this.totalRooms = totalRooms;
     return this;
@@ -841,6 +2374,38 @@ public class PropertyInput {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTotalRooms(@javax.annotation.Nullable Integer totalRooms) {
     this.totalRooms = totalRooms;
+  }
+
+
+  public PropertyInput translations(@javax.annotation.Nullable List<Translation> translations) {
+    this.translations = translations;
+    return this;
+  }
+
+  public PropertyInput addTranslationsItem(Translation translationsItem) {
+    if (this.translations == null) {
+      this.translations = new ArrayList<>();
+    }
+    this.translations.add(translationsItem);
+    return this;
+  }
+
+  /**
+   * Get translations
+   * @return translations
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TRANSLATIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<Translation> getTranslations() {
+    return translations;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_TRANSLATIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTranslations(@javax.annotation.Nullable List<Translation> translations) {
+    this.translations = translations;
   }
 
 
@@ -889,6 +2454,30 @@ public class PropertyInput {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUsableAreaSqm(@javax.annotation.Nullable BigDecimal usableAreaSqm) {
     this.usableAreaSqm = usableAreaSqm;
+  }
+
+
+  public PropertyInput windowGlazing(@javax.annotation.Nullable String windowGlazing) {
+    this.windowGlazing = windowGlazing;
+    return this;
+  }
+
+  /**
+   * Get windowGlazing
+   * @return windowGlazing
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_WINDOW_GLAZING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getWindowGlazing() {
+    return windowGlazing;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_WINDOW_GLAZING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setWindowGlazing(@javax.annotation.Nullable String windowGlazing) {
+    this.windowGlazing = windowGlazing;
   }
 
 
@@ -959,35 +2548,88 @@ public class PropertyInput {
         Objects.equals(this.addressPostalCode, propertyInput.addressPostalCode) &&
         Objects.equals(this.addressProvince, propertyInput.addressProvince) &&
         Objects.equals(this.addressStreet, propertyInput.addressStreet) &&
+        Objects.equals(this.atticSqm, propertyInput.atticSqm) &&
+        Objects.equals(this.balconyCount, propertyInput.balconyCount) &&
+        Objects.equals(this.balconyTerraceSqm, propertyInput.balconyTerraceSqm) &&
         Objects.equals(this.bathrooms, propertyInput.bathrooms) &&
         Objects.equals(this.bedrooms, propertyInput.bedrooms) &&
+        Objects.equals(this.buildingAmenities, propertyInput.buildingAmenities) &&
+        Objects.equals(this.cellarSqm, propertyInput.cellarSqm) &&
         Objects.equals(this.condition, propertyInput.condition) &&
+        Objects.equals(this.constructionPhase, propertyInput.constructionPhase) &&
         Objects.equals(this.constructionType, propertyInput.constructionType) &&
         Objects.equals(this.description, propertyInput.description) &&
+        Objects.equals(this.descriptionFittings, propertyInput.descriptionFittings) &&
+        Objects.equals(this.descriptionLocation, propertyInput.descriptionLocation) &&
+        Objects.equals(this.descriptionOther, propertyInput.descriptionOther) &&
+        Objects.equals(this.energyCertificateIssuedAt, propertyInput.energyCertificateIssuedAt) &&
+        Objects.equals(this.energyCertificateType, propertyInput.energyCertificateType) &&
+        Objects.equals(this.energyCertificateValidUntil, propertyInput.energyCertificateValidUntil) &&
+        Objects.equals(this.energyCo2Emissions, propertyInput.energyCo2Emissions) &&
         Objects.equals(this.energyConsumptionKwh, propertyInput.energyConsumptionKwh) &&
+        Objects.equals(this.energyDemandKwh, propertyInput.energyDemandKwh) &&
+        Objects.equals(this.energyIncludesHotWater, propertyInput.energyIncludesHotWater) &&
         Objects.equals(this.energyLabel, propertyInput.energyLabel) &&
+        Objects.equals(this.energyPrimaryCarrier, propertyInput.energyPrimaryCarrier) &&
+        Objects.equals(this.exteriorFeatures, propertyInput.exteriorFeatures) &&
         Objects.equals(this.externalId, propertyInput.externalId) &&
         Objects.equals(this.floor, propertyInput.floor) &&
+        Objects.equals(this.flooring, propertyInput.flooring) &&
         Objects.equals(this.floorsInBuilding, propertyInput.floorsInBuilding) &&
+        Objects.equals(this.gardenSqm, propertyInput.gardenSqm) &&
         Objects.equals(this.halfBathrooms, propertyInput.halfBathrooms) &&
+        Objects.equals(this.hasAirConditioning, propertyInput.hasAirConditioning) &&
+        Objects.equals(this.hasAlarmSystem, propertyInput.hasAlarmSystem) &&
+        Objects.equals(this.hasBalcony, propertyInput.hasBalcony) &&
+        Objects.equals(this.hasCellar, propertyInput.hasCellar) &&
+        Objects.equals(this.hasFireplace, propertyInput.hasFireplace) &&
+        Objects.equals(this.hasFittedKitchen, propertyInput.hasFittedKitchen) &&
+        Objects.equals(this.hasGarden, propertyInput.hasGarden) &&
+        Objects.equals(this.hasGuestToilet, propertyInput.hasGuestToilet) &&
+        Objects.equals(this.hasLift, propertyInput.hasLift) &&
+        Objects.equals(this.hasPool, propertyInput.hasPool) &&
+        Objects.equals(this.hasSauna, propertyInput.hasSauna) &&
+        Objects.equals(this.hasSolarPanels, propertyInput.hasSolarPanels) &&
+        Objects.equals(this.hasTerrace, propertyInput.hasTerrace) &&
         Objects.equals(this.heatingType, propertyInput.heatingType) &&
+        Objects.equals(this.images, propertyInput.images) &&
+        Objects.equals(this.interiorFeatures, propertyInput.interiorFeatures) &&
+        Objects.equals(this.isBarrierFree, propertyInput.isBarrierFree) &&
+        Objects.equals(this.isFurnished, propertyInput.isFurnished) &&
+        Objects.equals(this.isLeasehold, propertyInput.isLeasehold) &&
+        Objects.equals(this.isMonumentProtected, propertyInput.isMonumentProtected) &&
+        Objects.equals(this.kitchenType, propertyInput.kitchenType) &&
         Objects.equals(this.latitude, propertyInput.latitude) &&
         Objects.equals(this.listing, propertyInput.listing) &&
         Objects.equals(this.livingAreaSqm, propertyInput.livingAreaSqm) &&
         Objects.equals(this.locationPrecision, propertyInput.locationPrecision) &&
         Objects.equals(this.longitude, propertyInput.longitude) &&
+        Objects.equals(this.officeAreaSqm, propertyInput.officeAreaSqm) &&
+        Objects.equals(this.otherAreaSqm, propertyInput.otherAreaSqm) &&
+        Objects.equals(this.parkingIncluded, propertyInput.parkingIncluded) &&
+        Objects.equals(this.parkingSpaceCount, propertyInput.parkingSpaceCount) &&
+        Objects.equals(this.parkingType, propertyInput.parkingType) &&
         Objects.equals(this.plotAreaSqm, propertyInput.plotAreaSqm) &&
+        Objects.equals(this.propertySubtype, propertyInput.propertySubtype) &&
+        Objects.equals(this.publishAddress, propertyInput.publishAddress) &&
+        Objects.equals(this.retailAreaSqm, propertyInput.retailAreaSqm) &&
+        Objects.equals(this.storageAreaSqm, propertyInput.storageAreaSqm) &&
+        Objects.equals(this.surroundings, propertyInput.surroundings) &&
+        Objects.equals(this.terraceCount, propertyInput.terraceCount) &&
         Objects.equals(this.title, propertyInput.title) &&
+        Objects.equals(this.totalAreaSqm, propertyInput.totalAreaSqm) &&
         Objects.equals(this.totalRooms, propertyInput.totalRooms) &&
+        Objects.equals(this.translations, propertyInput.translations) &&
         Objects.equals(this.type, propertyInput.type) &&
         Objects.equals(this.usableAreaSqm, propertyInput.usableAreaSqm) &&
+        Objects.equals(this.windowGlazing, propertyInput.windowGlazing) &&
         Objects.equals(this.yearBuilt, propertyInput.yearBuilt) &&
         Objects.equals(this.yearRenovated, propertyInput.yearRenovated);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(addressCity, addressCountry, addressDistrict, addressNumber, addressPostalCode, addressProvince, addressStreet, bathrooms, bedrooms, condition, constructionType, description, energyConsumptionKwh, energyLabel, externalId, floor, floorsInBuilding, halfBathrooms, heatingType, latitude, listing, livingAreaSqm, locationPrecision, longitude, plotAreaSqm, title, totalRooms, type, usableAreaSqm, yearBuilt, yearRenovated);
+    return Objects.hash(addressCity, addressCountry, addressDistrict, addressNumber, addressPostalCode, addressProvince, addressStreet, atticSqm, balconyCount, balconyTerraceSqm, bathrooms, bedrooms, buildingAmenities, cellarSqm, condition, constructionPhase, constructionType, description, descriptionFittings, descriptionLocation, descriptionOther, energyCertificateIssuedAt, energyCertificateType, energyCertificateValidUntil, energyCo2Emissions, energyConsumptionKwh, energyDemandKwh, energyIncludesHotWater, energyLabel, energyPrimaryCarrier, exteriorFeatures, externalId, floor, flooring, floorsInBuilding, gardenSqm, halfBathrooms, hasAirConditioning, hasAlarmSystem, hasBalcony, hasCellar, hasFireplace, hasFittedKitchen, hasGarden, hasGuestToilet, hasLift, hasPool, hasSauna, hasSolarPanels, hasTerrace, heatingType, images, interiorFeatures, isBarrierFree, isFurnished, isLeasehold, isMonumentProtected, kitchenType, latitude, listing, livingAreaSqm, locationPrecision, longitude, officeAreaSqm, otherAreaSqm, parkingIncluded, parkingSpaceCount, parkingType, plotAreaSqm, propertySubtype, publishAddress, retailAreaSqm, storageAreaSqm, surroundings, terraceCount, title, totalAreaSqm, totalRooms, translations, type, usableAreaSqm, windowGlazing, yearBuilt, yearRenovated);
   }
 
   @Override
@@ -1001,28 +2643,81 @@ public class PropertyInput {
     sb.append("    addressPostalCode: ").append(toIndentedString(addressPostalCode)).append("\n");
     sb.append("    addressProvince: ").append(toIndentedString(addressProvince)).append("\n");
     sb.append("    addressStreet: ").append(toIndentedString(addressStreet)).append("\n");
+    sb.append("    atticSqm: ").append(toIndentedString(atticSqm)).append("\n");
+    sb.append("    balconyCount: ").append(toIndentedString(balconyCount)).append("\n");
+    sb.append("    balconyTerraceSqm: ").append(toIndentedString(balconyTerraceSqm)).append("\n");
     sb.append("    bathrooms: ").append(toIndentedString(bathrooms)).append("\n");
     sb.append("    bedrooms: ").append(toIndentedString(bedrooms)).append("\n");
+    sb.append("    buildingAmenities: ").append(toIndentedString(buildingAmenities)).append("\n");
+    sb.append("    cellarSqm: ").append(toIndentedString(cellarSqm)).append("\n");
     sb.append("    condition: ").append(toIndentedString(condition)).append("\n");
+    sb.append("    constructionPhase: ").append(toIndentedString(constructionPhase)).append("\n");
     sb.append("    constructionType: ").append(toIndentedString(constructionType)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    descriptionFittings: ").append(toIndentedString(descriptionFittings)).append("\n");
+    sb.append("    descriptionLocation: ").append(toIndentedString(descriptionLocation)).append("\n");
+    sb.append("    descriptionOther: ").append(toIndentedString(descriptionOther)).append("\n");
+    sb.append("    energyCertificateIssuedAt: ").append(toIndentedString(energyCertificateIssuedAt)).append("\n");
+    sb.append("    energyCertificateType: ").append(toIndentedString(energyCertificateType)).append("\n");
+    sb.append("    energyCertificateValidUntil: ").append(toIndentedString(energyCertificateValidUntil)).append("\n");
+    sb.append("    energyCo2Emissions: ").append(toIndentedString(energyCo2Emissions)).append("\n");
     sb.append("    energyConsumptionKwh: ").append(toIndentedString(energyConsumptionKwh)).append("\n");
+    sb.append("    energyDemandKwh: ").append(toIndentedString(energyDemandKwh)).append("\n");
+    sb.append("    energyIncludesHotWater: ").append(toIndentedString(energyIncludesHotWater)).append("\n");
     sb.append("    energyLabel: ").append(toIndentedString(energyLabel)).append("\n");
+    sb.append("    energyPrimaryCarrier: ").append(toIndentedString(energyPrimaryCarrier)).append("\n");
+    sb.append("    exteriorFeatures: ").append(toIndentedString(exteriorFeatures)).append("\n");
     sb.append("    externalId: ").append(toIndentedString(externalId)).append("\n");
     sb.append("    floor: ").append(toIndentedString(floor)).append("\n");
+    sb.append("    flooring: ").append(toIndentedString(flooring)).append("\n");
     sb.append("    floorsInBuilding: ").append(toIndentedString(floorsInBuilding)).append("\n");
+    sb.append("    gardenSqm: ").append(toIndentedString(gardenSqm)).append("\n");
     sb.append("    halfBathrooms: ").append(toIndentedString(halfBathrooms)).append("\n");
+    sb.append("    hasAirConditioning: ").append(toIndentedString(hasAirConditioning)).append("\n");
+    sb.append("    hasAlarmSystem: ").append(toIndentedString(hasAlarmSystem)).append("\n");
+    sb.append("    hasBalcony: ").append(toIndentedString(hasBalcony)).append("\n");
+    sb.append("    hasCellar: ").append(toIndentedString(hasCellar)).append("\n");
+    sb.append("    hasFireplace: ").append(toIndentedString(hasFireplace)).append("\n");
+    sb.append("    hasFittedKitchen: ").append(toIndentedString(hasFittedKitchen)).append("\n");
+    sb.append("    hasGarden: ").append(toIndentedString(hasGarden)).append("\n");
+    sb.append("    hasGuestToilet: ").append(toIndentedString(hasGuestToilet)).append("\n");
+    sb.append("    hasLift: ").append(toIndentedString(hasLift)).append("\n");
+    sb.append("    hasPool: ").append(toIndentedString(hasPool)).append("\n");
+    sb.append("    hasSauna: ").append(toIndentedString(hasSauna)).append("\n");
+    sb.append("    hasSolarPanels: ").append(toIndentedString(hasSolarPanels)).append("\n");
+    sb.append("    hasTerrace: ").append(toIndentedString(hasTerrace)).append("\n");
     sb.append("    heatingType: ").append(toIndentedString(heatingType)).append("\n");
+    sb.append("    images: ").append(toIndentedString(images)).append("\n");
+    sb.append("    interiorFeatures: ").append(toIndentedString(interiorFeatures)).append("\n");
+    sb.append("    isBarrierFree: ").append(toIndentedString(isBarrierFree)).append("\n");
+    sb.append("    isFurnished: ").append(toIndentedString(isFurnished)).append("\n");
+    sb.append("    isLeasehold: ").append(toIndentedString(isLeasehold)).append("\n");
+    sb.append("    isMonumentProtected: ").append(toIndentedString(isMonumentProtected)).append("\n");
+    sb.append("    kitchenType: ").append(toIndentedString(kitchenType)).append("\n");
     sb.append("    latitude: ").append(toIndentedString(latitude)).append("\n");
     sb.append("    listing: ").append(toIndentedString(listing)).append("\n");
     sb.append("    livingAreaSqm: ").append(toIndentedString(livingAreaSqm)).append("\n");
     sb.append("    locationPrecision: ").append(toIndentedString(locationPrecision)).append("\n");
     sb.append("    longitude: ").append(toIndentedString(longitude)).append("\n");
+    sb.append("    officeAreaSqm: ").append(toIndentedString(officeAreaSqm)).append("\n");
+    sb.append("    otherAreaSqm: ").append(toIndentedString(otherAreaSqm)).append("\n");
+    sb.append("    parkingIncluded: ").append(toIndentedString(parkingIncluded)).append("\n");
+    sb.append("    parkingSpaceCount: ").append(toIndentedString(parkingSpaceCount)).append("\n");
+    sb.append("    parkingType: ").append(toIndentedString(parkingType)).append("\n");
     sb.append("    plotAreaSqm: ").append(toIndentedString(plotAreaSqm)).append("\n");
+    sb.append("    propertySubtype: ").append(toIndentedString(propertySubtype)).append("\n");
+    sb.append("    publishAddress: ").append(toIndentedString(publishAddress)).append("\n");
+    sb.append("    retailAreaSqm: ").append(toIndentedString(retailAreaSqm)).append("\n");
+    sb.append("    storageAreaSqm: ").append(toIndentedString(storageAreaSqm)).append("\n");
+    sb.append("    surroundings: ").append(toIndentedString(surroundings)).append("\n");
+    sb.append("    terraceCount: ").append(toIndentedString(terraceCount)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    totalAreaSqm: ").append(toIndentedString(totalAreaSqm)).append("\n");
     sb.append("    totalRooms: ").append(toIndentedString(totalRooms)).append("\n");
+    sb.append("    translations: ").append(toIndentedString(translations)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    usableAreaSqm: ").append(toIndentedString(usableAreaSqm)).append("\n");
+    sb.append("    windowGlazing: ").append(toIndentedString(windowGlazing)).append("\n");
     sb.append("    yearBuilt: ").append(toIndentedString(yearBuilt)).append("\n");
     sb.append("    yearRenovated: ").append(toIndentedString(yearRenovated)).append("\n");
     sb.append("}");
@@ -1104,6 +2799,21 @@ public class PropertyInput {
       joiner.add(String.format(java.util.Locale.ROOT, "%saddress_street%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAddressStreet()))));
     }
 
+    // add `attic_sqm` to the URL query string
+    if (getAtticSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sattic_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAtticSqm()))));
+    }
+
+    // add `balcony_count` to the URL query string
+    if (getBalconyCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbalcony_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBalconyCount()))));
+    }
+
+    // add `balcony_terrace_sqm` to the URL query string
+    if (getBalconyTerraceSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbalcony_terrace_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBalconyTerraceSqm()))));
+    }
+
     // add `bathrooms` to the URL query string
     if (getBathrooms() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sbathrooms%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBathrooms()))));
@@ -1114,9 +2824,28 @@ public class PropertyInput {
       joiner.add(String.format(java.util.Locale.ROOT, "%sbedrooms%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBedrooms()))));
     }
 
+    // add `building_amenities` to the URL query string
+    if (getBuildingAmenities() != null) {
+      for (int i = 0; i < getBuildingAmenities().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%sbuilding_amenities%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getBuildingAmenities().get(i)))));
+      }
+    }
+
+    // add `cellar_sqm` to the URL query string
+    if (getCellarSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scellar_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCellarSqm()))));
+    }
+
     // add `condition` to the URL query string
     if (getCondition() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%scondition%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCondition()))));
+    }
+
+    // add `construction_phase` to the URL query string
+    if (getConstructionPhase() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconstruction_phase%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConstructionPhase()))));
     }
 
     // add `construction_type` to the URL query string
@@ -1129,14 +2858,73 @@ public class PropertyInput {
       joiner.add(String.format(java.util.Locale.ROOT, "%sdescription%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescription()))));
     }
 
+    // add `description_fittings` to the URL query string
+    if (getDescriptionFittings() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdescription_fittings%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescriptionFittings()))));
+    }
+
+    // add `description_location` to the URL query string
+    if (getDescriptionLocation() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdescription_location%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescriptionLocation()))));
+    }
+
+    // add `description_other` to the URL query string
+    if (getDescriptionOther() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdescription_other%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescriptionOther()))));
+    }
+
+    // add `energy_certificate_issued_at` to the URL query string
+    if (getEnergyCertificateIssuedAt() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%senergy_certificate_issued_at%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyCertificateIssuedAt()))));
+    }
+
+    // add `energy_certificate_type` to the URL query string
+    if (getEnergyCertificateType() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%senergy_certificate_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyCertificateType()))));
+    }
+
+    // add `energy_certificate_valid_until` to the URL query string
+    if (getEnergyCertificateValidUntil() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%senergy_certificate_valid_until%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyCertificateValidUntil()))));
+    }
+
+    // add `energy_co2_emissions` to the URL query string
+    if (getEnergyCo2Emissions() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%senergy_co2_emissions%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyCo2Emissions()))));
+    }
+
     // add `energy_consumption_kwh` to the URL query string
     if (getEnergyConsumptionKwh() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%senergy_consumption_kwh%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyConsumptionKwh()))));
     }
 
+    // add `energy_demand_kwh` to the URL query string
+    if (getEnergyDemandKwh() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%senergy_demand_kwh%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyDemandKwh()))));
+    }
+
+    // add `energy_includes_hot_water` to the URL query string
+    if (getEnergyIncludesHotWater() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%senergy_includes_hot_water%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyIncludesHotWater()))));
+    }
+
     // add `energy_label` to the URL query string
     if (getEnergyLabel() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%senergy_label%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyLabel()))));
+    }
+
+    // add `energy_primary_carrier` to the URL query string
+    if (getEnergyPrimaryCarrier() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%senergy_primary_carrier%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnergyPrimaryCarrier()))));
+    }
+
+    // add `exterior_features` to the URL query string
+    if (getExteriorFeatures() != null) {
+      for (int i = 0; i < getExteriorFeatures().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%sexterior_features%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getExteriorFeatures().get(i)))));
+      }
     }
 
     // add `external_id` to the URL query string
@@ -1149,9 +2937,19 @@ public class PropertyInput {
       joiner.add(String.format(java.util.Locale.ROOT, "%sfloor%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFloor()))));
     }
 
+    // add `flooring` to the URL query string
+    if (getFlooring() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sflooring%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFlooring()))));
+    }
+
     // add `floors_in_building` to the URL query string
     if (getFloorsInBuilding() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sfloors_in_building%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFloorsInBuilding()))));
+    }
+
+    // add `garden_sqm` to the URL query string
+    if (getGardenSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgarden_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGardenSqm()))));
     }
 
     // add `half_bathrooms` to the URL query string
@@ -1159,9 +2957,118 @@ public class PropertyInput {
       joiner.add(String.format(java.util.Locale.ROOT, "%shalf_bathrooms%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHalfBathrooms()))));
     }
 
+    // add `has_air_conditioning` to the URL query string
+    if (getHasAirConditioning() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_air_conditioning%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasAirConditioning()))));
+    }
+
+    // add `has_alarm_system` to the URL query string
+    if (getHasAlarmSystem() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_alarm_system%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasAlarmSystem()))));
+    }
+
+    // add `has_balcony` to the URL query string
+    if (getHasBalcony() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_balcony%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasBalcony()))));
+    }
+
+    // add `has_cellar` to the URL query string
+    if (getHasCellar() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_cellar%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasCellar()))));
+    }
+
+    // add `has_fireplace` to the URL query string
+    if (getHasFireplace() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_fireplace%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasFireplace()))));
+    }
+
+    // add `has_fitted_kitchen` to the URL query string
+    if (getHasFittedKitchen() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_fitted_kitchen%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasFittedKitchen()))));
+    }
+
+    // add `has_garden` to the URL query string
+    if (getHasGarden() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_garden%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasGarden()))));
+    }
+
+    // add `has_guest_toilet` to the URL query string
+    if (getHasGuestToilet() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_guest_toilet%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasGuestToilet()))));
+    }
+
+    // add `has_lift` to the URL query string
+    if (getHasLift() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_lift%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasLift()))));
+    }
+
+    // add `has_pool` to the URL query string
+    if (getHasPool() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_pool%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasPool()))));
+    }
+
+    // add `has_sauna` to the URL query string
+    if (getHasSauna() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_sauna%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasSauna()))));
+    }
+
+    // add `has_solar_panels` to the URL query string
+    if (getHasSolarPanels() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_solar_panels%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasSolarPanels()))));
+    }
+
+    // add `has_terrace` to the URL query string
+    if (getHasTerrace() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shas_terrace%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHasTerrace()))));
+    }
+
     // add `heating_type` to the URL query string
     if (getHeatingType() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sheating_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHeatingType()))));
+    }
+
+    // add `images` to the URL query string
+    if (getImages() != null) {
+      for (int i = 0; i < getImages().size(); i++) {
+        if (getImages().get(i) != null) {
+          joiner.add(getImages().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%simages%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `interior_features` to the URL query string
+    if (getInteriorFeatures() != null) {
+      for (int i = 0; i < getInteriorFeatures().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%sinterior_features%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getInteriorFeatures().get(i)))));
+      }
+    }
+
+    // add `is_barrier_free` to the URL query string
+    if (getIsBarrierFree() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_barrier_free%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsBarrierFree()))));
+    }
+
+    // add `is_furnished` to the URL query string
+    if (getIsFurnished() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_furnished%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsFurnished()))));
+    }
+
+    // add `is_leasehold` to the URL query string
+    if (getIsLeasehold() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_leasehold%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsLeasehold()))));
+    }
+
+    // add `is_monument_protected` to the URL query string
+    if (getIsMonumentProtected() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_monument_protected%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsMonumentProtected()))));
+    }
+
+    // add `kitchen_type` to the URL query string
+    if (getKitchenType() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%skitchen_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getKitchenType()))));
     }
 
     // add `latitude` to the URL query string
@@ -1189,9 +3096,68 @@ public class PropertyInput {
       joiner.add(String.format(java.util.Locale.ROOT, "%slongitude%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLongitude()))));
     }
 
+    // add `office_area_sqm` to the URL query string
+    if (getOfficeAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%soffice_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOfficeAreaSqm()))));
+    }
+
+    // add `other_area_sqm` to the URL query string
+    if (getOtherAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sother_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOtherAreaSqm()))));
+    }
+
+    // add `parking_included` to the URL query string
+    if (getParkingIncluded() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sparking_included%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getParkingIncluded()))));
+    }
+
+    // add `parking_space_count` to the URL query string
+    if (getParkingSpaceCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sparking_space_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getParkingSpaceCount()))));
+    }
+
+    // add `parking_type` to the URL query string
+    if (getParkingType() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sparking_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getParkingType()))));
+    }
+
     // add `plot_area_sqm` to the URL query string
     if (getPlotAreaSqm() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%splot_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPlotAreaSqm()))));
+    }
+
+    // add `property_subtype` to the URL query string
+    if (getPropertySubtype() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproperty_subtype%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPropertySubtype()))));
+    }
+
+    // add `publish_address` to the URL query string
+    if (getPublishAddress() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%spublish_address%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPublishAddress()))));
+    }
+
+    // add `retail_area_sqm` to the URL query string
+    if (getRetailAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sretail_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRetailAreaSqm()))));
+    }
+
+    // add `storage_area_sqm` to the URL query string
+    if (getStorageAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sstorage_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStorageAreaSqm()))));
+    }
+
+    // add `surroundings` to the URL query string
+    if (getSurroundings() != null) {
+      for (int i = 0; i < getSurroundings().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%ssurroundings%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getSurroundings().get(i)))));
+      }
+    }
+
+    // add `terrace_count` to the URL query string
+    if (getTerraceCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sterrace_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTerraceCount()))));
     }
 
     // add `title` to the URL query string
@@ -1199,9 +3165,24 @@ public class PropertyInput {
       joiner.add(String.format(java.util.Locale.ROOT, "%stitle%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTitle()))));
     }
 
+    // add `total_area_sqm` to the URL query string
+    if (getTotalAreaSqm() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stotal_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTotalAreaSqm()))));
+    }
+
     // add `total_rooms` to the URL query string
     if (getTotalRooms() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%stotal_rooms%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTotalRooms()))));
+    }
+
+    // add `translations` to the URL query string
+    if (getTranslations() != null) {
+      for (int i = 0; i < getTranslations().size(); i++) {
+        if (getTranslations().get(i) != null) {
+          joiner.add(getTranslations().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%stranslations%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
     }
 
     // add `type` to the URL query string
@@ -1212,6 +3193,11 @@ public class PropertyInput {
     // add `usable_area_sqm` to the URL query string
     if (getUsableAreaSqm() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%susable_area_sqm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUsableAreaSqm()))));
+    }
+
+    // add `window_glazing` to the URL query string
+    if (getWindowGlazing() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%swindow_glazing%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getWindowGlazing()))));
     }
 
     // add `year_built` to the URL query string

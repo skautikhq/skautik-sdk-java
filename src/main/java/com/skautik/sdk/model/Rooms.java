@@ -33,15 +33,21 @@ import com.skautik.sdk.ApiClient;
  * Rooms
  */
 @JsonPropertyOrder({
+  Rooms.JSON_PROPERTY_BALCONIES,
   Rooms.JSON_PROPERTY_BATHROOMS,
   Rooms.JSON_PROPERTY_BEDROOMS,
   Rooms.JSON_PROPERTY_FLOOR,
   Rooms.JSON_PROPERTY_FLOORS_IN_BUILDING,
   Rooms.JSON_PROPERTY_HALF_BATHROOMS,
+  Rooms.JSON_PROPERTY_TERRACES,
   Rooms.JSON_PROPERTY_TOTAL_ROOMS
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
 public class Rooms {
+  public static final String JSON_PROPERTY_BALCONIES = "balconies";
+  @javax.annotation.Nullable
+  private Integer balconies;
+
   public static final String JSON_PROPERTY_BATHROOMS = "bathrooms";
   @javax.annotation.Nullable
   private Integer bathrooms;
@@ -62,12 +68,40 @@ public class Rooms {
   @javax.annotation.Nullable
   private Integer halfBathrooms;
 
+  public static final String JSON_PROPERTY_TERRACES = "terraces";
+  @javax.annotation.Nullable
+  private Integer terraces;
+
   public static final String JSON_PROPERTY_TOTAL_ROOMS = "total_rooms";
   @javax.annotation.Nullable
   private Integer totalRooms;
 
   public Rooms() { 
   }
+
+  public Rooms balconies(@javax.annotation.Nullable Integer balconies) {
+    this.balconies = balconies;
+    return this;
+  }
+
+  /**
+   * Get balconies
+   * @return balconies
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_BALCONIES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Integer getBalconies() {
+    return balconies;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_BALCONIES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBalconies(@javax.annotation.Nullable Integer balconies) {
+    this.balconies = balconies;
+  }
+
 
   public Rooms bathrooms(@javax.annotation.Nullable Integer bathrooms) {
     this.bathrooms = bathrooms;
@@ -189,6 +223,30 @@ public class Rooms {
   }
 
 
+  public Rooms terraces(@javax.annotation.Nullable Integer terraces) {
+    this.terraces = terraces;
+    return this;
+  }
+
+  /**
+   * Get terraces
+   * @return terraces
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TERRACES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Integer getTerraces() {
+    return terraces;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_TERRACES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTerraces(@javax.annotation.Nullable Integer terraces) {
+    this.terraces = terraces;
+  }
+
+
   public Rooms totalRooms(@javax.annotation.Nullable Integer totalRooms) {
     this.totalRooms = totalRooms;
     return this;
@@ -225,28 +283,32 @@ public class Rooms {
       return false;
     }
     Rooms rooms = (Rooms) o;
-    return Objects.equals(this.bathrooms, rooms.bathrooms) &&
+    return Objects.equals(this.balconies, rooms.balconies) &&
+        Objects.equals(this.bathrooms, rooms.bathrooms) &&
         Objects.equals(this.bedrooms, rooms.bedrooms) &&
         Objects.equals(this.floor, rooms.floor) &&
         Objects.equals(this.floorsInBuilding, rooms.floorsInBuilding) &&
         Objects.equals(this.halfBathrooms, rooms.halfBathrooms) &&
+        Objects.equals(this.terraces, rooms.terraces) &&
         Objects.equals(this.totalRooms, rooms.totalRooms);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(bathrooms, bedrooms, floor, floorsInBuilding, halfBathrooms, totalRooms);
+    return Objects.hash(balconies, bathrooms, bedrooms, floor, floorsInBuilding, halfBathrooms, terraces, totalRooms);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Rooms {\n");
+    sb.append("    balconies: ").append(toIndentedString(balconies)).append("\n");
     sb.append("    bathrooms: ").append(toIndentedString(bathrooms)).append("\n");
     sb.append("    bedrooms: ").append(toIndentedString(bedrooms)).append("\n");
     sb.append("    floor: ").append(toIndentedString(floor)).append("\n");
     sb.append("    floorsInBuilding: ").append(toIndentedString(floorsInBuilding)).append("\n");
     sb.append("    halfBathrooms: ").append(toIndentedString(halfBathrooms)).append("\n");
+    sb.append("    terraces: ").append(toIndentedString(terraces)).append("\n");
     sb.append("    totalRooms: ").append(toIndentedString(totalRooms)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -292,6 +354,11 @@ public class Rooms {
 
     StringJoiner joiner = new StringJoiner("&");
 
+    // add `balconies` to the URL query string
+    if (getBalconies() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbalconies%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBalconies()))));
+    }
+
     // add `bathrooms` to the URL query string
     if (getBathrooms() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sbathrooms%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBathrooms()))));
@@ -315,6 +382,11 @@ public class Rooms {
     // add `half_bathrooms` to the URL query string
     if (getHalfBathrooms() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%shalf_bathrooms%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHalfBathrooms()))));
+    }
+
+    // add `terraces` to the URL query string
+    if (getTerraces() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sterraces%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTerraces()))));
     }
 
     // add `total_rooms` to the URL query string

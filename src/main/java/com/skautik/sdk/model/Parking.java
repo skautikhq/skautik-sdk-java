@@ -30,26 +30,79 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.skautik.sdk.ApiClient;
 /**
- * DeliveryInput
+ * Parking
  */
 @JsonPropertyOrder({
-  DeliveryInput.JSON_PROPERTY_TYPE,
-  DeliveryInput.JSON_PROPERTY_URL
+  Parking.JSON_PROPERTY_INCLUDED,
+  Parking.JSON_PROPERTY_SPACES,
+  Parking.JSON_PROPERTY_TYPE
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.24.0")
-public class DeliveryInput {
+public class Parking {
+  public static final String JSON_PROPERTY_INCLUDED = "included";
+  @javax.annotation.Nullable
+  private Boolean included;
+
+  public static final String JSON_PROPERTY_SPACES = "spaces";
+  @javax.annotation.Nullable
+  private Integer spaces;
+
   public static final String JSON_PROPERTY_TYPE = "type";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String type;
 
-  public static final String JSON_PROPERTY_URL = "url";
-  @javax.annotation.Nullable
-  private String url;
-
-  public DeliveryInput() { 
+  public Parking() { 
   }
 
-  public DeliveryInput type(@javax.annotation.Nonnull String type) {
+  public Parking included(@javax.annotation.Nullable Boolean included) {
+    this.included = included;
+    return this;
+  }
+
+  /**
+   * Get included
+   * @return included
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_INCLUDED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getIncluded() {
+    return included;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_INCLUDED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIncluded(@javax.annotation.Nullable Boolean included) {
+    this.included = included;
+  }
+
+
+  public Parking spaces(@javax.annotation.Nullable Integer spaces) {
+    this.spaces = spaces;
+    return this;
+  }
+
+  /**
+   * Get spaces
+   * @return spaces
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SPACES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Integer getSpaces() {
+    return spaces;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_SPACES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSpaces(@javax.annotation.Nullable Integer spaces) {
+    this.spaces = spaces;
+  }
+
+
+  public Parking type(@javax.annotation.Nullable String type) {
     this.type = type;
     return this;
   }
@@ -58,47 +111,23 @@ public class DeliveryInput {
    * Get type
    * @return type
    */
-  @javax.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public String getType() {
     return type;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(@javax.annotation.Nonnull String type) {
+  @JsonProperty(value = JSON_PROPERTY_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setType(@javax.annotation.Nullable String type) {
     this.type = type;
   }
 
 
-  public DeliveryInput url(@javax.annotation.Nullable String url) {
-    this.url = url;
-    return this;
-  }
-
   /**
-   * Get url
-   * @return url
-   */
-  @javax.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_URL, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public String getUrl() {
-    return url;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_URL, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUrl(@javax.annotation.Nullable String url) {
-    this.url = url;
-  }
-
-
-  /**
-   * Return true if this DeliveryInput object is equal to o.
+   * Return true if this Parking object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -108,22 +137,24 @@ public class DeliveryInput {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    DeliveryInput deliveryInput = (DeliveryInput) o;
-    return Objects.equals(this.type, deliveryInput.type) &&
-        Objects.equals(this.url, deliveryInput.url);
+    Parking parking = (Parking) o;
+    return Objects.equals(this.included, parking.included) &&
+        Objects.equals(this.spaces, parking.spaces) &&
+        Objects.equals(this.type, parking.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, url);
+    return Objects.hash(included, spaces, type);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class DeliveryInput {\n");
+    sb.append("class Parking {\n");
+    sb.append("    included: ").append(toIndentedString(included)).append("\n");
+    sb.append("    spaces: ").append(toIndentedString(spaces)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -168,14 +199,19 @@ public class DeliveryInput {
 
     StringJoiner joiner = new StringJoiner("&");
 
+    // add `included` to the URL query string
+    if (getIncluded() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sincluded%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIncluded()))));
+    }
+
+    // add `spaces` to the URL query string
+    if (getSpaces() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sspaces%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSpaces()))));
+    }
+
     // add `type` to the URL query string
     if (getType() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%stype%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getType()))));
-    }
-
-    // add `url` to the URL query string
-    if (getUrl() != null) {
-      joiner.add(String.format(java.util.Locale.ROOT, "%surl%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUrl()))));
     }
 
     return joiner.toString();
